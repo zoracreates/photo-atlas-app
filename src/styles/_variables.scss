@@ -1,0 +1,23 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Text&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap');
+
+$pimary_accent_color: #3F5ED2;
+$secondary_accent_color: #CA4747;
+$gray: #4A5968;
+$light_gray: #E4E8EC;
+$white: #FFF;
+$black: #323232;
+
+$pimary_button_color: $pimary_accent_color;
+$black_text_color: $black;
+$gray_text_color: $gray;
+$white_text_color: $white;
+$link_color: $pimary_accent_color;
+$light_link_color: $white;
+
+$serif_font: 'DM Serif Display', serif;
+$sans_serif_font: 'Poppins', sans-serif;;
+
+$normal_weight: 400;
+$medium_weight: 500;
+$bold_weight: 700;

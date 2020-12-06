@@ -1,0 +1,11 @@
+.button {
+    background: $pimary_accent_color;
+    @extend %button_font;
+    color: $light_link_color;
+    padding: 0.9375rem;
+}
+
+.button-link {
+    @extend %button_font;
+    color: $link_color;
+}

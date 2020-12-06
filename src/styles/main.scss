@@ -9,7 +9,7 @@
 @import '_forms.scss';
 @import '_user.scss';
 
-
+/*DELETE LATER*/
 .App {
     text-align: center;
   }
@@ -48,4 +48,24 @@
       transform: rotate(360deg);
     }
   }
-  
+/*END OF DELETE LATER*/
+
+/* COLORS */
+
+.light-background {
+    background-color: $white;
+    color: $black_text_color;
+}
+
+.light-background a {
+    color: $link_color;
+}
+
+.dark-background {
+    color: $white_text_color;
+    background-color: $gray;
+}
+
+.dark-background a {
+    color: $light_link_color;
+}
