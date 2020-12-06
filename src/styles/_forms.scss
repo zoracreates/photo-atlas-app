@@ -1,7 +1,7 @@
 /* BUTTONS */
 .button {
-    background: $pimary_accent_color;
     @extend %button_font;
+    background: $pimary_accent_color;
     color: $light_link_color;
     padding: 0.9375rem;
 }
