@@ -9,14 +9,14 @@
 @import '_forms.scss';
 @import '_user.scss';
 
-
 /* COLORS */
 
 .light-background {
   background-color: $white;
   color: $black_text_color;
 
-  a {
+  a,
+  .button-link {
       color: $link_color;
   }
 
@@ -30,7 +30,8 @@
   color: $white_text_color;
   background-color: $gray;
 
-  a {
+  a,
+  .button-link  {
       color: $light_link_color;
   }
 }

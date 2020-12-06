@@ -1,3 +1,4 @@
+/* BUTTONS */
 .button {
     background: $pimary_accent_color;
     @extend %button_font;
@@ -7,5 +8,4 @@
 
 .button-link {
     @extend %button_font;
-    color: $link_color;
 }
