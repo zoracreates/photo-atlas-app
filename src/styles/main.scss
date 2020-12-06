@@ -9,6 +9,34 @@
 @import '_forms.scss';
 @import '_user.scss';
 
+
+/* COLORS */
+
+.light-background {
+  background-color: $white;
+  color: $black_text_color;
+
+  a {
+      color: $link_color;
+  }
+
+  .caption {
+      @extend %caption_font;
+      color: $gray_text_color;
+  }
+}
+
+.dark-background {
+  color: $white_text_color;
+  background-color: $gray;
+
+  a {
+      color: $light_link_color;
+  }
+}
+
+
+
 /*DELETE LATER*/
 .App {
     text-align: center;
@@ -50,22 +78,3 @@
   }
 /*END OF DELETE LATER*/
 
-/* COLORS */
-
-.light-background {
-    background-color: $white;
-    color: $black_text_color;
-}
-
-.light-background a {
-    color: $link_color;
-}
-
-.dark-background {
-    color: $white_text_color;
-    background-color: $gray;
-}
-
-.dark-background a {
-    color: $light_link_color;
-}
