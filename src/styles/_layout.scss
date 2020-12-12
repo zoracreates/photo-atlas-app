@@ -1,0 +1,53 @@
+html {
+    box-sizing: border-box;
+}
+
+*, *:before, *:after {
+    box-sizing: inherit;
+}
+
+header,
+nav,
+main
+footer,
+.dark-background,
+.light-background {
+    width: 100%;
+}
+
+header .container,
+nav .container,
+main .container,
+footer .container,
+.dark-background .container,
+.light-background .container {
+    width: 98%;
+    max-width: 1425px;
+    margin: auto;
+    min-width: 320px;
+}
+
+header,
+nav {
+    background-color: $gray;
+    color: $white_text_color;
+
+    a {
+       color: $light_link_color;
+       font-weight: $bold_weight;
+       text-decoration: underline;
+    }
+}
+
+
+
+
+
+@media (min-width: 769px) {
+
+}
+
+
+@supports (display:grid) {
+
+}

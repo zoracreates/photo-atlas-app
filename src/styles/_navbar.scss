@@ -1,0 +1,14 @@
+nav ul {
+    margin: 0px;
+    padding: 0px;
+
+    li {
+        list-style: none;
+
+        a {
+            @extend %caption_font;
+           text-decoration: none; 
+           font-weight: $normal_weight;
+        }
+    }
+}
