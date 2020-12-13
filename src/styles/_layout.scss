@@ -13,6 +13,7 @@ footer,
 .dark-background,
 .light-background {
     width: 100%;
+    min-width: 320px;
 }
 
 header .container,
@@ -24,23 +25,7 @@ footer .container,
     width: 98%;
     max-width: 1425px;
     margin: auto;
-    min-width: 320px;
 }
-
-header,
-nav {
-    background-color: $gray;
-    color: $white_text_color;
-
-    a {
-       color: $light_link_color;
-       font-weight: $bold_weight;
-       text-decoration: underline;
-    }
-}
-
-
-
 
 
 @media (min-width: 769px) {
@@ -48,6 +33,6 @@ nav {
 }
 
 
-@supports (display:grid) {
+@supports (display: grid) {
 
 }
