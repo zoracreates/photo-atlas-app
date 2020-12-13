@@ -27,6 +27,17 @@ footer .container,
     margin: auto;
 }
 
+footer  {
+    .container {
+        border-top: 1px $gray solid;
+        margin-top: 20px;
+    }
+
+    p.caption {
+        font-style: italic;
+        max-width: 500px;
+    }
+}
 
 @media (min-width: 769px) {
 

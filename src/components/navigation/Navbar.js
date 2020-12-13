@@ -7,12 +7,13 @@ import profileIcon from '../../images/icons/96px/profile-outline-white.png';
 function Navbar () {
 
     return (
-        <nav>
+        <header>
             <div className={`container`}>
                 <div className={`logo`}>
+                    <h1>Photo Atlas</h1>
                     <img src={logo} alt={`Photo Atlas logo`}/>
                 </div>
-
+                <nav>
                 <ul>
                     <li>
                         <img src={exploreIcon} alt/>
@@ -34,8 +35,9 @@ function Navbar () {
                         <span>Profile</span>
                     </li>
                 </ul>
+                </nav>
             </div>
-    </nav>
+    </header>
     )
 }
 

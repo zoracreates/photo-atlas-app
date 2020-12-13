@@ -10,20 +10,19 @@
 @import '_user.scss';
 
 /* COLORS */
+a,
+.button-link {
+    color: $link_color;
+}
+
+.caption {
+  @extend %caption_font;
+  color: $gray_text_color;
+}
 
 .light-background {
   background-color: $white;
   color: $black_text_color;
-
-  a,
-  .button-link {
-      color: $link_color;
-  }
-
-  .caption {
-      @extend %caption_font;
-      color: $gray_text_color;
-  }
 }
 
 .dark-background {
