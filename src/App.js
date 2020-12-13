@@ -9,11 +9,10 @@ function App(props) {
 
       <main>
         <div className={`container`}>
-          main 
           {props.children}
         </div>
       </main>
-
+      
       <footer>
         <div className={`container`}>
           <p>&copy; PhotoAtlas 2020</p>

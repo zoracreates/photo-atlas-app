@@ -7,7 +7,6 @@ html {
 }
 
 header,
-nav,
 main
 footer,
 .dark-background,
@@ -17,13 +16,12 @@ footer,
 }
 
 header .container,
-nav .container,
 main .container,
 footer .container,
 .dark-background .container,
 .light-background .container {
     width: 98%;
-    max-width: 1425px;
+    max-width: 1200px;
     margin: auto;
 }
 
