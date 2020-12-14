@@ -1,35 +1,29 @@
-import logo from './logo.svg';
+import Navbar from './components/navigation/Navbar';
 import './styles/main.scss';
 
-
-function App() {
+function App(props) {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-          <img src="/icons/icon-72.png" alt=""/>
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-        <div className="dark-background">
-        <h1>hello</h1>
-        <h2>hello</h2>
-        <h3>hello</h3>
-        <h4>hello</h4>
-        <h5>hello</h5>
-        <h6>hello</h6>
-        <p className="button-link">here is a <a>link</a></p>
+    <>
+      <Navbar />
+
+      <main>
+        <div className={`container`}>
+          {props.children}
         </div>
-      </header>
-    </div>
+      </main>
+      
+      <footer>
+        <div className={`container`}>
+          <p>&copy; PhotoAtlas 2020</p>
+          <p className={`caption`}>
+            All photographs and their titles/metadata on PhotoAtlas are copyrighted and owned by 
+            their respective owners (the photographers) and not by PhotoAtlas. As such Photo Atlas does 
+            not grant any licenses to any copyrights, patents or any other intellectual property rights.
+          </p>
+        </div>
+      </footer>
+      
+    </>
   );
 }
 

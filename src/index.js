@@ -1,10 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
+import MapWithCards from './components/layout/MapWithCards';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <App>
+      <MapWithCards>
+          cards go here
+      </MapWithCards>
+    </App>
   </React.StrictMode>,
   document.getElementById('root')
 );
