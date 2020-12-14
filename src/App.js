@@ -1,7 +1,6 @@
 import Navbar from './components/navigation/Navbar';
 import './styles/main.scss';
 
-
 function App(props) {
   return (
     <>
@@ -23,6 +22,7 @@ function App(props) {
           </p>
         </div>
       </footer>
+      
     </>
   );
 }

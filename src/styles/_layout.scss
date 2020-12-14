@@ -37,8 +37,80 @@ footer  {
     }
 }
 
+.grid-2_3,
+.grid-scroll {
+    display: flex;
+    justify-content: space-between;
+
+}
+
+.grid-2_3 {
+    flex-wrap: wrap;
+}
+
+.grid-2_3  > * {
+    flex-basis: 48%;
+}
+
+.grid-scroll {
+    overflow-x: scroll;
+    overflow-y: hidden;
+}
+
+.grid-scroll > * {
+    min-width: 260px;
+    margin-right: 2%;
+    margin-top: 2%;
+    border: 1px gray solid;
+}
+
+.grid-1_3 > *,
+.grid-2_3  > *,
+.grid-1_2 > *,
+.grid-map > * {
+    margin-top: 2%;
+    border: 1px gray solid;
+}
+
+.grid-map .map {
+    position: fixed;
+    bottom: 0px;
+    right: 0px;
+    left: 0px;
+    height: 50vh;
+}
+
 @media (min-width: 769px) {
 
+    .grid-1_3,
+    .grid-1_2,
+    .grid-2_3, 
+    .grid-map,
+    .grid-scroll {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+    }
+
+    .grid-1_3 > *,
+    .grid-2_3  > *,
+    .grid-scroll > * {
+        flex-basis: 31%;
+    }
+
+    .grid-scroll > * {
+        margin-right: 0px;
+        min-width: 0;
+    }
+
+    .grid-1_2 > *,
+    .grid-map > * {
+        flex-basis: 48%;
+    }
+
+    .grid-map .map {
+        position: static;
+    }
 }
 
 
