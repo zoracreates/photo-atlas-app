@@ -1,7 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
-import PhotoSlider from './components/layout/PhotoSlider';
+import PhotoSlider from './components/slider/PhotoSlider';
+
 
 
 const imageList = [
@@ -28,6 +29,8 @@ ReactDOM.render(
   <React.StrictMode>
     <App>
       <PhotoSlider imageList={imageList} />
+
+
     </App>
   </React.StrictMode>,
   document.getElementById('root')
