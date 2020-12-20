@@ -1,0 +1,26 @@
+//source https://codepen.io/sarus/pen/PJGPmy
+.photo-slider  {
+    > div{
+        display:flex;
+        width: 100%;
+        overflow-x: scroll;
+        overflow-y: hidden;
+        margin-top: 2%;
+        height: 50vh;
+        max-height: 400px;
+    }
+
+    .image-container {
+        margin-right: 1.5rem;
+        height: 100%;
+        display: flex;
+        align-items: center;
+    }
+}
+
+.imgage-container img  {
+    width: 100%;
+    height: auto;
+    vertical-align: middle;
+    object-fit: cover;
+}

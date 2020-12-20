@@ -16,22 +16,22 @@ function Navbar () {
                 <nav>
                 <ul>
                     <li>
-                        <img src={exploreIcon} alt/>
+                        <img src={exploreIcon} alt=""/>
                         <span>Explore</span>
                     </li>
 
                     <li>
-                        <img src={tripsIcon} alt/>
+                        <img src={tripsIcon} alt=""/>
                         <span>Trips</span>
                     </li>
 
                     <li>
-                        <img src={addIcon} alt/>
+                        <img src={addIcon} alt=""/>
                         <span>Add</span>
                     </li>
 
                     <li>
-                        <img src={profileIcon} alt/>
+                        <img src={profileIcon} alt=""/>
                         <span>Profile</span>
                     </li>
                 </ul>
