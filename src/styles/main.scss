@@ -1,9 +1,10 @@
 @import '_normalize.scss';
 @import '_variables.scss';
 @import '_typography.scss';
-@import '_layout.scss';
+@import '_grid.scss';
 @import '_header.scss';
 @import '_navbar.scss';
+@import '_slider.scss';
 @import '_maps.scss';
 @import '_cards.scss';
 @import '_forms.scss';
@@ -51,3 +52,14 @@ body {
     background-color: $light_gray;
 }
 
+footer  {
+  .container {
+      border-top: 1px $gray solid;
+      margin-top: 20px;
+  }
+
+  p.caption {
+      font-style: italic;
+      max-width: 500px;
+  }
+}

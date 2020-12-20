@@ -23,3 +23,6 @@ Furthemore, Photo Atlas will allow photographers to create curated lists of phot
 - Firebase Cloud Storage
 - Flickr API
 - Netlify
+
+## Next ToDos
+
