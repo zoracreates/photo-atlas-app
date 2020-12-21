@@ -1,3 +1,4 @@
+import React from 'react';
 import ContainedImage from './ContainedImage';
 import SimpleReactLightbox, { SRLWrapper } from "simple-react-lightbox";
 
@@ -25,47 +26,114 @@ const imageList = [
 ];
 */
 
-const PhotoSlider = (props) => {
+class PhotoSlider extends React.Component {
 
-  const { imageList } = props;
-
-  const lightboxOptions = {
-    buttons: {
-      showDownloadButton: false,
-      showAutoplayButton: false
-    }
+  state = {
+    scrollToEl: 2,
+    fwdToggle: 'active',
+    bckToggle: 'disabled'
   }
 
-  const windowWidth = window.innerWidth;
-  const maxImageWidth = (windowWidth > 600) ? (windowWidth / 2.5) : (windowWidth * .8);
+  render() {
 
-  return (
+    const { imageList } = this.props;
+    const imagesCount = imageList.length;
 
-    <SimpleReactLightbox>
+    const lightboxOptions = {
+      buttons: {
+        showDownloadButton: false,
+        showAutoplayButton: false
+      }
+    }
+    const windowWidth = window.innerWidth;
+    const maxImageWidth = (windowWidth > 600) ? (windowWidth / 2.5) : (windowWidth * .8);
 
-      <div className={`photo-slider`}>
 
-        <SRLWrapper options={lightboxOptions}>
-          
-          {imageList.map((image, id) => {
+    let handleFwdClick = () => {
+      if (this.state.scrollToEl >= 2 && this.state.scrollToEl < imagesCount) {
+        this.setState(prevState => ({ scrollToEl: prevState.scrollToEl + 2 }),
+        () => {
 
-            const { src, alt } = image;
+          let fwdTo = document.querySelector(`.photo-slider > div > a:nth-child(${this.state.scrollToEl})`);
 
-            return (
-              <a key={id} href={src}>
-                <ContainedImage src={src} alt={alt} maxHeight={600} maxWidth={maxImageWidth} />
-              </a>
-            )
+          if (fwdTo) {
+            fwdTo.scrollIntoView({ behavior: "smooth", block: "end", inline: "start" });
+          }
 
-          })}
+          if (this.state.scrollToEl > 2 && this.state.bckToggle === 'disabled') {
+            this.setState({ bckToggle: 'active'})
+          }
 
-        </SRLWrapper>
+          if (this.state.scrollToEl >= imagesCount) {
+            this.setState({ fwdToggle: 'disabled'})
+          }
 
-      </div>
+        });
+      }
+      else {
+        this.setState({ fwdToggle: 'disabled'})
+      }
+    }
 
-    </SimpleReactLightbox>
+    let handleBckClick = () => {
+      if (this.state.scrollToEl > 2) {
+        this.setState(prevState => ({ scrollToEl: prevState.scrollToEl - 2 }),
+          () => {
+            let backTo = document.querySelector(`.photo-slider > div > a:nth-child(${this.state.scrollToEl})`)
 
-  )
+            if (backTo) {
+              backTo.scrollIntoView({ behavior: "smooth", block: "end", inline: "end" });
+            }
+
+            if (this.state.scrollToEl >= 2 && this.state.scrollToEl < imagesCount && this.state.fwdToggle === 'disabled') {
+              this.setState({ fwdToggle: 'active'})
+            }
+
+            if(this.state.scrollToEl <= 2) {
+              this.setState({ bckToggle: 'disabled'})
+            }
+  
+          });
+      }
+      else {
+        this.setState({ bckToggle: 'disabled' })
+      }
+    }
+
+
+    return (
+      <SimpleReactLightbox>
+        <div className={`photo-slider`}>
+          <button className={`${this.state.fwdToggle} fwd`} onClick={handleFwdClick}>
+            fwd
+        </button>
+
+          <button className={`${this.state.bckToggle} bck`} onClick={handleBckClick}>
+            back
+        </button>
+          <SRLWrapper options={lightboxOptions}>
+            {imageList.map((image, id) => {
+
+              const { src, alt } = image;
+
+              return (
+                <a key={id} href={src}>
+                  <ContainedImage src={src} alt={alt} maxHeight={600} maxWidth={maxImageWidth} />
+                </a>
+              )
+
+            })}
+
+          </SRLWrapper>
+
+        </div>
+
+        <p className={`caption`}>Total images: {imagesCount}</p>
+
+      </SimpleReactLightbox>
+
+    )
+  }
 }
 
 export default PhotoSlider;

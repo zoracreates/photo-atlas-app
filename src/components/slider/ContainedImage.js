@@ -1,4 +1,3 @@
-import React from 'react';
 import resizeImage from '../../utils/resizeimage';
 
 const ContainedImage = (props) => {

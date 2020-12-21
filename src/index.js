@@ -21,6 +21,14 @@ const imageList = [
   {
     src: "https://picsum.photos/2000/700",
     alt: "placeholder 4"
+  },
+  {
+    src: "https://picsum.photos/2000/800",
+    alt: "placeholder 4"
+  },
+  {
+    src: "https://picsum.photos/200/700",
+    alt: "placeholder 4"
   }
 ];
 
@@ -29,8 +37,6 @@ ReactDOM.render(
   <React.StrictMode>
     <App>
       <PhotoSlider imageList={imageList} />
-
-
     </App>
   </React.StrictMode>,
   document.getElementById('root')

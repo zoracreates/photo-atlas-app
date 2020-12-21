@@ -1,10 +1,9 @@
 //source https://codepen.io/sarus/pen/PJGPmy
 .photo-slider  {
+    width: 100%;
+    overflow: hidden;
     > div{
         display:flex;
-        width: 100%;
-        overflow-x: scroll;
-        overflow-y: hidden;
         margin-top: 2%;
         height: 50vh;
         max-height: 400px;
@@ -13,16 +12,46 @@
     .image-container {
         margin-right: 1.5rem;
         height: 100%;
+        width: 100%;
         max-height: 400px;
         max-width: 800px;
         display: flex;
         overflow: hidden;
         align-items: center;
     }
+
+    button {
+        position: fixed;
+        &.disabled {
+            background: gray;
+        }
+
+        &.active {
+            background: yellow;
+        }
+
+        &.fwd {
+            top: 100px;
+        }
+
+        &.bck {
+            top: 150px;
+        }
+    }
+
 }
 
 .image-container img  {
     vertical-align: middle;
     object-fit: cover;
 }
+
+.fwd.active .photo-slider div {
+    transform: translateX(-40%);
+}
+
+.bck.active .photo-slider div {
+    transform: translateX(-40%);
+}
+  
   
