@@ -27,44 +27,45 @@ const imageList = [
 
 const PhotoSlider = (props) => {
 
-    const { imageList } = props;
+  const { imageList } = props;
 
-    const lightboxOptions = {
-        buttons: {
-            showDownloadButton: false,
-            showAutoplayButton: false
-        }
+  const lightboxOptions = {
+    buttons: {
+      showDownloadButton: false,
+      showAutoplayButton: false
     }
+  }
 
-    return (
+  const windowWidth = window.innerWidth;
+  const maxImageWidth = (windowWidth > 600) ? (windowWidth / 2.5) : (windowWidth * .8);
 
-        <SimpleReactLightbox>
+  return (
 
-            <div className={`photo-slider`}>
+    <SimpleReactLightbox>
 
-                <SRLWrapper options={lightboxOptions}>
+      <div className={`photo-slider`}>
 
-                    {imageList.map((image, id) => {
+        <SRLWrapper options={lightboxOptions}>
+          
+          {imageList.map((image, id) => {
 
-                        const { src, alt } = image;
+            const { src, alt } = image;
 
-                        return (
+            return (
+              <a key={id} href={src}>
+                <ContainedImage src={src} alt={alt} maxHeight={600} maxWidth={maxImageWidth} />
+              </a>
+            )
 
-                            <a key={id} href={src}>
-                                <ContainedImage src={src} alt={alt} maxHeight={400} maxWidth={700} />
-                            </a>
-                        )
+          })}
 
+        </SRLWrapper>
 
-                    })}
-                    
-                </SRLWrapper>
+      </div>
 
-            </div>
+    </SimpleReactLightbox>
 
-        </SimpleReactLightbox>
-
-    )
+  )
 }
 
 export default PhotoSlider;
