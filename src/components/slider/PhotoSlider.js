@@ -45,39 +45,48 @@ class PhotoSlider extends React.Component {
         showAutoplayButton: false
       }
     }
+
     const windowWidth = window.innerWidth;
     const maxImageWidth = (windowWidth > 600) ? (windowWidth / 2.5) : (windowWidth * .8);
 
 
+
     let handleFwdClick = () => {
-      if (this.state.scrollToEl >= 2 && this.state.scrollToEl < imagesCount) {
-        this.setState(prevState => ({ scrollToEl: prevState.scrollToEl + 2 }),
-        () => {
 
-          let fwdTo = document.querySelector(`.photo-slider > div > a:nth-child(${this.state.scrollToEl})`);
+      if (this.state.scrollToEl >= 1 && this.state.scrollToEl < imagesCount) {
 
-          if (fwdTo) {
-            fwdTo.scrollIntoView({ behavior: "smooth", block: "end", inline: "start" });
+        let fwdTo = document.querySelector(`.photo-slider > div > a:nth-child(${this.state.scrollToEl})`);
+
+        if (fwdTo) {
+          fwdTo.scrollIntoView({ behavior: "smooth", block: "end", inline: "center" });
+        }
+
+        this.setState(
+          prevState => { return { scrollToEl: prevState.scrollToEl + 1 } },
+
+          () => {
+            console.log(this.state.scrollToEl);
+            if (this.state.scrollToEl > 1 && this.state.bckToggle === 'disabled') {
+              this.setState({ bckToggle: 'active' })
+            }
+            if (this.state.scrollToEl >= imagesCount && this.state.scrollToEl) {
+              this.setState({ fwdToggle: 'disabled' })
+            }
           }
+        )
 
-          if (this.state.scrollToEl > 2 && this.state.bckToggle === 'disabled') {
-            this.setState({ bckToggle: 'active'})
-          }
-
-          if (this.state.scrollToEl >= imagesCount) {
-            this.setState({ fwdToggle: 'disabled'})
-          }
-
-        });
       }
+
       else {
-        this.setState({ fwdToggle: 'disabled'})
+        this.setState({ fwdToggle: 'disabled' })
       }
     }
 
+
+
     let handleBckClick = () => {
-      if (this.state.scrollToEl > 2) {
-        this.setState(prevState => ({ scrollToEl: prevState.scrollToEl - 2 }),
+      if (this.state.scrollToEl > 1) {
+        this.setState(prevState => ({ scrollToEl: prevState.scrollToEl - 1 }),
           () => {
             let backTo = document.querySelector(`.photo-slider > div > a:nth-child(${this.state.scrollToEl})`)
 
@@ -85,14 +94,22 @@ class PhotoSlider extends React.Component {
               backTo.scrollIntoView({ behavior: "smooth", block: "end", inline: "end" });
             }
 
-            if (this.state.scrollToEl >= 2 && this.state.scrollToEl < imagesCount && this.state.fwdToggle === 'disabled') {
-              this.setState({ fwdToggle: 'active'})
+            if (this.state.scrollToEl >= 1 && this.state.scrollToEl < imagesCount && this.state.fwdToggle === 'disabled') {
+              this.setState({ fwdToggle: 'active' })
             }
 
-            if(this.state.scrollToEl <= 2) {
-              this.setState({ bckToggle: 'disabled'})
+            if (this.state.scrollToEl === 1) {
+              this.setState(prevState => ({ scrollToEl: prevState.scrollToEl + 1 }),
+                () => {
+                  this.setState({ bckToggle: 'disabled' })
+                });
             }
-  
+
+
+            if (this.state.scrollToEl <= 2) {
+              this.setState({ bckToggle: 'disabled' })
+            }
+
           });
       }
       else {
@@ -105,12 +122,12 @@ class PhotoSlider extends React.Component {
       <SimpleReactLightbox>
         <div className={`photo-slider`}>
           <button className={`${this.state.fwdToggle} fwd`} onClick={handleFwdClick}>
-            fwd
-        </button>
+            Next
+          </button>
 
           <button className={`${this.state.bckToggle} bck`} onClick={handleBckClick}>
-            back
-        </button>
+            Previous
+          </button>
           <SRLWrapper options={lightboxOptions}>
             {imageList.map((image, id) => {
 
