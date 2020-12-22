@@ -1,8 +1,34 @@
 //source https://codepen.io/sarus/pen/PJGPmy
 .photo-slider  {
     width: 100%;
-    overflow: hidden;
-    > div{
+    overflow-x: scroll;
+    overflow-y: hidden;
+    position: relative;
+    padding-bottom: 25px;
+
+    /* width */
+    &::-webkit-scrollbar {
+        width: 4px;
+    }
+    
+    /* Track */
+    &::-webkit-scrollbar-track {
+        background: $light_gray;
+        border-top: 1px $light_border_color solid;
+        border-bottom: 1px $light_border_color solid;
+    }
+    
+    /* Handle */
+    &::-webkit-scrollbar-thumb {
+        background: $gray;
+    }
+    
+    /* Handle on hover */
+    &::-webkit-scrollbar-thumb:hover {
+        background: $pimary_accent_color;
+    }
+
+    > div {
         display:flex;
         margin-top: 2%;
         height: 50vh;
@@ -18,25 +44,6 @@
         display: flex;
         overflow: hidden;
         align-items: center;
-    }
-
-    button {
-        position: fixed;
-        &.disabled {
-            background: gray;
-        }
-
-        &.active {
-            background: yellow;
-        }
-
-        &.fwd {
-            top: 100px;
-        }
-
-        &.bck {
-            top: 150px;
-        }
     }
 
 }
