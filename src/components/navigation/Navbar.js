@@ -11,7 +11,7 @@ function Navbar () {
             <div className={`container`}>
                 <div className={`logo`}>
                     <h1>Photo Atlas</h1>
-                    <img src={logo} alt={`Photo Atlas logo`}/>
+                    <img src={logo} alt={`PhotoAtlas logo`}/>
                 </div>
                 <nav>
                 <ul>

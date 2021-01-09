@@ -1,0 +1,37 @@
+.map-container {
+    .map-toggle-bar {
+        background-color: $black;
+        color: $white;
+        p {
+            @extend %button_font;
+            margin: 0px;
+            padding: .5em;
+    
+            &::before {
+                content: '';
+                display: inline-block;
+                margin-right: .5em;
+                width: .9em;
+                height: .9em;
+                background-image: url(../images/icons/48px/chevron-white.png);
+                background-repeat: no-repeat;
+                background-size: .9em;
+                background-position: center bottom;
+                transition-duration: $default-transition-duration;
+            }
+    
+        }
+    }
+
+    &.open .map-toggle-bar p::before {
+        transform: rotate(90deg);
+
+    }
+
+    &.close .map-toggle-bar p::before {
+        transform: rotate(0deg);
+
+    }
+
+}
+

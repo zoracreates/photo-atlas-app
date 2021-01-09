@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
-import PhotoSlider from './components/slider/PhotoSlider';
+import MapWithCards from './components/layout/MapWithCards';
 
 
 
@@ -28,8 +28,10 @@ const imageList = [
 ReactDOM.render(
   <React.StrictMode>
     <App>
-      <PhotoSlider imageList={imageList} />
-
+      
+      <MapWithCards>
+        Cards hellooooo
+      </MapWithCards>
 
     </App>
   </React.StrictMode>,
