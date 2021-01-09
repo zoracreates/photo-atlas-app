@@ -1,10 +1,35 @@
 //source https://codepen.io/sarus/pen/PJGPmy
 .photo-slider  {
-    > div{
+    width: 100%;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    position: relative;
+    padding-bottom: 25px;
+
+    /* width */
+    &::-webkit-scrollbar {
+        width: 4px;
+    }
+    
+    /* Track */
+    &::-webkit-scrollbar-track {
+        background: $light_gray;
+        border-top: 1px $light_border_color solid;
+        border-bottom: 1px $light_border_color solid;
+    }
+    
+    /* Handle */
+    &::-webkit-scrollbar-thumb {
+        background: $gray;
+    }
+    
+    /* Handle on hover */
+    &::-webkit-scrollbar-thumb:hover {
+        background: $pimary_accent_color;
+    }
+
+    > div {
         display:flex;
-        width: 100%;
-        overflow-x: scroll;
-        overflow-y: hidden;
         margin-top: 2%;
         height: 50vh;
         max-height: 400px;
@@ -13,14 +38,27 @@
     .image-container {
         margin-right: 1.5rem;
         height: 100%;
+        width: 100%;
+        max-height: 400px;
+        max-width: 800px;
         display: flex;
+        overflow: hidden;
         align-items: center;
     }
+
 }
 
-.imgage-container img  {
-    width: 100%;
-    height: auto;
+.image-container img  {
     vertical-align: middle;
     object-fit: cover;
 }
+
+.fwd.active .photo-slider div {
+    transform: translateX(-40%);
+}
+
+.bck.active .photo-slider div {
+    transform: translateX(-40%);
+}
+  
+  

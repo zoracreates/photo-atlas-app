@@ -1,3 +1,4 @@
+import React from 'react';
 import ContainedImage from './ContainedImage';
 import SimpleReactLightbox, { SRLWrapper } from "simple-react-lightbox";
 
@@ -25,46 +26,51 @@ const imageList = [
 ];
 */
 
+
+const windowWidth = window.innerWidth;
+const breakPoint = 600;
+const maxImageWidth = (windowWidth > breakPoint) ? (windowWidth / 2) : windowWidth;
+
 const PhotoSlider = (props) => {
+  const { imageList } = props;
+  const imagesCount = imageList.length;
 
-    const { imageList } = props;
-
-    const lightboxOptions = {
-        buttons: {
-            showDownloadButton: false,
-            showAutoplayButton: false
-        }
+  const lightboxOptions = {
+    buttons: {
+      showDownloadButton: false,
+      showAutoplayButton: false
     }
+  }
 
-    return (
+  return (
+    <SimpleReactLightbox>
+      <div className={`photo-slider`}>
 
-        <SimpleReactLightbox>
+        <SRLWrapper options={lightboxOptions}>
 
-            <div className={`photo-slider`}>
+          {imageList.map((image, id) => {
 
-                <SRLWrapper options={lightboxOptions}>
+            const { src, alt } = image;
 
-                    {imageList.map((image, id) => {
+            return (
+              <a key={id} href={src}>
+                <ContainedImage src={src} alt={alt} maxHeight={600} maxWidth={maxImageWidth} />
+              </a>
+            )
 
-                        const { src, alt } = image;
+          })}
 
-                        return (
+        </SRLWrapper>
 
-                            <a key={id} href={src}>
-                                <ContainedImage src={src} alt={alt} maxHeight={400} maxWidth={700} />
-                            </a>
-                        )
+      </div>
 
+      <p className={`caption`}>Total images: {imagesCount}</p>
 
-                    })}
-                    
-                </SRLWrapper>
+    </SimpleReactLightbox>
 
-            </div>
+  )
 
-        </SimpleReactLightbox>
-
-    )
 }
+
 
 export default PhotoSlider;

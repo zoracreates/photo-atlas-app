@@ -7,19 +7,31 @@ import MapWithCards from './components/layout/MapWithCards';
 
 const imageList = [
   {
-    src: "https://picsum.photos/700/800",
+    src: "https://picsum.photos/200/200",
     alt: "placeholder 1"
   },
   {
-    src: "https://picsum.photos/1000/300",
+    src: "https://picsum.photos/1000/200",
     alt: "placeholder 2"
   },
   {
-    src: "https://picsum.photos/200/300",
+    src: "https://picsum.photos/200/200",
     alt: "placeholder 3"
   },
   {
-    src: "https://picsum.photos/2000/700",
+    src:  "https://picsum.photos/2000/4000",
+    alt: "placeholder 4"
+  },
+  {
+    src:  "https://picsum.photos/2000/2000",
+    alt: "placeholder 4"
+  },
+  {
+    src:  "https://picsum.photos/200/200",
+    alt: "placeholder 4"
+  },
+  {
+    src:  "https://picsum.photos/200/200",
     alt: "placeholder 4"
   }
 ];
@@ -27,12 +39,10 @@ const imageList = [
 
 ReactDOM.render(
   <React.StrictMode>
-    <App>
-      
+    <App>      
       <MapWithCards>
         Cards hellooooo
       </MapWithCards>
-
     </App>
   </React.StrictMode>,
   document.getElementById('root')
