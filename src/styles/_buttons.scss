@@ -1,0 +1,25 @@
+%button {
+    @extend %button_font;
+    border: none;
+    padding: 7px;
+    min-width: 200px;
+    max-width: 90%;
+    border-radius: 0px;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    transition-duration: $default-transition-duration;
+}
+
+.default-button {
+    @extend %button;
+    color: $white_text_color;
+    background-color: $pimary_button_color;
+}
+
+.default-button:hover {
+    background-color: $pimary_button_pressed_color;
+}
+
+input[type='submit'] {
+    min-width: 5rem;
+}

@@ -1,5 +1,4 @@
 import React from 'react';
-import ToggleBar from '../buttons/ToggleBar'
 
 class MapWithCards extends React.Component {
 

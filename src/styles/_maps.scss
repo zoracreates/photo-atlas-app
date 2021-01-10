@@ -1,7 +1,7 @@
 .map-container {
     .toggle-bar {
         background-color: $black;
-        color: $white;
+        color: $white_text_color;
         p {
             @extend %button_font;
             margin: 0px;
