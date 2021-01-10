@@ -1,7 +1,7 @@
 %button {
     @extend %button_font;
     border: none;
-    padding: 7px;
+    padding: 0.9375rem;
     min-width: 200px;
     max-width: 90%;
     border-radius: 0px;
@@ -10,9 +10,13 @@
     transition-duration: $default-transition-duration;
 }
 
+.button-link {
+    @extend %button_font;
+}
+
 .default-button {
     @extend %button;
-    color: $white_text_color;
+    color: $light_link_color;
     background-color: $pimary_button_color;
 }
 

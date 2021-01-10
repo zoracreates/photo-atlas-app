@@ -1,11 +1,100 @@
-/* BUTTONS */
-.button {
-    @extend %button_font;
-    background: $pimary_accent_color;
-    color: $light_link_color;
-    padding: 0.9375rem;
+/* Text Input Bars */
+.text-bar  {
+    @extend %body2_font;
+    border-radius: 7px;
+    border: 1px solid $gray;
+    background-color: $light_gray;
+    color: $black_text_color;
 }
 
-.button-link {
-    @extend %button_font;
+
+/* Search Bar */
+
+.search-bar-container {
+    display: flex;
+    max-width: 90%;
+    margin: 1rem auto;
+
+    &.standard-search {
+        .search-back-buttton {
+            display: none;
+        }
+
+        .text-bar {
+            border-radius: 7px 0px 0px 7px;
+        }
+    }
+
+    &.back-search {        
+        .text-bar {
+            border-radius: 0px;
+        }
+    }
+
+    .text-bar {
+        border-right: none;
+    }
+
+    @media (min-width: 769px) {
+        .search-back-buttton {
+            display: none;
+        }
+
+        &.back-search .text-bar {
+            border-radius: 7px 0px 0px 7px;
+        }
+    }
+}
+
+.search-back-buttton,
+.search-button,
+.text-bar {
+   padding: (0.8125rem / 1.5);
+}
+
+.search-back-buttton,
+.search-button {
+    border: none;
+    transition-duration: $default-transition-duration;
+}
+
+.search-button {
+    border-radius: 0px 7px 7px 0px;
+    background-color: $light_gray;
+    border: 1px solid $gray;
+    border-left: none;
+    background-image: url(../images/icons/96px/search-gray.png);
+    background-repeat: no-repeat;
+    background-size: 1rem;
+    background-position: center;
+    color: transparent;
+    width: 0.8125rem;
+    padding-right: 1rem;
+}
+
+.search-back-buttton {
+    border-radius: 7px 0px 0px 7px;
+    border: 1px solid $gray;
+    border-right: none;
+    @extend %body2_font;
+    background-color: $light_accent_gray;
+    color: $gray_text_color;
+
+    &::before {
+        content: '';
+        display: inline-block;
+        width: 0.8125rem;
+        height: 90%;
+        background-image:  url(../images/icons/48px/chevron-gray.png);
+        background-repeat: no-repeat;
+        background-size: 0.65rem;
+        background-position: center bottom;
+        transform: rotateY(180deg);
+    }
+}
+
+.search-back-buttton {
+    @extend %caption_font;
+    background-color: $light_accent_gray;
+    color: $gray_text_color;
 }

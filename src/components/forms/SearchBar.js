@@ -2,16 +2,18 @@ function SearchBar(props) {
 
     let { className, onClick, id, showBackButton, placeholder, name, onChange } = props;
 
-    let backSearch = showBackButton ? 'back-search' : 'standard-search';
+    let searchStyle = showBackButton ? 'back-search' : 'standard-search';
 
     return (
-        <>
+        <div className={`search-bar-container ${searchStyle} ${className}`}>
 
-            <button className={`search-back-buttton`}>Back</button>
+            <button onClick={() => {window.history.back()}} className={`search-back-buttton`}><span></span>Back</button>
 
-            <form className={`text-bar ${backSearch} ${className}`}>
+            <form>
                 <input
-
+                    
+                    className={`text-bar`}
+                    
                     type="search"
 
                     id={id}
@@ -24,10 +26,10 @@ function SearchBar(props) {
 
                 />
 
-                <button className={`search-buttton`} onClick={onClick}>Search</button>
+                <button className={`search-button`} onClick={onClick}>Search</button>
 
             </form>
-        </>
+        </div>
     )
 }
 
