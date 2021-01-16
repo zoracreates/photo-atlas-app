@@ -1,10 +1,9 @@
-function SearchBar(props) {
+function TextInput(props) {
 
     let { 
         className, 
         id, 
         name, 
-        onClick, 
         onChange, 
         placeholder, 
         required, 
@@ -14,29 +13,23 @@ function SearchBar(props) {
         maxLength, 
         minLength,  
         pattern, 
-        readOnly, 
-        showBackButton } = props;
+        readOnly } = props;
  
-    let searchStyle = showBackButton ? 'back-search' : 'standard-search';
 
     return (
-        <div className={`search-bar-container ${searchStyle} ${className}`}>
-
-            <button onClick={() => {window.history.back()}} className={`search-back-buttton`}><span></span>Back</button>
-
-            <form>
+        
                 <input
-                    type="search"
+                    type="text"
 
-                    className={`text-bar`}
+                    className={`text-bar ${className}`}
                     
                     onChange={onChange}
                 
                     id={id}
 
-                    name={name ? name : 'q'}
+                    name={name}
 
-                    placeholder={placeholder ? placeholder : 'Search Term'}
+                    placeholder={placeholder ? placeholder : 'Enter Text'}
                     
                     required={required}
 
@@ -55,13 +48,8 @@ function SearchBar(props) {
                     readOnly={readOnly}
 
                 />
-
-                <button className={`search-button`} onClick={onClick}>Search</button>
-
-            </form>
-        </div>
     )
 }
 
 
-export default SearchBar;
+export default TextInput;

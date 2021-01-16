@@ -7,11 +7,13 @@ $pimary_dark_color: darken($pimary_accent_color, 5%);
 $gray: #4A5968;
 $light_gray: #F0F2F4;
 $light_accent_gray: #E4E8EC;
+$light_accent_gray_dark: darken($light_accent_gray, 5%);
 $white: #FFF;
 $black: #323232;
 
 $pimary_button_color: $pimary_accent_color;
 $pimary_button_pressed_color: $pimary_dark_color;
+$light_gray_accent_button_pressed: $light_accent_gray_dark;
 $black_text_color: $black;
 $gray_text_color: $gray;
 $white_text_color: $white;
