@@ -1,11 +1,252 @@
-/* BUTTONS */
-.button {
-    @extend %button_font;
-    background: $pimary_accent_color;
-    color: $light_link_color;
-    padding: 0.9375rem;
+/* Text Input Bars */
+.text-bar  {
+    @extend %body2_font;
+    border-radius: 7px;
+    border: 1px solid $gray;
+    background-color: $light_gray;
+    color: $black_text_color;
 }
 
-.button-link {
-    @extend %button_font;
+
+/* Search Bar */
+
+.search-bar-container {
+    display: flex;
+    max-width: 90%;
+    margin: 1rem auto;
+
+    &.standard-search {
+        .search-back-buttton {
+            display: none;
+        }
+
+        .text-bar {
+            border-radius: 7px 0px 0px 7px;
+        }
+    }
+
+    &.back-search {        
+        .text-bar {
+            border-radius: 0px;
+        }
+    }
+
+    .text-bar {
+        border-right: none;
+    }
+
+    @media (min-width: 769px) {
+        .search-back-buttton {
+            display: none;
+        }
+
+        &.back-search .text-bar {
+            border-radius: 7px 0px 0px 7px;
+        }
+    }
+
+    [type="search"] {
+        outline-offset: -4px;
+    }
 }
+
+.search-back-buttton,
+.search-button,
+.text-bar {
+   padding: (0.8125rem / 1.5);
+}
+
+.search-back-buttton,
+.search-button {
+    border: none;
+    transition-duration: $default-transition-duration;
+}
+
+.search-button {
+    border-radius: 0px 7px 7px 0px;
+    background-color: $light_gray;
+    border: 1px solid $gray;
+    overflow: hidden;
+    border-left: none;
+    background-image: url(../images/icons/96px/search-gray.png);
+    background-repeat: no-repeat;
+    background-size: 1rem;
+    background-position: center;
+    color: transparent;
+    width: 0.8125rem;
+    padding-right: 1rem;
+}
+
+.search-back-buttton {
+    border-radius: 7px 0px 0px 7px;
+    border: 1px solid $gray;
+    border-right: none;
+    @extend %body2_font;
+    background-color: $light_accent_gray;
+    color: $gray_text_color;
+
+    &::before {
+        content: '';
+        display: inline-block;
+        width: 0.8125rem;
+        height: 90%;
+        background-image:  url(../images/icons/48px/chevron-gray.png);
+        background-repeat: no-repeat;
+        background-size: 0.65rem;
+        background-position: center bottom;
+        transform: rotateY(180deg);
+    }
+}
+
+.search-back-buttton {
+    @extend %caption_font;
+    background-color: $light_accent_gray;
+    color: $gray_text_color;
+    transition-duration: $default-transition-duration;
+
+    &:hover {
+        background-color: $light_accent_gray_dark;
+    }
+}
+
+/* FILE INPUT */
+
+input[type="file"]{
+    width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+    
+     + label {
+        @extend %body2_font;
+        display: block;
+        border: 1px solid $gray;
+        background-color: $light_accent_gray;
+        color: $gray_text_color;
+        padding: (0.8125rem / 1.5);
+        text-transform: uppercase;
+        transition-duration: $default-transition-duration;
+        max-width: 10em;
+        text-align: center;
+
+        &:hover {
+            background-color: $light_accent_gray_dark;
+        }
+    }
+}
+
+/* CHECKBOXES */
+
+/* Customize the label (the container) */
+.check-container {
+    @extend %body2_font;
+    color: $gray_text_color;
+    display: block;
+    max-width: fit-content;
+    position: relative;
+    padding-left: 1.7em;
+    padding-top: 2px;
+    margin-bottom: 2%;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+
+    input {
+        /* Hide the browser's default checkbox */
+        position: absolute;
+        opacity: 0;
+        cursor: pointer;
+        height: 0;
+        width: 0;
+    
+    
+        /* When the checkbox is checked, add a blue background */
+        &:checked ~ .checkmark,
+        &:checked ~ .radiomark {
+            background-color: $pimary_accent_color;
+            
+            /* Show the checkmark when checked */
+            &:after {
+                display: block; 
+            }
+        }
+      
+      }
+
+      /* On mouse-over, add a grey background color */
+      &:hover  input:not(:checked) ~ .radiomark,
+      &:hover  input:not(:checked) ~ .checkmark{
+          background-color: $light_accent_gray;
+      }
+      
+      /* Create a custom checkbox */
+      .checkmark,
+      .radiomark {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 17px;
+        width: 17px;
+        border: 1px solid $gray;
+        background-color: $white;
+        transition-duration: $default-transition-duration;
+    
+        /* Create the checkmark/indicator (hidden when not checked) */
+        &:after {
+            content: "";
+            position: absolute;
+            display: none;
+        }
+    }
+
+    .radiomark {
+        border-radius: 50%;
+    }
+
+    .checkmark:after{
+        /* Style the checkmark/indicator */
+        left: 5px;
+        top: 2px;
+        width: 5px;
+        height: 10px;
+        border: solid $white;
+        border-width: 0 3px 3px 0;
+        -webkit-transform: rotate(45deg);
+        -ms-transform: rotate(45deg);
+        transform: rotate(45deg);
+    }
+
+    .radiomark:after{
+        /* Style the checkmark/indicator */
+        left: 3px;
+        right: 3px;
+        bottom: 3px;
+        top: 3px;
+        border-radius: 50%;
+        background: white;
+    }
+
+
+
+  }
+
+
+
+
+
+
+  
+
+
+  
+ 
+  
+
+  
+
+  
+
+  
+  

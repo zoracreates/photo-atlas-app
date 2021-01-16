@@ -1,7 +1,7 @@
 .map-container {
-    .map-toggle-bar {
+    .toggle-bar {
         background-color: $black;
-        color: $white;
+        color: $white_text_color;
         p {
             @extend %button_font;
             margin: 0px;
@@ -23,14 +23,13 @@
         }
     }
 
-    &.open .map-toggle-bar p::before {
+    &.open .toggle-bar p::before {
         transform: rotate(90deg);
 
     }
 
-    &.close .map-toggle-bar p::before {
+    &.close .toggle-bar p::before {
         transform: rotate(0deg);
-
     }
 
 }

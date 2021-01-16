@@ -3,49 +3,48 @@ import React from 'react';
 class MapWithCards extends React.Component {
 
     state = {
-        toggle: 'open'
+        openedMap: true
     }
 
-handleToggle = () => {
+    handleToggle = () => {
+        this.setState({ openedMap: !this.state.openedMap });
+    }
 
-    let setToOpen = () => this.setState({toggle: 'open'});
-    let setToClose = () => this.setState({toggle: 'close'});
-     
-    (this.state.toggle === 'open') ? setToClose() : setToOpen();
-}
+    render() {
+        let { children } = this.props;
 
-render() {
-    let { children } = this.props;
+        let { openedMap } = this.state;
 
-    let handleToggle = this.handleToggle;
+        let handleToggle = this.handleToggle;
 
-    let { toggle } = this.state;
+        let toggleBarClass = openedMap ? 'open' : 'close';
 
-    return (
-        <div className={`grid-map`}>
+        return (
+            <div className={`grid-map`}>
 
-            <div>
-                {children}
-            </div>
-
-            <div className={`map-container ${toggle}`}>
-                <div className={`map-toggle-bar`} onClick={handleToggle.bind(this)}>
-                    <p>
-                        {toggle == 'open' ? 'Hide Map' : 'Show Map'}
-                    </p>
+                <div>
+                    {children}
                 </div>
 
-                <div className={'map'}>
-                    Map will go here
+                <div className={`map-container ${toggleBarClass}`}>
+
+                    <div className={`toggle-bar`} onClick={handleToggle.bind(this)}>
+                        <p>
+                            {openedMap ? 'Hide Map' : 'Show Map'}
+                        </p>
+
+                    </div>
+
+                    <div className={'map'}>
+                        Map will go here
                 </div>
+                </div>
+
             </div>
 
-        </div>
+        )
 
-    )
-
-}
-
+    }
 
 }
 
