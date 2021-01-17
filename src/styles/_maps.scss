@@ -19,13 +19,11 @@
                 background-position: center bottom;
                 transition-duration: $default-transition-duration;
             }
-    
         }
     }
 
     &.open .toggle-bar p::before {
         transform: rotate(90deg);
-
     }
 
     &.close .toggle-bar p::before {

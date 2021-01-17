@@ -53,18 +53,12 @@ header {
     min-width: 260px;
     margin-right: 2%;
     margin-top: 2%;
-    border: 1px gray solid;
 }
 
 .grid-1_3 > *,
 .grid-2_3  > *,
 .grid-1_2 > * {
     margin-top: 2%;
-    border: 1px $gray solid;
-}
-
-.grid-map > * {
-    border: 1px $gray solid;
 }
 
 .grid-map .map-container {
