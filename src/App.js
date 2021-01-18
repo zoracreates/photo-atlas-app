@@ -3,21 +3,25 @@ import AddLocation from './screens/AddLocation';
 import Explore from './screens/explore/Explore';
 import Profile from './screens/Profile';
 import Trips from './screens/trips/Trips';
+import LogIn from './screens/authentication/LogIn';
+import PrivateRoute from './components/navigation/PrivateRoute';
 import './styles/main.scss';
 import {Switch, Route} from 'react-router-dom';
 
-function App(props) {
+function App({authState}) {
   return (
     <>
-      <Navbar />  {/* need to figure out how to set icons to active maybe with match param*/}
+
+      <Navbar />
 
       <main>
         <div className={`container`}>
           <Switch>
             <Route exact path="/" component={Explore}/>
-            <Route path="/trips" component={Trips}/> {/* will become an auth required route*/}
-            <Route path="/add" component={AddLocation}/> {/* will become an auth required route*/}
-            <Route path="/profile" component={Profile}/> {/* will become an auth required route*/}
+            <PrivateRoute path="/trips" component={Trips} isAuthenticated={authState}/> 
+            <PrivateRoute path="/add" component={AddLocation}/> 
+            <PrivateRoute path="/profile" component={Profile}/>
+            <Route path="/login" component={LogIn}/> 
           </Switch>
         </div>
       </main>

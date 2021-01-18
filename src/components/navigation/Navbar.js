@@ -4,19 +4,19 @@ import { Link, useLocation } from 'react-router-dom';
 function Navbar() {
 
     // Check Router's location to set active status
-
     let location = useLocation().pathname;
 
     let tripsPath = new RegExp('/trips/?');
     let addPath = new RegExp('/add/?');
     let profilePath = new RegExp('/profile/?');
+    let logInPath = new RegExp('/login/?');
 
     let tripsActive = tripsPath.test(location);
     let addActive = addPath.test(location);
     let profileActive = profilePath.test(location);
-    let exploreActive = (!tripsActive && !addActive && !profileActive);
-
-
+    let logInActive = logInPath.test(location);
+    let exploreActive = (!tripsActive && !addActive && !profileActive && !logInActive);
+    
 
     return (
         <header>
