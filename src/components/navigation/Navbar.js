@@ -1,43 +1,61 @@
 import logo from '../../images/icons/nav-logo.png'
-import exploreIcon from '../../images/icons/96px/search-white.png';
-import tripsIcon from '../../images/icons/96px/trips-outline-white.png';
-import addIcon from '../../images/icons/96px/add-outline-white.png';
-import profileIcon from '../../images/icons/96px/profile-outline-white.png';
+import { Link, useLocation } from 'react-router-dom';
 
-function Navbar () {
+function Navbar() {
+
+    // Check Router's location to set active status
+    let location = useLocation().pathname;
+
+    let tripsPath = new RegExp('/trips/?');
+    let addPath = new RegExp('/add/?');
+    let profilePath = new RegExp('/profile/?');
+    let logInPath = new RegExp('/login/?');
+
+    let tripsActive = tripsPath.test(location);
+    let addActive = addPath.test(location);
+    let profileActive = profilePath.test(location);
+    let logInActive = logInPath.test(location);
+    let exploreActive = (!tripsActive && !addActive && !profileActive && !logInActive);
+    
 
     return (
         <header>
             <div className={`container`}>
                 <div className={`logo`}>
-                    <h1>Photo Atlas</h1>
-                    <img src={logo} alt={`PhotoAtlas logo`}/>
+                    <Link to="/">
+                        <h1>Photo Atlas</h1>
+                        <img src={logo} alt={`PhotoAtlas logo`} />
+                    </Link>
                 </div>
                 <nav>
-                <ul>
-                    <li>
-                        <img src={exploreIcon} alt=""/>
-                        <span>Explore</span>
-                    </li>
+                    <ul>
+                        <li>
+                            <Link to="/" className={`explore ${exploreActive ? 'active' : 'normal'}`}>
+                                <span>Explore</span>
+                            </Link>
+                        </li>
 
-                    <li>
-                        <img src={tripsIcon} alt=""/>
-                        <span>Trips</span>
-                    </li>
+                        <li>
+                            <Link to="/trips" className={`trips ${tripsActive ? 'active' : 'normal'}`}>
+                                <span>Trips</span>
+                            </Link>
+                        </li>
 
-                    <li>
-                        <img src={addIcon} alt=""/>
-                        <span>Add</span>
-                    </li>
+                        <li>
+                            <Link to="/add" className={`add ${addActive ? 'active' : 'normal'}`}>
+                                <span>Add</span>
+                            </Link>
+                        </li>
 
-                    <li>
-                        <img src={profileIcon} alt=""/>
-                        <span>Profile</span>
-                    </li>
-                </ul>
+                        <li>
+                            <Link to="/profile" className={`profile ${profileActive ? 'active' : 'normal'}`}>
+                                <span>Profile</span>
+                            </Link>
+                        </li>
+                    </ul>
                 </nav>
             </div>
-    </header>
+        </header>
     )
 }
 

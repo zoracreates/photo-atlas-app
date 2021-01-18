@@ -1,16 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { BrowserRouter } from 'react-router-dom';
 import App from './App';
-import MapWithCards from './components/layout/MapWithCards';
 
+let checkAuthStatus = () => { return false}
 
 ReactDOM.render(
   <React.StrictMode>
-    <App>      
-      <MapWithCards>
-      
-      </MapWithCards>
-    </App>
+     <BrowserRouter>
+         <App authState={checkAuthStatus()} />  
+    </BrowserRouter>    
   </React.StrictMode>,
   document.getElementById('root')
 );
