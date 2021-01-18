@@ -1,14 +1,24 @@
 import Navbar from './components/navigation/Navbar';
+import AddLocation from './screens/AddLocation';
+import Explore from './screens/explore/Explore';
+import Profile from './screens/Profile';
+import Trips from './screens/trips/Trips';
 import './styles/main.scss';
+import {Switch, Route} from 'react-router-dom';
 
 function App(props) {
   return (
     <>
-      <Navbar />  {/* will add links to the Navbar compoenet*/}
+      <Navbar />  {/* need to figure out how to set icons to active maybe with match param*/}
 
       <main>
         <div className={`container`}>
-          {props.children} {/* this is where routes will be*/}
+          <Switch>
+            <Route exact path="/" component={Explore}/>
+            <Route path="/trips" component={Trips}/> {/* will become an auth required route*/}
+            <Route path="/add" component={AddLocation}/> {/* will become an auth required route*/}
+            <Route path="/profile" component={Profile}/> {/* will become an auth required route*/}
+          </Switch>
         </div>
       </main>
       

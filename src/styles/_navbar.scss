@@ -1,3 +1,9 @@
+/*
+
+import exploreIcon from '../../images/icons/96px/search-white.png';
+
+*/
+
 header {
     z-index: 20;
     h1 {
@@ -29,6 +35,18 @@ header {
     nav {
         margin: auto;
         width: 90%;
+        
+        a {
+            text-decoration: none;
+            font-weight: normal;
+
+            &.active {
+                text-decoration: underline;
+                font-weight: 700;
+            }
+        }
+
+
     }
 
     ul {
@@ -38,9 +56,9 @@ header {
 
 
         li {
+            @extend %caption_font;
             flex-basis: 20%;
             list-style: none;
-            @extend %caption_font;
             font-weight: $normal_weight;
             text-align: center;
 
@@ -53,6 +71,17 @@ header {
 
             span {
                 display: block;
+
+                &::before {
+                    content: '';
+                    display: block;
+                    height: 35px;
+                    width: 25px;
+                    margin: auto;
+                    padding-bottom: 10px;
+                    background-size: contain;
+                    background-repeat: no-repeat;
+                }
             }
         }
     }
@@ -60,8 +89,6 @@ header {
 
 
 @media (min-width: 769px) {
-
-
     header {
         position: static;
         
@@ -86,3 +113,50 @@ header {
     }
 
 }
+
+
+
+
+nav {
+    .explore {
+        span::before {
+            background-image: url(../images/icons/96px/search-white.png);
+        }
+
+        &.active span::before {
+            background-image: url(../images/icons/96px/search-bold-white.png);
+        }
+    }
+    
+    .trips {
+        span::before {
+            background-image: url(../images/icons/96px/trips-outline-white.png);
+        }
+
+        &.active span::before {
+            background-image: url(../images/icons/96px/trips-fill-white.png);
+        }
+    }
+    
+    .add {
+        span::before {
+            background-image: url(../images/icons/96px/add-outline-white.png);
+        }
+
+        &.active span::before {
+            background-image: url(../images/icons/96px/add-fill-white.png);
+        }
+    }
+
+    .profile {
+        span::before {
+            background-image: url(../images/icons/96px/profile-outline-white.png);
+        }
+
+        &.active span::before {
+            background-image: url(../images/icons/96px/profile-fill-white.png);
+        }
+    }
+}
+
+
