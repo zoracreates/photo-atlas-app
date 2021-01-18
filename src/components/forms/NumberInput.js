@@ -1,53 +1,15 @@
+import PropTypes from 'prop-types';
+
 function NumberInput(props) {
 
-    let { 
-        className, 
-        id, 
-        name, 
-        onChange, 
-        placeholder, 
-        required, 
-        autoComplete, 
-        list, 
-        max, 
-        min,  
-        readOnly,
-        step } = props;
- 
+    let { className, ...rest} = props;
 
+    return <input type="number" className={`text-bar ${className ? className : ''}`} {...rest} />
 
-    return (
-        
-                <input
-                    type="number"
+}
 
-                    className={`text-bar ${className}`}
-                    
-                    onChange={onChange}
-                
-                    id={id}
-
-                    name={name}
-
-                    placeholder={placeholder ? placeholder : '0'}
-                    
-                    required={required}
-
-                    autoComplete= {autoComplete}
-
-                    list={list}
-
-                    max={max}
-
-                    min={min}
-
-
-                    readOnly={readOnly}
-
-                    step={step}
-
-                />
-    )
+NumberInput.propTypes = {
+    className: PropTypes.string
 }
 
 

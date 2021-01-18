@@ -1,21 +1,26 @@
+import PropTypes from 'prop-types';
+
 function SubmitButton(props) {
     
-    let { className, value, onClick, id } = props;
+    let { className, value, ...rest } = props;
 
     return (
         <input 
             type="submit" 
 
-            id={id}
-
             className={`${className ? className : 'default-button'}`} 
 
             value={value ? value : 'Submit'} 
 
-            onClick={onClick}
+            {...rest}
 
         />
     )
+}
+
+SubmitButton.propTypes = {
+    className: PropTypes.string,
+    value: PropTypes.string
 }
 
 export default SubmitButton;

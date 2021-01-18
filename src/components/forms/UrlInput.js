@@ -1,56 +1,38 @@
+import PropTypes from 'prop-types';
+
 function UrlInput(props) {
 
     let { 
         className, 
-        id, 
-        name, 
-        onChange, 
-        placeholder, 
-        required, 
-        size, 
-        autoComplete, 
-        list, 
-        maxLength, 
-        minLength,  
+        placeholder,  
         pattern, 
-        readOnly } = props;
+        ...rest } = props;
  
 
 
     return (
-        
                 <input
+
                     type="url"
 
                     className={`text-bar ${className}`}
                     
-                    onChange={onChange}
-                
-                    id={id}
-
-                    name={name}
-
                     placeholder={placeholder ? placeholder : 'https://example.com'}
-                    
-                    required={required}
-
-                    size={size}
-
-                    autoComplete= {autoComplete}
-
-                    list={list}
-
-                    maxLength={maxLength}
-
-                    minLength={minLength}
 
                     pattern={pattern ? pattern : 'https://.*'}
 
-                    readOnly={readOnly}
+                    {...rest}
 
                 />
     )
 }
+
+TextInput.propTypes = {
+    className: PropTypes.string,
+    placeholder: PropTypes.string,
+    pattern: PropTypes.string
+}
+
 
 
 export default UrlInput;

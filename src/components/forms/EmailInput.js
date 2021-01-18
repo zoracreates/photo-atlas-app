@@ -1,59 +1,14 @@
+import PropTypes from 'prop-types';
+
 function EmailInput(props) {
 
-    let { 
-        className, 
-        id, 
-        name, 
-        onChange, 
-        placeholder, 
-        required, 
-        size, 
-        autoComplete, 
-        list, 
-        maxLength, 
-        minLength,  
-        pattern, 
-        readOnly,
-        multiple } = props;
- 
+    let { className, ...rest} = props;
 
-
-    return (
-        
-                <input
-                    type="email"
-
-                    className={`text-bar ${className}`}
-                    
-                    onChange={onChange}
-                
-                    id={id}
-
-                    name={name}
-
-                    placeholder={placeholder ? placeholder : 'username@email.com'}
-                    
-                    required={required}
-
-                    size={size}
-
-                    autoComplete= {autoComplete}
-
-                    list={list}
-
-                    maxLength={maxLength}
-
-                    minLength={minLength}
-
-                    pattern={pattern}
-
-                    readOnly={readOnly}
-
-                    multiple={multiple}
-
-                />
-    )
+    return <input type="email" className={`text-bar ${className ? className : ''}`} {...rest} />
 }
 
+EmailInput.propTypes = {
+    className: PropTypes.string
+}
 
 export default EmailInput;

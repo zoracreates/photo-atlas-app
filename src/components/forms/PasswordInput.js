@@ -1,56 +1,15 @@
+import PropTypes from 'prop-types';
+
 function PasswordInput(props) {
 
-    let { 
-        className, 
-        id, 
-        name, 
-        onChange, 
-        placeholder, 
-        required, 
-        size, 
-        autoComplete, 
-        list, 
-        maxLength, 
-        minLength,  
-        pattern, 
-        readOnly,
-        inputMode } = props;
+    let { className, ...rest } = props;
 
-    return (
-        
-                <input
-                    type="password"
+    return <input type="password" className={`text-bar ${className ? className : ''}`} {...rest} />
+    
+}
 
-                    className={`text-bar ${className}`}
-                    
-                    onChange={onChange}
-                
-                    id={id}
-
-                    name={name}
-
-                    placeholder={placeholder}
-                    
-                    required={required}
-
-                    size={size}
-
-                    autoComplete= {autoComplete}
-
-                    list={list}
-
-                    maxLength={maxLength}
-
-                    minLength={minLength}
-
-                    pattern={pattern}
-
-                    readOnly={readOnly}
-
-                    inputMode={inputMode}
-
-                />
-    )
+PasswordInput.propTypes = {
+    className: PropTypes.string
 }
 
 

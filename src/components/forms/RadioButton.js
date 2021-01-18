@@ -1,42 +1,35 @@
+import PropTypes from 'prop-types';
+
 function RadioButton(props) {
 
     let { 
-        className, 
-        name, 
         id,
-        onChange, 
-        required,
         value,
-        defaultChecked,
-        indeterminate,
-        checkboxText} = props;
+        labelText,
+        className,
+        name,
+        ...rest } = props;
  
-        let idName = id ? id : value;
+    let idName = id ? id : value;
 
     return (
         
         <>
         
-            <label className={`check-container`} htmlFor={idName}>{checkboxText ? checkboxText : 'label'}
+            <label className={`check-container ${className ? className : ''}`} htmlFor={idName}>{labelText ? labelText : 'label'}
 
                 <input
+                    
                     type="radio"
 
-                    className={`${className}`}
-                    
-                    onChange={onChange}
-                
                     id={idName}
 
                     name={name}
 
-                    required={required}
-
-                    defaultChecked={defaultChecked}
-                    
                     value={value}
-                    
-                    indeterminate={indeterminate}
+
+                    {...rest}
+
                 />
 
                 <span className={`radiomark`}></span>
@@ -44,6 +37,13 @@ function RadioButton(props) {
             </label>
     </>
     )
+}
+
+RadioButton.propTypes = {
+    className: PropTypes.string,
+    value: PropTypes.string.isRequired,
+    labelText: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired
 }
 
 

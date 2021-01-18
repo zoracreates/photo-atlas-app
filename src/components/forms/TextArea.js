@@ -1,58 +1,15 @@
+
+import PropTypes from 'prop-types';
+
 function TextArea(props) {
 
-    let { 
-        className, 
-        id, 
-        name, 
-        onChange,
-        cols,
-        rows,
-        disabled,
-        form,
-        maxLength, 
-        minLength, 
-        placeholder, 
-        required, 
-        autoComplete, 
-        readOnly } = props;
- 
+    let { className, ...rest } = props;
 
-    return (
-        
-                <textarea
+    return <textarea className={`text-bar ${className ? className : ''}`} {...rest} > </textarea>
+}
 
-                    className={`text-bar ${className}`}
-                    
-                    onChange={onChange}
-                
-                    id={id}
-
-                    name={name}
-
-                    placeholder={placeholder ? placeholder : 'Enter Text'}
-                    
-                    required={required}
-
-                    autoComplete= {autoComplete}
-
-                    maxLength={maxLength}
-
-                    minLength={minLength}
-
-                    readOnly={readOnly}
-
-                    form={form}
-
-                    cols={cols}
-
-                    rows={rows}
-
-                    disabled={disabled}
-                    
-                    >
-
-                </textarea>
-    )
+TextArea.propTypes = {
+    className: PropTypes.string
 }
 
 

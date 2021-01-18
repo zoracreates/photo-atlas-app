@@ -12,6 +12,10 @@
 @import '_user.scss';
 
 /* COLORS */
+body {
+  color: $black;
+}
+
 a,
 .button-link {
     color: $link_color;

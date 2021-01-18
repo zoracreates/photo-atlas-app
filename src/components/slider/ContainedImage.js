@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+
 import resizeImage from '../../utils/resizeimage';
 
 const ContainedImage = (props) => {
@@ -13,10 +15,15 @@ const ContainedImage = (props) => {
 
   return (
     <div className={`image-container`}>
-      <img onLoad={onImageLoad} src={src} alt={alt} />
+      <img onLoad={onImageLoad} src={src} alt={alt ? alt : ''} />
     </div>
   )
 
+}
+
+ContainedImage.propTypes = {
+  src: PropTypes.string.isRequired,
+  alt: PropTypes.string
 }
 
 export default ContainedImage;

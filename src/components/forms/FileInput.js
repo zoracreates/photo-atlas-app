@@ -1,17 +1,13 @@
+import PropTypes from 'prop-types';
+
 function FileInput(props) {
 
     let {
         className,
         id,
         name,
-        onChange,
-        required,
-        accept,
-        capture,
-        files,
-        value,
-        multiple,
-        buttonText } = props;
+        buttonText,
+        ...rest } = props;
 
     let inputName = name ? name : "file"
 
@@ -21,25 +17,13 @@ function FileInput(props) {
             <input
                 type="file"
 
-                className={`file-input ${className}`}
-
-                onChange={onChange}
+                className={`file-input ${className ? className : ''}`}
 
                 id={id ? id : inputName}
 
                 name={inputName}
 
-                required={required}
-
-                accept={accept}
-
-                capture={capture}
-
-                files={files}
-
-                value={value}
-
-                multiple={multiple}
+                {...rest}
 
             />
               <label for={inputName}>{buttonText ? buttonText : 'Choose a file'}</label>
@@ -47,5 +31,12 @@ function FileInput(props) {
     )
 }
 
+
+FileInput.propTypes = {
+    className: PropTypes.string,
+    id: PropTypes.string,
+    name: PropTypes.string,
+    buttonText: PropTypes.string
+}
 
 export default FileInput;

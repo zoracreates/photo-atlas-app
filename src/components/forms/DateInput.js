@@ -1,52 +1,15 @@
+import PropTypes from 'prop-types';
+
 function DateInput(props) {
 
-    let {
-        className,
-        id,
-        name,
-        onChange,
-        required,
-        autoComplete,
-        list,
-        readOnly,
-        value,
-        min,
-        max,
-        step } = props;
+    let { className, ...rest } = props;
 
+    return <input type="date" className={`text-bar ${className ? className : ''}`} {...rest} />
+    
+}
 
-
-    return (
-
-        <input
-            type="date"
-
-            className={`text-bar ${className}`}
-
-            onChange={onChange}
-
-            id={id}
-
-            name={name}
-
-            value={value}
-
-            required={required}
-
-            autoComplete={autoComplete}
-
-            list={list}
-
-            max={max}
-
-            min={min}
-
-            readOnly={readOnly}
-
-            step={step}
-
-        />
-    )
+DateInput.propTypes = {
+    className: PropTypes.string
 }
 
 

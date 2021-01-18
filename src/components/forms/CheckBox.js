@@ -1,47 +1,45 @@
+import PropTypes from 'prop-types';
+
 function CheckBox(props) {
 
-    let { 
-        className, 
-        id, 
-        name, 
-        onChange, 
-        required, 
-        value,
-        checked,
-        indeterminate,
-        checkboxText} = props;
- 
-        let inputName = name ? name : "checkbox";
+    let {
+        className,
+        id,
+        name,
+        labelText,
+        ...rest } = props;
 
     return (
         <>
-            <label className={`check-container`} htmlFor={inputName}>{checkboxText ? checkboxText : 'label'}
+            <label className={`check-container ${className ? className : ''}` } htmlFor={name}>{labelText ? labelText : 'label'}
+                
                 <input
+                    
                     type="checkbox"
 
                     className={`${className}`}
                     
-                    onChange={onChange}
-                
-                    id={id ? id : inputName}
+                    id={id ? id : name}
 
-                    name={inputName}
+                    name={name}
 
+                    {...rest}
 
-                    required={required}
-
-                    checked={checked}
-                    
-                    value={inputName}
-                    
-                    indeterminate={indeterminate}
                 />
 
                 <span className={`checkmark`}></span>
 
             </label>
-    </>
+
+        </>
     )
+}
+
+CheckBox.propTypes = {
+    className: PropTypes.string,
+    id: PropTypes.string,
+    name: PropTypes.string.isRequired,
+    labelText: PropTypes.string.isRequired,
 }
 
 

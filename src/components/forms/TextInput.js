@@ -1,55 +1,15 @@
+import PropTypes from 'prop-types';
+
 function TextInput(props) {
 
-    let { 
-        className, 
-        id, 
-        name, 
-        onChange, 
-        placeholder, 
-        required, 
-        size, 
-        autoComplete, 
-        list, 
-        maxLength, 
-        minLength,  
-        pattern, 
-        readOnly } = props;
- 
+    let { className, ...rest } = props;
 
-    return (
-        
-                <input
-                    type="text"
-
-                    className={`text-bar ${className}`}
-                    
-                    onChange={onChange}
-                
-                    id={id}
-
-                    name={name}
-
-                    placeholder={placeholder ? placeholder : 'Enter Text'}
-                    
-                    required={required}
-
-                    size={size}
-
-                    autoComplete= {autoComplete}
-
-                    list={list}
-
-                    maxLength={maxLength}
-
-                    minLength={minLength}
-
-                    pattern={pattern}
-
-                    readOnly={readOnly}
-
-                />
-    )
+    return <input type="text" className={`text-bar ${className ? className : ''}`} {...rest} />
+    
 }
 
+TextInput.propTypes = {
+    className: PropTypes.string
+}
 
 export default TextInput;

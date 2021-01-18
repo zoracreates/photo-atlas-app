@@ -1,6 +1,7 @@
 import React from 'react';
 import ContainedImage from './ContainedImage';
 import SimpleReactLightbox, { SRLWrapper } from "simple-react-lightbox";
+import PropTypes from 'prop-types';
 
 
 /* 
@@ -70,6 +71,10 @@ const PhotoSlider = (props) => {
 
   )
 
+}
+
+PhotoSlider.propTypes = {
+  imageList: PropTypes.arrayOf(PropTypes.object).isRequired
 }
 
 

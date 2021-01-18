@@ -1,58 +1,35 @@
+import PropTypes from 'prop-types';
+
 function SearchBar(props) {
 
     let { 
         className, 
-        id, 
         name, 
         onClick, 
-        onChange, 
-        placeholder, 
-        required, 
-        size, 
-        autoComplete, 
-        list, 
-        maxLength, 
-        minLength,  
-        pattern, 
-        readOnly, 
-        showBackButton } = props;
+        placeholder,
+        backSearch,
+        ...rest } = props;
  
-    let searchStyle = showBackButton ? 'back-search' : 'standard-search';
+
+        let searchStyle = backSearch ? 'back-search' : 'standard-search';
 
     return (
-        <div className={`search-bar-container ${searchStyle} ${className}`}>
+        <div className={`search-bar-container ${searchStyle} ${className ? className : ''}`}>
 
             <button onClick={() => {window.history.back()}} className={`search-back-buttton`}><span></span>Back</button>
 
             <form>
                 <input
+
                     type="search"
 
                     className={`text-bar`}
-                    
-                    onChange={onChange}
-                
-                    id={id}
-
+            
                     name={name ? name : 'q'}
 
                     placeholder={placeholder ? placeholder : 'Search Term'}
-                    
-                    required={required}
 
-                    size={size}
-
-                    autoComplete= {autoComplete}
-
-                    list={list}
-
-                    maxLength={maxLength}
-
-                    minLength={minLength}
-
-                    pattern={pattern}
-
-                    readOnly={readOnly}
+                    {...rest}
 
                 />
 
@@ -61,6 +38,14 @@ function SearchBar(props) {
             </form>
         </div>
     )
+}
+
+SearchBar.propTypes = {
+    className: PropTypes.string,
+    backSearch: PropTypes.bool,
+    name: PropTypes.string,
+    onClick: PropTypes.func,
+    placeholder: PropTypes.string
 }
 
 
