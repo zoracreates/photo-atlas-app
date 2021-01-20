@@ -7,8 +7,9 @@ import LogIn from './screens/authentication/LogIn';
 import PrivateRoute from './components/navigation/PrivateRoute';
 import './styles/main.scss';
 import {Switch, Route} from 'react-router-dom';
+import PropTypes from 'prop-types';
 
-function App({authState}) {
+function App({userAuth}) {
   return (
     <>
 
@@ -18,9 +19,9 @@ function App({authState}) {
         <div className={`container`}>
           <Switch>
             <Route exact path="/" component={Explore}/>
-            <PrivateRoute path="/trips" component={Trips} isAuthenticated={authState}/> 
-            <PrivateRoute path="/add" component={AddLocation}/> 
-            <PrivateRoute path="/profile" component={Profile}/>
+            <PrivateRoute path="/trips" component={Trips} isAuthenticated={userAuth}/> 
+            <PrivateRoute path="/add" component={AddLocation} isAuthenticated={userAuth}/> 
+            <PrivateRoute path="/profile" component={Profile} isAuthenticated={userAuth}/>
             <Route path="/login" component={LogIn}/> 
           </Switch>
         </div>
@@ -39,6 +40,10 @@ function App({authState}) {
       
     </>
   );
+}
+
+App.propTypes = {
+  authState: PropTypes.bool.isRequired
 }
 
 export default App;
