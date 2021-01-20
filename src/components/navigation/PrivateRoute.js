@@ -1,4 +1,5 @@
 import {Route, Redirect} from "react-router-dom";
+import PropTypes from 'prop-types';
 
 function PrivateRoute  ({component: Component, isAuthenticated, ...rest})  {
     return (
@@ -15,6 +16,10 @@ function PrivateRoute  ({component: Component, isAuthenticated, ...rest})  {
         )}/>
 
     )
+}
+
+PrivateRoute.propTypes = {
+    isAuthenticated: PropTypes.bool.isRequired
 }
 
 export default PrivateRoute;
