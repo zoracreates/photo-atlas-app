@@ -106,27 +106,46 @@ body {
    @extend %body2_font;
 }
 
-h1 {
-    @extend %headline1_font;
+p {
+    margin-top: 1.5rem;
 }
 
-h2 {
+h1, h2, h3, h4,h5,h6,
+p.h1-font, p.h2-font, p.h3-font, p.h4-font, p.h5-font, p.h6-font {
+    margin: 0px;
+}
+
+h1,
+.h1-font {
+    @extend %headline1_font;
+    margin: 0px;
+}
+
+h2,
+.h2-font {
     @extend %headline2_font;
 }
 
-h3 {
+h3,
+.h3-font {
     @extend %headline3_font;
+    margin-bottom: 1rem;
 }
 
-h4 {
+h4,
+.h4-font {
     @extend %headline4_font;
 }
 
-h5 {
+h5,
+.h5-font {
     @extend %headline5_font;
 }
 
-h6 {
+h6,
+.h6-font {
     @extend %headline6_font;
 }
+
+
 

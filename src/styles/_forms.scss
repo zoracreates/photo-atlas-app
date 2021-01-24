@@ -12,7 +12,8 @@
 .search-bar-container {
     display: flex;
     max-width: 90%;
-    margin: 1rem auto;
+    margin: 0;
+    padding-bottom: 1rem;
 
     &.standard-search {
         .search-back-buttton {
@@ -34,7 +35,17 @@
         border-right: none;
     }
 
+    input[type="search"]{
+        width: 180px;
+        max-width: 55vw;
+    }
+
     @media (min-width: 769px) {
+
+        input[type="search"]{
+            width: 300px;
+        }
+    
         .search-back-buttton {
             display: none;
         }

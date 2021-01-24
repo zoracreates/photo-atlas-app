@@ -18,7 +18,7 @@ function App({userAuth}) {
       <Navbar />
 
       <main>
-        <div className={`container`}>
+
 
           <Switch>
             <Route exact path="/" component={Explore}/>
@@ -28,7 +28,7 @@ function App({userAuth}) {
             <Route path="/login" component={LogIn}/> 
           </Switch>
 
-        </div>
+
       </main>
       
       <Footer/>
