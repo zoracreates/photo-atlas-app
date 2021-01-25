@@ -27,3 +27,15 @@
 input[type='submit'] {
     min-width: 5rem;
 }
+
+
+.search-filter {
+    @extend %caption_font;
+    color: $white;
+    background-color: transparent;
+    border-radius: 7px;
+    border: 1px solid $white;
+    padding: .3rem .5rem;
+    line-height: 1;
+    margin-top: .5rem;
+}

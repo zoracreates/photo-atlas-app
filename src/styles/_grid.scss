@@ -15,6 +15,7 @@ footer,
     min-width: 320px;
 }
 
+
 header .container,
 main .container,
 footer .container,
@@ -25,21 +26,20 @@ footer .container,
     margin: auto;
 }
 
-.container {
-    padding-top: 50px;
-    padding-bottom: 50px;
+footer .container {
+    padding: 20px 0px;
 }
 
-header .container {
-    padding: 0px
-}
 
 .container.mobile-padding {
     padding-left: 2%;
     padding-right: 2%;
 }
 
-
+.container.header-container {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
 
 header {
     height: 94px;
@@ -132,10 +132,6 @@ header {
     .grid-1_2 > *,
     .grid-map > * {
         flex-basis: 48%;
-    }
-
-    .grid-map > * {
-        margin-top: 2%;
     }
 
     .grid-map .map-container {

@@ -106,19 +106,18 @@ body {
    @extend %body2_font;
 }
 
-p {
+p:not(:first-child) {
     margin-top: 1.5rem;
 }
 
-h1, h2, h3, h4,h5,h6,
-p.h1-font, p.h2-font, p.h3-font, p.h4-font, p.h5-font, p.h6-font {
-    margin: 0px;
+p:first-child {
+    margin-top: 0px;
 }
+
 
 h1,
 .h1-font {
     @extend %headline1_font;
-    margin: 0px;
 }
 
 h2,
@@ -147,5 +146,8 @@ h6,
     @extend %headline6_font;
 }
 
+.caption-font {
+    @extend %caption_font;
+}
 
 

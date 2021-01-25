@@ -9,11 +9,25 @@
 
 /* Search Bar */
 
+.search-label {
+    @extend %subtitle2_font;
+    display: block;
+}
+
+.back-search-label {
+    padding-left: 62px;
+}
+
+@media (min-width: 769px) {
+    .back-search-label {
+        padding-left: 0px;
+    }
+}
+
 .search-bar-container {
     display: flex;
     max-width: 90%;
     margin: 0;
-    padding-bottom: 1rem;
 
     &.standard-search {
         .search-back-buttton {
@@ -53,6 +67,7 @@
         &.back-search .text-bar {
             border-radius: 7px 0px 0px 7px;
         }
+
     }
 
     [type="search"] {
