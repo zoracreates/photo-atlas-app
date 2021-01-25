@@ -39,3 +39,31 @@ input[type='submit'] {
     line-height: 1;
     margin-top: .5rem;
 }
+
+.location .action-button {
+    @extend %button_font;
+    background: transparent;
+    border: none;
+    color: $link_color;
+    text-decoration: none;
+    display: block;
+    margin: auto;
+    text-align: center;
+
+    &.action-button::before {
+        content:'';
+        display: block;
+        margin: auto;
+        height: 30px;
+        width: 30px;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: 30px;
+        margin-bottom: .5rem;
+
+    }
+
+    &.directions::before {
+        background-image: url(../images/icons/96px/directions-blue.png);  
+    }
+}

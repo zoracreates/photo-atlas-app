@@ -51,11 +51,14 @@ const PhotoSlider = (props) => {
 
           {imageList.map((image, id) => {
 
-            const { src, alt } = image;
+            const { src, alt, author, creditUrl} = image;
 
             return (
               <a key={id} href={src}>
+                <div className={`image-with-credit`}>
                 <ContainedImage src={src} alt={alt} maxHeight={600} maxWidth={maxImageWidth} />
+                {author && <span className={`credit`}><a href={creditUrl}>{author}</a></span>}
+                </div>
               </a>
             )
 

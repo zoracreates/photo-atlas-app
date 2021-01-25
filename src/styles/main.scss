@@ -73,6 +73,23 @@ footer  {
   @extend %headline3_font;
 }
 
+.location {
+    h2 {
+      @extend %headline4_font;
+      margin-bottom: 1rem;
+    }
+
+    h3 {
+      @extend %headline5_font;
+      margin-bottom: .5rem;
+      
+    }
+
+    .data-container {
+      border-top: 1px $gray solid;
+    }
+}
+
 
 @media (min-width: 769px) {
 

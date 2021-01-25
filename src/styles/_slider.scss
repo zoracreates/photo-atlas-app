@@ -59,3 +59,21 @@
 .bck.active .photo-slider div {
     transform: translateX(-40%);
 }
+
+.image-with-credit {
+    position: relative;
+
+    .credit {
+        @extend %caption_font;
+        position: absolute;
+        top: 0;
+        left: 0;
+        padding: .5rem;
+        background-color: $black;
+        a {
+            text-decoration: none;
+            color: $light_link_color;
+        }
+
+    }
+}

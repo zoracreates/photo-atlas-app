@@ -1,37 +1,58 @@
-import SearchResults from './SearchResults';
+import Location from '../location/Location';
 
-let locationList = [
+// let locationList = [
+//     {
+//         "imageUrl": "https://picsum.photos/200/300",
+//         "saves": 0,
+//         "distance": 2.1,
+//         "title": "image title"
+//     },
+//     {
+//         "imageUrl": "https://picsum.photos/200/300",
+//         "saves": 0,
+//         "distance": 2.1,
+//         "title": "image title"
+//     },
+//     {
+//         "imageUrl": "https://picsum.photos/200/300",
+//         "saves": 0,
+//         "distance": 2.1,
+//         "title": "image title"
+//     },
+//     {
+//         "imageUrl": "https://picsum.photos/200/300",
+//         "saves": 0,
+//         "distance": 2.1,
+//         "title": "image title"
+//     }
+// ]; 
+
+const imageList = [
     {
-        "imageUrl": "https://picsum.photos/200/300",
-        "saves": 0,
-        "distance": 2.1,
-        "title": "image title"
+      src: "https://picsum.photos/700/800",
+      alt: "placeholder 1",
+      author: "Zoraida Cabrera-Mieles",
+      creditUrl: "https://www.zoracabrera.com/"
     },
     {
-        "imageUrl": "https://picsum.photos/200/300",
-        "saves": 0,
-        "distance": 2.1,
-        "title": "image title"
+      src: "https://picsum.photos/1000/300",
+      alt: "placeholder 2"
     },
     {
-        "imageUrl": "https://picsum.photos/200/300",
-        "saves": 0,
-        "distance": 2.1,
-        "title": "image title"
+      src: "https://picsum.photos/200/300",
+      alt: "placeholder 3"
     },
     {
-        "imageUrl": "https://picsum.photos/200/300",
-        "saves": 0,
-        "distance": 2.1,
-        "title": "image title"
+      src: "https://picsum.photos/2000/700",
+      alt: "placeholder 4"
     }
-]; 
+  ];
 
 function Explore() {
     return (
         <>
-            <SearchResults locationList={locationList} />
-
+      
+        <Location imageList={imageList}/>
 
 
 
