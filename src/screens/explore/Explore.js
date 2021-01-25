@@ -12,6 +12,18 @@ let locationList = [
         "saves": 0,
         "distance": 2.1,
         "title": "image title"
+    },
+    {
+        "imageUrl": "https://picsum.photos/200/300",
+        "saves": 0,
+        "distance": 2.1,
+        "title": "image title"
+    },
+    {
+        "imageUrl": "https://picsum.photos/200/300",
+        "saves": 0,
+        "distance": 2.1,
+        "title": "image title"
     }
 ]; 
 

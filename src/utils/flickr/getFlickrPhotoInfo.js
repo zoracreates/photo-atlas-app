@@ -1,7 +1,7 @@
 async function getFlickrPhotoInfo(photoId, handleResponse =
     (responseData) => console.log(responseData)) {
 
-    let url = `https://api.flickr.com/services/rest/?api_key=8f4e32dfe64f3675be06e06d24bd62a1&method=flickr.photos.getInfo&format=json&nojsoncallback=1}&photo_id=${photoId}`
+    let url = `https://api.flickr.com/services/rest/?api_key=${process.env.REACT_APP_FLICKR_API_KEY}&method=flickr.photos.getInfo&format=json&nojsoncallback=1}&photo_id=${photoId}`
 
     await fetch(url)
         .then(response => {

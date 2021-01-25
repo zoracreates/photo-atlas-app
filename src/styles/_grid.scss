@@ -140,9 +140,37 @@ header {
         .toggle-bar {
             display: none;
         }
+    }
 
-        .map {
-            height: 80vh;
+    .grid-map .cards-container,
+    .grid-map .map-container.open .map,
+    .grid-map .map-container.close .map{
+        height: 90vh;
+    }
+
+    .grid-map .cards-container  {
+        overflow-y: scroll;
+
+        /* width */
+        &::-webkit-scrollbar {
+            width: 4px;
+        }
+        
+        /* Track */
+        &::-webkit-scrollbar-track {
+            background: $light_gray;
+            border-top: 1px $light_border_color solid;
+            border-bottom: 1px $light_border_color solid;
+        }
+        
+        /* Handle */
+        &::-webkit-scrollbar-thumb {
+            background: $gray;
+        }
+        
+        /* Handle on hover */
+        &::-webkit-scrollbar-thumb:hover {
+            background: $pimary_accent_color;
         }
     }
 }
