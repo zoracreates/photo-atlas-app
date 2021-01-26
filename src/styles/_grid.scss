@@ -15,6 +15,7 @@ footer,
     min-width: 320px;
 }
 
+
 header .container,
 main .container,
 footer .container,
@@ -25,16 +26,45 @@ footer .container,
     margin: auto;
 }
 
+footer .container {
+    padding: 20px 0px;
+}
+
+
+.container.mobile-padding {
+    padding-left: 2%;
+    padding-right: 2%;
+}
+
+.container.header-container {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
 header {
     height: 94px;
 }
 
+
+
+
+.gird-70-30,
 .grid-2_3,
 .grid-scroll {
     display: flex;
     justify-content: space-between;
 
 }
+
+.gird-70-30 {
+  .col-70 {
+      flex-basis: 69%;
+  }
+  .col-30 {
+      flex-basis: 29%;
+  }
+}
+
 
 .grid-2_3 {
     flex-wrap: wrap;
@@ -83,6 +113,11 @@ header {
 
 @media (min-width: 769px) {
 
+    .container.mobile-padding {
+        padding-left: 0%;
+        padding-right: 0%;
+    }
+
     header {
         height: auto;
     }
@@ -113,19 +148,43 @@ header {
         flex-basis: 48%;
     }
 
-    .grid-map > * {
-        margin-top: 2%;
-    }
-
     .grid-map .map-container {
         position: static;
 
         .toggle-bar {
             display: none;
         }
+    }
 
-        .map {
-            height: 80vh;
+    .grid-map .cards-container,
+    .grid-map .map-container.open .map,
+    .grid-map .map-container.close .map{
+        height: 90vh;
+    }
+
+    .grid-map .cards-container  {
+        overflow-y: scroll;
+
+        /* width */
+        &::-webkit-scrollbar {
+            width: 4px;
+        }
+        
+        /* Track */
+        &::-webkit-scrollbar-track {
+            background: $light_gray;
+            border-top: 1px $light_border_color solid;
+            border-bottom: 1px $light_border_color solid;
+        }
+        
+        /* Handle */
+        &::-webkit-scrollbar-thumb {
+            background: $gray;
+        }
+        
+        /* Handle on hover */
+        &::-webkit-scrollbar-thumb:hover {
+            background: $pimary_accent_color;
         }
     }
 }

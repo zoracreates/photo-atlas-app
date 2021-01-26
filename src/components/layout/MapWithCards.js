@@ -22,7 +22,7 @@ class MapWithCards extends React.Component {
         return (
             <div className={`grid-map`}>
 
-                <div>
+                <div className={`cards-container`}>
                     {children}
                 </div>
 
@@ -36,8 +36,12 @@ class MapWithCards extends React.Component {
                     </div>
 
                     <div className={'map'}>
-                        Map will go here
-                </div>
+                        <iframe
+                            title="Search Results Map"
+                            frameBorder="0" 
+                            src={`https:/www.google.com/maps/embed/v1/place?key=${process.env.REACT_APP_MAPS_API_KEY}&q=Space+Needle,Seattle+WA`} >
+                        </iframe>
+                    </div>
                 </div>
 
             </div>

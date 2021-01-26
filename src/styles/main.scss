@@ -68,3 +68,124 @@ footer  {
       max-width: 500px;
   }
 }
+
+.home-heading {
+  @extend %headline3_font;
+}
+
+.location {
+    h2 {
+      @extend %headline4_font;
+      margin-bottom: 1rem;
+    }
+
+    h3 {
+      @extend %headline5_font;
+      margin-bottom: .5rem;
+      
+    }
+
+    .data-container {
+      border-top: 1px $gray solid;
+    }
+}
+
+
+.subject-indicators {
+  margin: 10px 0px 0px 0px;
+  padding: 0px;
+  display: flex;
+  flex-wrap: wrap;
+
+  li {
+    @extend %body2_font;
+    padding-right: 20px;
+    margin-bottom: 15px;
+    list-style: none;
+
+
+    &:last-child {
+      padding-right: 0px;
+    }
+  
+    &::before {
+      content: '';
+      display: inline-block;
+      height: 1.25rem;
+      width: 1.25rem;
+      background-size: 1.25rem;
+      margin-right: 7px;
+      margin-bottom: -5px;
+      background-repeat: no-repeat;
+    }
+  }
+
+  .sunset::before {
+    background-image: url(../images/icons/48px/filters/sunset.png);
+  }
+
+  .sunrise::before {
+    background-image: url(../images/icons/48px/filters/sunrise.png);
+  }
+
+  .architecture::before {
+    background-image: url(../images/icons/48px/filters/architecture.png);
+  }
+
+  .urban::before{
+    background-image: url(../images/icons/48px/filters/urban.png);
+  }
+
+  .landscape::before {
+    background-image: url(../images/icons/48px/filters/landscape.png);
+  }
+
+  .transport::before {
+    background-image: url(../images/icons/48px/filters/transport.png);
+  }
+
+  .indoors::before {
+    background-image: url(../images/icons/48px/filters/indoor.png);
+  }
+
+  .people::before {
+    background-image: url(../images/icons/48px/filters/people.png);
+  }
+
+  .astro::before {
+    background-image: url(../images/icons/48px/filters/astro.png);
+  }
+
+  .abandoned::before {
+    background-image: url(../images/icons/48px/filters/abandoned.png);
+  }
+
+  .water::before {
+    background-image: url(../images/icons/48px/filters/water.png);
+  }
+
+}
+
+
+@media (min-width: 769px) {
+
+  .home-heading {
+    display: none;
+  }
+
+  .home  {
+    .container {
+      padding-top: 50px;
+      padding-bottom: 50px;
+  }
+  
+    .dark-background {
+      background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,.5)), url(../images/home-back.jpg);
+      background-size: cover;
+        .container {
+          padding-top: 50px;
+          padding-bottom: 50px;
+        }
+    }
+  }
+}

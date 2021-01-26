@@ -106,27 +106,48 @@ body {
    @extend %body2_font;
 }
 
-h1 {
+p:not(:first-child) {
+    margin-top: 1.5rem;
+}
+
+p:first-child {
+    margin-top: 0px;
+}
+
+
+h1,
+.h1-font {
     @extend %headline1_font;
 }
 
-h2 {
+h2,
+.h2-font {
     @extend %headline2_font;
 }
 
-h3 {
+h3,
+.h3-font {
     @extend %headline3_font;
+    margin-bottom: 1rem;
 }
 
-h4 {
+h4,
+.h4-font {
     @extend %headline4_font;
 }
 
-h5 {
+h5,
+.h5-font {
     @extend %headline5_font;
 }
 
-h6 {
+h6,
+.h6-font {
     @extend %headline6_font;
 }
+
+.caption-font {
+    @extend %caption_font;
+}
+
 
