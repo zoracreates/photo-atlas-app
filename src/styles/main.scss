@@ -91,6 +91,82 @@ footer  {
 }
 
 
+.subject-indicators {
+  margin: 10px 0px 0px 0px;
+  padding: 0px;
+  display: flex;
+  flex-wrap: wrap;
+
+  li {
+    @extend %body2_font;
+    padding-right: 20px;
+    margin-bottom: 15px;
+    list-style: none;
+
+
+    &:last-child {
+      padding-right: 0px;
+    }
+  
+    &::before {
+      content: '';
+      display: inline-block;
+      height: 1.25rem;
+      width: 1.25rem;
+      background-size: 1.25rem;
+      margin-right: 7px;
+      margin-bottom: -5px;
+      background-repeat: no-repeat;
+    }
+  }
+
+  .sunset::before {
+    background-image: url(../images/icons/48px/filters/sunset.png);
+  }
+
+  .sunrise::before {
+    background-image: url(../images/icons/48px/filters/sunrise.png);
+  }
+
+  .architecture::before {
+    background-image: url(../images/icons/48px/filters/architecture.png);
+  }
+
+  .urban::before{
+    background-image: url(../images/icons/48px/filters/urban.png);
+  }
+
+  .landscape::before {
+    background-image: url(../images/icons/48px/filters/landscape.png);
+  }
+
+  .transport::before {
+    background-image: url(../images/icons/48px/filters/transport.png);
+  }
+
+  .indoors::before {
+    background-image: url(../images/icons/48px/filters/indoor.png);
+  }
+
+  .people::before {
+    background-image: url(../images/icons/48px/filters/people.png);
+  }
+
+  .astro::before {
+    background-image: url(../images/icons/48px/filters/astro.png);
+  }
+
+  .abandoned::before {
+    background-image: url(../images/icons/48px/filters/abandoned.png);
+  }
+
+  .water::before {
+    background-image: url(../images/icons/48px/filters/water.png);
+  }
+
+}
+
+
 @media (min-width: 769px) {
 
   .home-heading {
@@ -112,7 +188,4 @@ footer  {
         }
     }
   }
-  
-
 }
-
