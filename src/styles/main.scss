@@ -71,6 +71,13 @@ footer  {
 
 .home-heading {
   @extend %headline3_font;
+  
+}
+
+p.no-results {
+  @extend %headline6_font;
+  margin-top: 30px;
+  line-height: 1.5
 }
 
 .location {
