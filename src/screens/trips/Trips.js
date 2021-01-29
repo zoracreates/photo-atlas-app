@@ -1,4 +1,4 @@
-function Trips(props) {
+function Trips() {
     return <h2>Trips</h2>
 
 }

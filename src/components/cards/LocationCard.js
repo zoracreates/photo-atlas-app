@@ -11,6 +11,10 @@ function LocationCard(props) {
             saves = 0;
         }
 
+        if(!title) {
+            title = "Unamed Location"
+        }
+
         let titleLength = title.length;
 
         //keep the lenght of the title at 45 characters

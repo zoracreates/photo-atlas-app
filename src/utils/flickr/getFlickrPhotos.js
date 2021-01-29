@@ -1,7 +1,8 @@
-async function getFlickrPhotos(options = {}, handleResponse =
-    (responseData) => console.log(responseData)) {
+import axios from 'axios';
+
+function createUrl(options = {}) {
     let url, item;
-    url = `https://api.flickr.com/services/rest/?api_key=${process.env.REACT_APP_FLICKR_API_KEY}&method=flickr.photos.search&format=json&nojsoncallback=1}`
+    url = `https://api.flickr.com/services/rest/?api_key=${process.env.REACT_APP_FLICKR_API_KEY}&method=flickr.photos.search&format=json&nojsoncallback=true}`
 
     for (item in options) {
         if (options.hasOwnProperty(item)) {
@@ -9,19 +10,30 @@ async function getFlickrPhotos(options = {}, handleResponse =
         }
     }
 
-    await fetch(url)
-        .then(response => {
-            if (!response.ok) {
-                throw Error(response.statusText);
-            }
-            return response.json().then(data => {
-                handleResponse(data);
-            });
-        }).catch(error => {
-            alert(error)
-        }
-        )
+    return url;
+}
+
+async function getFlickrPhotos(options = {}) {
+    
+    let url = createUrl(options)
+    let response;
+
+    try {
+       response = await axios.get(url)
+      
+       
+    } catch(err) {
+        alert(err); 
+    }
+
+    return response.data
+
+    
+
 };
+
+
+
 
 export default getFlickrPhotos;
 

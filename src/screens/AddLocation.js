@@ -1,4 +1,4 @@
-function AddLocation(props) {
+function AddLocation() {
     return <h2>AddLocation</h2>
 
 }

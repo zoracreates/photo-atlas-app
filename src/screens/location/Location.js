@@ -1,5 +1,6 @@
-import PhotoSlider from '../../components/slider/PhotoSlider'
 import PropTypes from 'prop-types';
+
+import PhotoSlider from '../../components/slider/PhotoSlider'
 import SubjectIndicators from '../../components/SubjectIndicators';
 
 

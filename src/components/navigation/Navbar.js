@@ -1,5 +1,6 @@
-import logo from '../../images/icons/nav-logo.png'
 import { Link, useLocation } from 'react-router-dom';
+
+import logo from '../../images/icons/nav-logo.png'
 
 function Navbar() {
 

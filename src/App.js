@@ -1,3 +1,6 @@
+import {Switch, Route} from 'react-router-dom';
+import PropTypes from 'prop-types';
+
 import Navbar from './components/navigation/Navbar';
 import AddLocation from './screens/AddLocation';
 import Home from './screens/explore/Home';
@@ -7,9 +10,9 @@ import Trips from './screens/trips/Trips';
 import LogIn from './screens/authentication/LogIn';
 import PrivateRoute from './components/navigation/PrivateRoute';
 import Footer from './components/Footer';
+
 import './styles/main.scss';
-import {Switch, Route} from 'react-router-dom';
-import PropTypes from 'prop-types';
+
 
 
 function App({userAuth}) {

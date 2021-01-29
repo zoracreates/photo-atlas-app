@@ -1,7 +1,9 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import ContainedImage from './ContainedImage';
 import SimpleReactLightbox, { SRLWrapper } from "simple-react-lightbox";
-import PropTypes from 'prop-types';
+
 
 
 /* 
