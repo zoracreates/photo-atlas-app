@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 
 function LocationCard(props) {
     let {
-        imageUrl,
+        thumbnail,
         title,
         saves,
         distance} = props;
@@ -29,7 +29,7 @@ function LocationCard(props) {
     return (
         <div className={`location-card`}>
             <div className={`location-card-image`}>
-                <img src={imageUrl} alt="" />
+                <img src={thumbnail} alt="" />
             </div>
             <div className={`location-card-content`}>
                 <p className={`title`}>{title}</p>
@@ -41,7 +41,7 @@ function LocationCard(props) {
 }
 
 LocationCard.propTypes = {
-    imageUrl: PropTypes.string,
+    thumbnail: PropTypes.string,
     title: PropTypes.string,
     saves: PropTypes.number,
     distance: PropTypes.number

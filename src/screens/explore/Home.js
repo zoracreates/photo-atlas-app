@@ -8,6 +8,9 @@ class Home extends React.Component  {
         query: ''
     }
 
+    componentDidUpdate() {
+        console.log(this.state.query)
+    }
 
     render() {
         let {query} = this.state;

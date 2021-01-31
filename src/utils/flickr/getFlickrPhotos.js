@@ -20,15 +20,11 @@ async function getFlickrPhotos(options = {}) {
 
     try {
        response = await axios.get(url)
-      
+       return response.data
        
     } catch(err) {
         alert(err); 
     }
-
-    return response.data
-
-    
 
 };
 

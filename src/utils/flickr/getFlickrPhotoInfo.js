@@ -22,7 +22,10 @@ export default getFlickrPhotoInfo;
 /*
 USAGE
 
-The function getFlickrPhotos receives two parameters photoId and handleResponse.
+The function getFlickrPhotoInfo returns information about a photo, including its author and a link to the gallery the photo
+belongs to or the Flickr photo page
+
+receives two parameters photoId and handleResponse.
 
 photoId is a flickr phot id needed to get the information for a flickr photo 
 

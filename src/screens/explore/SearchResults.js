@@ -6,48 +6,110 @@ import MapWithCards from '../../components/layout/MapWithCards';
 import LocationCard from '../../components/cards/LocationCard';
 import getFlickrPhotos from '../../utils/flickr/getFlickrPhotos';
 import createFlickrImageUrl from '../../utils/flickr/createFlickrImageUrl';
+import getFlickrPlace from '../../utils/flickr/getFlickrPlace';
 
 class SearchResults extends React.Component {
     state = {
         query: this.props.location.search,
-        photos: []
+        searchResults: [],
+        resultsCount: .5 // there's probably a better way to do this
     }
 
     componentDidMount() {
-     let searchParams = new URLSearchParams(this.state.query);
+        let searchParams = new URLSearchParams(this.state.query);
 
-     if(searchParams.has("lon") && searchParams.has("lat")) {
-        //test with ?q&lat=42.3601&lon=-71.0589
-        let options = {
+        if (searchParams.has("lon") && searchParams.has("lat")) {
+            //test with Boston ?q&lat=42.3601&lon=-71.0589
+            //test with PR q&lat=18.2208&lon=-66.5901
+            let options = {
                 "lat": searchParams.get("lat"),
                 "lon": searchParams.get("lon"),
-                "extras" : "geo",
-                "sort" : "interestingness-desc"
+                "extras": "geo",
+                "accuracy" : 6
+            }
+
+            getFlickrPhotos(options).then(data => {
+
+                let photos = data.photos.photo;
+            console.log(photos[3]);
+                console.log(`photos count = ${photos.length}`)
+
+                let locations = []
+
+                let list = [];
+
+
+                photos.forEach(
+
+                    photo => {
+
+                        let url = createFlickrImageUrl(photo);
+
+                        let title = photo.title;
+
+                        let lat = photo.latitude;
+
+                        let lon = photo.longitude;
+
+                        let woeId = photo.woeid;
+
+                        if (woeId && !locations.includes(woeId)) {
+
+
+                            locations.push(woeId);
+
+                            let location = {
+                                "thumbnail": url,
+                                "title": title, // set to empty string after geocoding is set for name
+                                "distance": parseInt(lon + lat),
+                                "saves": 0
+                            }
+
+                            let place = async (options) => {
+                                let placeName = await getFlickrPlace(options);
+                                return placeName
+                            }
+
+                            place({ "woeId": woeId }).then(placeName => {
+
+                                if (placeName) {
+                                    location.title = placeName
+
+                                }
+                                /*else
+                                use geo decoding to name the place
+                                
+                                */
+
+                            }).then(
+
+                                list.push(location)
+
+                            )
+                        }
+                    }
+                )
+
+                this.setState({ searchResults: list, resultsCount: list.length })
+                console.log(`results count = ${this.state.resultsCount}`)
+                console.log(`locations count = ${locations.length}`)
+
+            }
+
+            )
         }
-
-       getFlickrPhotos(options)
-        .then(data =>  {
-            let photoData = data.photos.photo[0]
-            let url =createFlickrImageUrl(photoData)
-        
-            this.setState({photos: [{"imageUrl" : url}]})
-        });
-  
-    }
-
-
     }
 
 
 
-    renderResults(list) {
+    renderResults(resultsList) {
         return (
-            list.map((location, id) => {
+            resultsList.map((location, id) => {
 
-                const { imageUrl, title, distance, saves } = location;
-    
+                const { thumbnail, title, distance, saves } = location;
+
                 return (
-                    <LocationCard key={id} imageUrl={imageUrl} title={title} distance={distance} saves={saves} />
+                    <LocationCard key={id} thumbnail={thumbnail} title={title} distance={distance} saves={saves} />
                 )
             })
         )
@@ -55,9 +117,9 @@ class SearchResults extends React.Component {
     }
 
     render() {
-        let locationList  = this.state.photos;
 
-        let {query} = this.state;
+        let { query, searchResults, resultsCount } = this.state;
+
 
 
         return (
@@ -70,7 +132,7 @@ class SearchResults extends React.Component {
                             backSearch
                             placeholder="Search a place"
                             value={query}
-                            onChange={(e) => {this.setState({query: e.target.value })}} 
+                            onChange={(e) => { this.setState({ query: e.target.value }) }}
                         />
                         <button className={`search-filter`}>Filter by Subject</button>
                     </div>
@@ -79,18 +141,18 @@ class SearchResults extends React.Component {
                 <div className={`container`}>
                     <MapWithCards>
 
-                        {locationList 
-                            
-                            ? 
-                        
-                            this.renderResults(locationList) 
-                            
+                        {resultsCount > 0
+
+                            ?
+
+                            this.renderResults(searchResults)
+
                             :
-                            
+
                             <p className={`no-results`}>
                                 Sorry, no photo spots here yet. You can try a different place,
                                 or be the first to <Link to="/add">Add a Spot</Link>!
-                            </p> }
+                            </p>}
 
                     </MapWithCards>
                 </div>
