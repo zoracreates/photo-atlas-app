@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 
 import SearchBar from '../../components/forms/SearchBar';
 import MapWithCards from '../../components/layout/MapWithCards';
@@ -8,31 +7,38 @@ import getFlickrPhotos from '../../utils/flickr/getFlickrPhotos';
 import createFlickrImageUrl from '../../utils/flickr/createFlickrImageUrl';
 import getFlickrPlace from '../../utils/flickr/getFlickrPlace';
 
+
+
 class SearchResults extends React.Component {
     state = {
-        query: this.props.location.search,
+        query: decodeURIComponent(this.props.location.search),
+        loaded: false,
         searchResults: [],
-        resultsCount: .5 // there's probably a better way to do this
+        resultsCount: 0 
     }
 
-    componentDidMount() {
-        let searchParams = new URLSearchParams(this.state.query);
+
+    getSearchReults = (searchParams) => {
+
+        if (!searchParams.has("lon") || !searchParams.has("lat")) {
+            this.setState({ loaded: true })
+        }
 
         if (searchParams.has("lon") && searchParams.has("lat")) {
-            //test with Boston ?q&lat=42.3601&lon=-71.0589
-            //test with PR q&lat=18.2208&lon=-66.5901
+            //test with Boston lat=42.3601&lon=-71.0589
+            //test with PR lat=18.2208&lon=-66.5901
+
             let options = {
                 "lat": searchParams.get("lat"),
                 "lon": searchParams.get("lon"),
                 "extras": "geo",
-                "accuracy" : 6
+                "accuracy": 6
             }
 
             getFlickrPhotos(options).then(data => {
 
                 let photos = data.photos.photo;
-            console.log(photos[3]);
-                console.log(`photos count = ${photos.length}`)
+
 
                 let locations = []
 
@@ -53,7 +59,7 @@ class SearchResults extends React.Component {
 
                         let woeId = photo.woeid;
 
-                        if (woeId && !locations.includes(woeId)) {
+                        if (woeId && !locations.includes(woeId)) { //in location view use woeid to search for other photos
 
 
                             locations.push(woeId);
@@ -90,37 +96,81 @@ class SearchResults extends React.Component {
                     }
                 )
 
-                this.setState({ searchResults: list, resultsCount: list.length })
-                console.log(`results count = ${this.state.resultsCount}`)
-                console.log(`locations count = ${locations.length}`)
+                this.setState({
+                    searchResults: list,
+                    resultsCount: list.length,
+                    loaded: true
+                })
 
             }
 
             )
         }
+
+    }
+
+    handleSubmit(e) {
+
+        e.preventDefault();
+
+        this.setState({ searchResults: [], loaded: false });
+
+        let search = decodeURIComponent(this.state.query);
+
+        this.props.location.search = `?q=&${search}`;
+
+        this.props.history.push(`/explore/?q=&${search}`)
+
+        let searchParams = new URLSearchParams(this.state.query);
+
+        this.getSearchReults(searchParams);
+
+    }
+
+    renderResults(loaded, resultsList, resultsCount) {
+
+
+        if (!loaded) {
+            return <p className={`results-status`}>Getting Locations...</p>
+        }
+
+        if (loaded && resultsCount > 0) {
+            return (
+                resultsList.map((location, id) => {
+
+                    const { thumbnail, title, distance, saves } = location;
+
+                    return (
+                        //make these into links where the search param should be the photo id
+                        <LocationCard key={id} thumbnail={thumbnail} title={title} distance={distance} saves={saves} />
+                    )
+
+                })
+            )
+
+        } else {
+            return (
+                <p className={`results-status`}>
+                    Sorry, no photo spots here yet. Let's checkout a different location!
+                </p>
+            )
+        }
+
+
+
+
+    }
+
+    componentDidMount() {
+        let searchParams = new URLSearchParams(this.state.query);
+        this.getSearchReults(searchParams)
     }
 
 
-
-    renderResults(resultsList) {
-        return (
-            resultsList.map((location, id) => {
-
-                const { thumbnail, title, distance, saves } = location;
-
-                return (
-                    <LocationCard key={id} thumbnail={thumbnail} title={title} distance={distance} saves={saves} />
-                )
-            })
-        )
-
-    }
 
     render() {
 
-        let { query, searchResults, resultsCount } = this.state;
-
-
+        let { query, searchResults, resultsCount, loaded } = this.state;
 
         return (
             <div className={`search`}>
@@ -133,6 +183,7 @@ class SearchResults extends React.Component {
                             placeholder="Search a place"
                             value={query}
                             onChange={(e) => { this.setState({ query: e.target.value }) }}
+                            onClick={(e) => this.handleSubmit(e)}
                         />
                         <button className={`search-filter`}>Filter by Subject</button>
                     </div>
@@ -141,18 +192,7 @@ class SearchResults extends React.Component {
                 <div className={`container`}>
                     <MapWithCards>
 
-                        {resultsCount > 0
-
-                            ?
-
-                            this.renderResults(searchResults)
-
-                            :
-
-                            <p className={`no-results`}>
-                                Sorry, no photo spots here yet. You can try a different place,
-                                or be the first to <Link to="/add">Add a Spot</Link>!
-                            </p>}
+                        {this.renderResults(loaded, searchResults, resultsCount)}
 
                     </MapWithCards>
                 </div>
