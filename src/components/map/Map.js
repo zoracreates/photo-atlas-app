@@ -1,9 +1,11 @@
 import React from 'react';
-import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup} from 'react-leaflet';
+import PropTypes from 'prop-types';
 
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 
+import ChangeMapView from './ChangeMapView'
 /* fix marker icon not rendering */
 import icon from 'leaflet/dist/images/marker-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
@@ -15,17 +17,6 @@ let DefaultIcon = L.icon({
 
 L.Marker.prototype.options.icon = DefaultIcon;
 
-/* 
-Except for its children, MapContainer props are immutable, and changes must be passed as events in children
-https://react-leaflet.js.org/docs/api-map/
-https://stackoverflow.com/questions/64665827/react-leaflet-center-attribute-does-not-change-when-the-center-state-changes*/
-function ChangeMapView(props) {
-    let { center,zoom } = props;
-    const map = useMap();
-    map.setView(center, zoom);
-    console.log('map center:', map.getCenter())
-    return null
-}
 
 function Map(props) {
 
@@ -72,6 +63,13 @@ function Map(props) {
         </MapContainer>
 
     )
+}
+
+Map.propTypes ={
+    locations: PropTypes.arrayOf(PropTypes.object),
+    lat: PropTypes.number,
+    lon: PropTypes.number,
+    zoom:PropTypes.number
 }
 
 export default Map;

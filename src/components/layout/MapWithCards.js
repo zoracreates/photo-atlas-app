@@ -1,6 +1,7 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
-import Map from '../content/Map';
+import Map from '../map/Map';
 
 class MapWithCards extends React.Component {
 
@@ -12,7 +13,7 @@ class MapWithCards extends React.Component {
         this.setState({ openedMap: !this.state.openedMap });
     }
 
-    render(props) {
+    render() {
         let { children, mapLoctaions, mapLat, mapLon, mapZoom } = this.props;
 
         let { openedMap } = this.state;
@@ -50,6 +51,13 @@ class MapWithCards extends React.Component {
 
 }
 
+
+MapWithCards.propTypes ={
+    mapLocations: PropTypes.arrayOf(PropTypes.object),
+    mapLat: PropTypes.number,
+    mapLon: PropTypes.number,
+    mapZoom:PropTypes.number
+}
 
 
 
