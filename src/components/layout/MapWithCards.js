@@ -1,5 +1,7 @@
 import React from 'react';
 
+import Map from '../content/Map';
+
 class MapWithCards extends React.Component {
 
     state = {
@@ -10,8 +12,8 @@ class MapWithCards extends React.Component {
         this.setState({ openedMap: !this.state.openedMap });
     }
 
-    render() {
-        let { children } = this.props;
+    render(props) {
+        let { children, mapLoctaions, mapLat, mapLon, mapZoom } = this.props;
 
         let { openedMap } = this.state;
 
@@ -36,11 +38,7 @@ class MapWithCards extends React.Component {
                     </div>
 
                     <div className={'map'}>
-                        <iframe
-                            title="Search Results Map"
-                            frameBorder="0" 
-                            src={`https:/www.google.com/maps/embed/v1/place?key=${process.env.REACT_APP_MAPS_API_KEY}&q=Space+Needle,Seattle+WA`} >
-                        </iframe>
+                        <Map locations={mapLoctaions} lat={mapLat} lon={mapLon} zoom={mapZoom}/>
                     </div>
                 </div>
 

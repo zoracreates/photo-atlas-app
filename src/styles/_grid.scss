@@ -101,11 +101,11 @@ header {
         transition-duration: $default-transition-duration;
     }
 
-    &.open  .map {
+    &.open  .map .leaflet-container {
         height: 50vh;
     }
 
-    &.close .map {
+    &.close .map .leaflet-container {
         height: 93px;
     }
    
@@ -157,8 +157,8 @@ header {
     }
 
     .grid-map .cards-container,
-    .grid-map .map-container.open .map,
-    .grid-map .map-container.close .map{
+    .grid-map .map-container.open .map .leaflet-container,
+    .grid-map .map-container.close .map .leaflet-container{
         height: 90vh;
     }
 

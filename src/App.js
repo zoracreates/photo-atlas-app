@@ -10,6 +10,7 @@ import Trips from './screens/trips/Trips';
 import LogIn from './screens/authentication/LogIn';
 import PrivateRoute from './components/navigation/PrivateRoute';
 import Footer from './components/content/Footer';
+import Map from './components/content/Map'
 
 import './styles/main.scss';
 
