@@ -1,6 +1,7 @@
-import PhotoSlider from '../../components/slider/PhotoSlider'
 import PropTypes from 'prop-types';
-import SubjectIndicators from '../../components/SubjectIndicators';
+
+import PhotoSlider from '../../components/slider/PhotoSlider'
+import SubjectIndicators from '../../components/content/SubjectIndicators'
 
 
 function Location(props) {

@@ -18,14 +18,3 @@ async function getFlickrPhotoInfo(photoId, handleResponse =
 };
 
 export default getFlickrPhotoInfo;
-
-/*
-USAGE
-
-The function getFlickrPhotos receives two parameters photoId and handleResponse.
-
-photoId is a flickr phot id needed to get the information for a flickr photo 
-
-The second parameter, handleResponse, is a callback indicating what to do once the request is received. 
-As a default handleResponse logs the received results into the browser console, but a different function may be passed. 
-*/

@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+
 function SubjectIndicators(props) {
 
     let { subjects } = props;
@@ -40,6 +42,10 @@ function SubjectIndicators(props) {
         </>
     )
 
+}
+
+SubjectIndicators.propTypes = {
+    subjects: PropTypes.arrayOf(PropTypes.string)
 }
 
 export default SubjectIndicators;

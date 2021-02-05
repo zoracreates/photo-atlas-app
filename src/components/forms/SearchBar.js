@@ -10,6 +10,8 @@ function SearchBar(props) {
         backSearch,
         id,
         labelText,
+        action,
+        method,
         ...rest } = props;
  
 
@@ -21,7 +23,7 @@ function SearchBar(props) {
         <div className={`search-bar-container ${searchStyle} ${className ? className : ''}`}>
             <button onClick={() => {window.history.back()}} className={`search-back-buttton`}>Back</button>
             
-            <form>
+            <form action={action} method={method}>
                 
                 <input
 
