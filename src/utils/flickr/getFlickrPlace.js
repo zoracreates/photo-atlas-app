@@ -30,15 +30,3 @@ async function getFlickrPlace(options = {}) {
 };
 
 export default getFlickrPlace;
-
-/*
-USAGE
-
-This receives two parameters options and handleResponse.
-
-The first parameter, options, is an object that contains the parameters that need to be passed to the Flickr REST request. 
-If a placeId is provided in options, then the request uses placeId, otherwise it uses the woe id or returns
-
-The second parameter, handleResponse, is a callback indicating what to do once the request is received. 
-As a default handleResponse logs the received results into the browser console, but a different function may be passed. 
-*/

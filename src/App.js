@@ -9,7 +9,7 @@ import Profile from './screens/Profile';
 import Trips from './screens/trips/Trips';
 import LogIn from './screens/authentication/LogIn';
 import PrivateRoute from './components/navigation/PrivateRoute';
-import Footer from './components/Footer';
+import Footer from './components/content/Footer';
 
 import './styles/main.scss';
 

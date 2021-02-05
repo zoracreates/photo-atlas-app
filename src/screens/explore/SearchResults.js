@@ -2,19 +2,16 @@ import React from 'react';
 
 import SearchBar from '../../components/forms/SearchBar';
 import MapWithCards from '../../components/layout/MapWithCards';
-import LocationCard from '../../components/cards/LocationCard';
 import getFlickrPhotos from '../../utils/flickr/getFlickrPhotos';
 import createFlickrImageUrl from '../../utils/flickr/createFlickrImageUrl';
 import getFlickrPlace from '../../utils/flickr/getFlickrPlace';
-
-
+import ResultsList from '../../components/content/ResultsList'
 
 class SearchResults extends React.Component {
     state = {
         query: decodeURIComponent(this.props.location.search),
         loaded: false,
         searchResults: [],
-        resultsCount: 0 
     }
 
 
@@ -39,10 +36,13 @@ class SearchResults extends React.Component {
 
                 let photos = data.photos.photo;
 
-
                 let locations = []
 
                 let list = [];
+
+                if (!photos) {
+                    this.setState({loaded: true})
+                }
 
 
                 photos.forEach(
@@ -98,7 +98,6 @@ class SearchResults extends React.Component {
 
                 this.setState({
                     searchResults: list,
-                    resultsCount: list.length,
                     loaded: true
                 })
 
@@ -113,7 +112,7 @@ class SearchResults extends React.Component {
 
         e.preventDefault();
 
-        this.setState({ searchResults: [], loaded: false });
+        this.setState({ searchResults: [], loaded: false});
 
         let search = decodeURIComponent(this.state.query);
 
@@ -127,39 +126,6 @@ class SearchResults extends React.Component {
 
     }
 
-    renderResults(loaded, resultsList, resultsCount) {
-
-
-        if (!loaded) {
-            return <p className={`results-status`}>Getting Locations...</p>
-        }
-
-        if (loaded && resultsCount > 0) {
-            return (
-                resultsList.map((location, id) => {
-
-                    const { thumbnail, title, distance, saves } = location;
-
-                    return (
-                        //make these into links where the search param should be the photo id
-                        <LocationCard key={id} thumbnail={thumbnail} title={title} distance={distance} saves={saves} />
-                    )
-
-                })
-            )
-
-        } else {
-            return (
-                <p className={`results-status`}>
-                    Sorry, no photo spots here yet. Let's checkout a different location!
-                </p>
-            )
-        }
-
-
-
-
-    }
 
     componentDidMount() {
         let searchParams = new URLSearchParams(this.state.query);
@@ -170,7 +136,7 @@ class SearchResults extends React.Component {
 
     render() {
 
-        let { query, searchResults, resultsCount, loaded } = this.state;
+        let { query, searchResults, loaded } = this.state;
 
         return (
             <div className={`search`}>
@@ -192,7 +158,7 @@ class SearchResults extends React.Component {
                 <div className={`container`}>
                     <MapWithCards>
 
-                        {this.renderResults(loaded, searchResults, resultsCount)}
+                        <ResultsList loaded={loaded} list={searchResults} />
 
                     </MapWithCards>
                 </div>
