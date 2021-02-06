@@ -1,4 +1,7 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
+import Map from '../map/Map';
 
 class MapWithCards extends React.Component {
 
@@ -11,7 +14,7 @@ class MapWithCards extends React.Component {
     }
 
     render() {
-        let { children } = this.props;
+        let { children, mapLoctaions, mapLat, mapLon, mapZoom } = this.props;
 
         let { openedMap } = this.state;
 
@@ -22,7 +25,7 @@ class MapWithCards extends React.Component {
         return (
             <div className={`grid-map`}>
 
-                <div className={`cards-container`}>
+                <div className={`cards-container ${toggleBarClass}`}>
                     {children}
                 </div>
 
@@ -36,11 +39,7 @@ class MapWithCards extends React.Component {
                     </div>
 
                     <div className={'map'}>
-                        <iframe
-                            title="Search Results Map"
-                            frameBorder="0" 
-                            src={`https:/www.google.com/maps/embed/v1/place?key=${process.env.REACT_APP_MAPS_API_KEY}&q=Space+Needle,Seattle+WA`} >
-                        </iframe>
+                        <Map locations={mapLoctaions} lat={mapLat} lon={mapLon} zoom={mapZoom}/>
                     </div>
                 </div>
 
@@ -52,6 +51,13 @@ class MapWithCards extends React.Component {
 
 }
 
+
+MapWithCards.propTypes ={
+    mapLocations: PropTypes.arrayOf(PropTypes.object),
+    mapLat: PropTypes.number,
+    mapLon: PropTypes.number,
+    mapZoom:PropTypes.number
+}
 
 
 

@@ -12,22 +12,30 @@ class SearchResults extends React.Component {
         query: decodeURIComponent(this.props.location.search),
         loaded: false,
         searchResults: [],
+        mapLat: null,
+        mapLon: null,
+        mapZoom: 10
     }
 
 
     getSearchReults = (searchParams) => {
 
         if (!searchParams.has("lon") || !searchParams.has("lat")) {
-            this.setState({ loaded: true })
+            this.setState({ loaded: true, mapZoom: 1 })
         }
 
         if (searchParams.has("lon") && searchParams.has("lat")) {
             //test with Boston lat=42.3601&lon=-71.0589
             //test with PR lat=18.2208&lon=-66.5901
+            //test with this cool place lat=42.3601&lon=42.3601
+
+            let searchLat = searchParams.get("lat");
+
+            let searchLon = searchParams.get("lon");
 
             let options = {
-                "lat": searchParams.get("lat"),
-                "lon": searchParams.get("lon"),
+                "lat":searchLat,
+                "lon":searchLon,
                 "extras": "geo",
                 "accuracy": 6
             }
@@ -68,7 +76,9 @@ class SearchResults extends React.Component {
                                 "thumbnail": url,
                                 "title": title, // set to empty string after geocoding is set for name
                                 "distance": parseInt(lon + lat),
-                                "saves": 0
+                                "saves": 0,
+                                "lat" : lat,
+                                "lon": lon
                             }
 
                             let place = async (options) => {
@@ -98,7 +108,10 @@ class SearchResults extends React.Component {
 
                 this.setState({
                     searchResults: list,
-                    loaded: true
+                    loaded: true,
+                    mapLat: parseFloat(searchLat),
+                    mapLon: parseFloat(searchLon),
+                    mapZoom: 10
                 })
 
             }
@@ -136,7 +149,7 @@ class SearchResults extends React.Component {
 
     render() {
 
-        let { query, searchResults, loaded } = this.state;
+        let { query, searchResults, loaded, mapLat, mapLon, mapZoom } = this.state;
 
         return (
             <div className={`search`}>
@@ -156,7 +169,13 @@ class SearchResults extends React.Component {
                 </div>
 
                 <div className={`container`}>
-                    <MapWithCards>
+                    <MapWithCards
+                        mapLoctaions={searchResults}
+                        mapLat={mapLat}
+                        mapLon={mapLon}
+                        mapZoom={mapZoom}
+              
+                    >
 
                         <ResultsList loaded={loaded} list={searchResults} />
 

@@ -1,30 +1,3 @@
-.meta-data {
-    @extend %caption_font;
-    color: $gray;
-    margin: 0px;
-
-    &.saved::before,
-    &.distance::before {
-        content:'';
-        display: inline-block;
-        width: 0.6rem;
-        height: 0.6rem;
-        background-repeat: no-repeat;
-        background-size: 0.6rem;
-        background-position: center bottom;
-        margin-right: 0.25rem;
-    }
-
-    &.saved::before {
-        background-image:  url(../images/icons/48px/heart-gray.png);
-    }
-
-    &.distance::before {
-        background-image:  url(../images/icons/48px/marker-gray.png);
-    }
-}
-
-
 .location-card {
     margin: 2% auto;
     background-color: $white;

@@ -15,6 +15,10 @@ footer,
     min-width: 320px;
 }
 
+footer {
+    margin-bottom: 100px;
+}
+
 
 header .container,
 main .container,
@@ -91,22 +95,30 @@ header {
     margin-top: 2%;
 }
 
-.grid-map .map-container {
-    position: fixed;
-    bottom: 0px;
-    right: -1px;
-    left: -1px;
+.grid-map {
 
-    .map {
-        transition-duration: $default-transition-duration;
+    .cards-container.open {
+        margin-bottom: 20vh;
     }
 
-    &.open  .map {
-        height: 50vh;
-    }
+    .map-container {
+        position: fixed;
+        bottom: 0px;
+        right: -1px;
+        left: -1px;
 
-    &.close .map {
-        height: 93px;
+        .map {
+            transition-duration: $default-transition-duration;
+        }
+
+        &.open  .map .leaflet-container {
+            height: 55vh;
+        }
+
+        &.close .map .leaflet-container {
+            height: 93px;
+        }
+
     }
    
 }
@@ -120,6 +132,10 @@ header {
 
     header {
         height: auto;
+    }
+
+    footer {
+        margin-bottom: 0px;
     }
 
     .grid-1_3,
@@ -157,13 +173,18 @@ header {
     }
 
     .grid-map .cards-container,
-    .grid-map .map-container.open .map,
-    .grid-map .map-container.close .map{
+    .grid-map .map-container.open .map .leaflet-container,
+    .grid-map .map-container.close .map .leaflet-container{
         height: 90vh;
     }
 
     .grid-map .cards-container  {
         overflow-y: scroll;
+
+        &.open {
+            margin-bottom: 0px;
+        }
+        
 
         /* width */
         &::-webkit-scrollbar {
