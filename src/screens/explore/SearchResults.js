@@ -21,13 +21,15 @@ class SearchResults extends React.Component {
     getSearchReults = (searchParams) => {
 
         if (!searchParams.has("lon") || !searchParams.has("lat")) {
-            this.setState({ loaded: true, mapZoom: 1 })
+            this.setState({ loaded: true, mapZoom: 1.5 })
         }
 
         if (searchParams.has("lon") && searchParams.has("lat")) {
             //test with Boston lat=42.3601&lon=-71.0589
             //test with PR lat=18.2208&lon=-66.5901
             //test with this cool place lat=42.3601&lon=42.3601
+            //hatillo &lat=18.4285&lon=-66.7875
+            //middle of the pacific ocean, use for testing no location results lat=-48.52&lon=-123.23 
 
             let searchLat = searchParams.get("lat");
 

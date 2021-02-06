@@ -29,7 +29,7 @@ class Home extends React.Component  {
 
         return (
             <div className={`home`}>
-                <div className={`dark-background`}>
+                <div className={`background-image`}>
                     <div className={`container mobile-padding`}>
                         <p className={`home-heading`}>Photo Atlas</p>
                         <h2 className={`h5-font`}>Find new places to capture your best work.</h2>

@@ -28,8 +28,8 @@ function Map(props) {
     }
 
     if (!lat || !lon) {
-        lat = 42.3601;
-        lon = -71.0589;
+        lat = 34.36;
+        lon = -20.58;
     }
 
     let center = [lat, lon]
