@@ -46,7 +46,7 @@ class SearchResults extends React.Component {
 
                 let photos = data.photos.photo;
 
-                let locations = []
+                let existingLocations = []
 
                 let list = [];
 
@@ -69,10 +69,10 @@ class SearchResults extends React.Component {
 
                         let woeId = photo.woeid;
 
-                        if (woeId && !locations.includes(woeId)) { //in location view use woeid to search for other photos
+                        if (woeId && !existingLocations.includes(woeId)) { //in location view use woeid to search for other photos
 
 
-                            locations.push(woeId);
+                            existingLocations.push(woeId);
 
                             let location = {
                                 "thumbnail": url,
@@ -92,7 +92,6 @@ class SearchResults extends React.Component {
 
                                 if (placeName) {
                                     location.title = placeName
-
                                 }
                                 /*else
                                 use geo decoding to name the place
@@ -167,6 +166,7 @@ class SearchResults extends React.Component {
                             onClick={(e) => this.handleSubmit(e)}
                         />
                         <button className={`search-filter`}>Filter by Subject</button>
+                        <button className={`search-filter`}>Spots Near Me</button>
                     </div>
                 </div>
 

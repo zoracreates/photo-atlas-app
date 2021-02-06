@@ -2,11 +2,7 @@
     font-size: 16px;
 }
 
-@media (min-width: 769px) {
-    :root {
-        font-size: 18px;
-    }
-}
+
 
 %headline1_font {
     font-family: $serif_font;
@@ -112,8 +108,8 @@ p:not(:first-child) {
 
 p:first-child {
     margin-top: 0px;
+    padding-top: 1rem
 }
-
 
 h1,
 .h1-font {
@@ -183,3 +179,9 @@ p.meta-data:not(:first-child) {
     }
 }
 
+@media (min-width: 769px) {
+    :root {
+        font-size: 18px;
+    }
+
+}
