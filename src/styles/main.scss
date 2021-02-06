@@ -71,7 +71,12 @@ footer  {
 
 .home-heading {
   @extend %headline3_font;
-  
+    margin-bottom: 0px;
+    padding-top: 20px;
+}
+
+.home .search-bar-container {
+  padding-bottom: 20px;
 }
 
 p.results-status {

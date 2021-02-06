@@ -25,7 +25,7 @@ class MapWithCards extends React.Component {
         return (
             <div className={`grid-map`}>
 
-                <div className={`cards-container`}>
+                <div className={`cards-container ${toggleBarClass}`}>
                     {children}
                 </div>
 

@@ -1,6 +1,7 @@
 import React from 'react';
 import { MapContainer, TileLayer, Marker, Popup} from 'react-leaflet';
 import PropTypes from 'prop-types';
+import MapPopup from '../map/MapPopUp'
 
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
@@ -47,12 +48,13 @@ function Map(props) {
                 const { thumbnail, title, distance, saves, lat, lon } = location;
                 return (
                     <Marker key={id} position={[lat, lon]}>
-                        <Popup>
-                            <img src={thumbnail} alt="" />
-                            <p>{title}</p>
-                            Distance: {distance}
-                            Saves: {saves}
-                        </Popup>
+
+                        <MapPopup 
+                            thumbnail={thumbnail}
+                            title={title}
+                            saves={saves}
+                            distance={distance}
+                             />
                     </Marker>
 
                 )
