@@ -1,5 +1,5 @@
 import React from 'react';
-import { MapContainer, TileLayer, Marker, Popup} from 'react-leaflet';
+import { MapContainer, TileLayer, Marker } from 'react-leaflet';
 import PropTypes from 'prop-types';
 import MapPopup from '../map/MapPopUp'
 
