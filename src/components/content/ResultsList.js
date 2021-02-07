@@ -10,7 +10,7 @@ function ResultsList (props)  {
    let count = list.length;
 
     if (!loaded) {
-        return <p className={`results-status`}>Getting Locations...</p>
+        return <p>Getting Locations...</p>
     } 
     
     if (loaded && count > 0) {
@@ -31,7 +31,7 @@ function ResultsList (props)  {
     
     if (loaded && count === 0) {
         return (
-            <p className={`results-status`}>
+            <p >
                 Sorry, no photo spots here yet. Let's checkout a different location!
             </p>
         )
