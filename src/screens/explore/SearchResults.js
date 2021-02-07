@@ -7,7 +7,17 @@ import createFlickrImageUrl from '../../utils/flickr/createFlickrImageUrl';
 import getFlickrPlace from '../../utils/flickr/getFlickrPlace';
 import getCurrentLocation from '../../utils/getCurrentLocation';
 import ResultsList from '../../components/content/ResultsList'
-import calculateDistance from '../../utils/calculateDistance';
+import GoogleCalculateDistance from '../../utils/GoogleCalculateDistance';
+
+let dummyDest = {
+    "latitude": 42.3397917,
+    "longitude":-71.1499027
+}
+
+let dummyOrigin = {
+    "latitude": 42.3601,
+    "longitude": -71.0589
+}
 
 class SearchResults extends React.Component {
     state = {
@@ -22,12 +32,6 @@ class SearchResults extends React.Component {
 
 
     getSearchReults = (searchParams) => {
-
-        // if (!searchParams.has("lon") || !searchParams.has("lat")) {
-        //     this.setState({ loaded: true, mapZoom: 1.5 })
-        // }
-
-        // if (searchParams.has("lon") && searchParams.has("lat")) {
         //test with Boston lat=42.3601&lon=-71.0589
         //test with PR lat=18.2208&lon=-66.5901
         //test with this cool place lat=42.3601&lon=42.3601
@@ -48,6 +52,7 @@ class SearchResults extends React.Component {
         }
 
         getFlickrPhotos(options).then(data => {
+            
             let photos;
             
             if (data) {
@@ -66,6 +71,7 @@ class SearchResults extends React.Component {
                 let existingLocations = []
 
                 let list = [];
+
 
                 photos.forEach(
 
@@ -129,19 +135,9 @@ class SearchResults extends React.Component {
 
             }
 
-
-
-
-
-
-
-
-
-
         }
 
         )
-        // }
 
     }
 
@@ -157,14 +153,17 @@ class SearchResults extends React.Component {
 
         this.props.history.push(`/explore/?q=&${search}`)
 
-        // let searchParams = new URLSearchParams(this.state.query);
 
-        // this.getSearchReults(searchParams);
+        let searchParams = new URLSearchParams(this.state.query);
 
-        /*getCurrentLocation(
-            (position) => this.setState({currentLocation: position.coords}, this.getSearchReults(searchParams)),
-            () => this.getSearchReults(searchParams)
-        )*/
+        if (!searchParams.has("lon") || !searchParams.has("lat")) {
+            this.setState({ loaded: true, mapZoom: 1.5 })
+        } else {
+            getCurrentLocation(
+                (position) => this.setState({ currentLocation: position.coords }, this.getSearchReults(searchParams)),
+                () => this.getSearchReults(searchParams)
+            )
+        }
 
     }
 
@@ -174,9 +173,7 @@ class SearchResults extends React.Component {
 
         if (!searchParams.has("lon") || !searchParams.has("lat")) {
             this.setState({ loaded: true, mapZoom: 1.5 })
-        }
-
-        if (searchParams.has("lon") && searchParams.has("lat")) {
+        } else {
             getCurrentLocation(
                 (position) => this.setState({ currentLocation: position.coords }, this.getSearchReults(searchParams)),
                 () => this.getSearchReults(searchParams)
@@ -209,6 +206,7 @@ class SearchResults extends React.Component {
                 </div>
 
                 <div className={`container`}>
+                    
                     <MapWithCards
                         mapLoctaions={searchResults}
                         mapLat={mapLat}
@@ -216,9 +214,9 @@ class SearchResults extends React.Component {
                         mapZoom={mapZoom}
 
                     >
-
+                        <GoogleCalculateDistance origin={dummyOrigin} destination={dummyDest}/>
                         <ResultsList loaded={loaded} list={searchResults} />
-
+                        
                     </MapWithCards>
                 </div>
             </div>
