@@ -4,6 +4,10 @@
     display: flex;
     border: 1px solid $light_border_color;
     
+    p:first-child {
+        padding-top: 0px;
+    }
+    
     .location-card-content {
         flex-basis: 75%;
         margin-left: 7px;
