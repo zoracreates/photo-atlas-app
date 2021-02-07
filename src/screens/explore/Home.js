@@ -5,6 +5,7 @@ import TitleCard from '../../components/cards/TtitleCard'
 import getFlickrPhotos from '../../utils/flickr/getFlickrPhotos';
 import createFlickrImageUrl from '../../utils/flickr/createFlickrImageUrl';
 import getFlickrPlace from '../../utils/flickr/getFlickrPlace';
+import getCurrentLocation from '../../utils/getCurrentLocation';
 
 class Home extends React.Component {
 
@@ -74,6 +75,10 @@ class Home extends React.Component {
             }
 
             getFlickrPhotos(options).then(data => {
+
+                if(!data) {
+                    return undefined
+                }
 
                 let photos = data.photos.photo;
 
@@ -146,10 +151,12 @@ class Home extends React.Component {
     }
 
     componentDidMount() {
-        window.navigator.geolocation.getCurrentPosition(
+
+        getCurrentLocation(
             position => this.setState({ currentLocation: position.coords }, () => { this.getNearbyLocations() }),
             err => this.setState({ errorMessage: err.message })
-        );
+        )
+
     }
 
 

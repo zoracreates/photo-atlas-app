@@ -5,7 +5,9 @@ import MapWithCards from '../../components/layout/MapWithCards';
 import getFlickrPhotos from '../../utils/flickr/getFlickrPhotos';
 import createFlickrImageUrl from '../../utils/flickr/createFlickrImageUrl';
 import getFlickrPlace from '../../utils/flickr/getFlickrPlace';
+import getCurrentLocation from '../../utils/getCurrentLocation';
 import ResultsList from '../../components/content/ResultsList'
+import calculateDistance from '../../utils/calculateDistance';
 
 class SearchResults extends React.Component {
     state = {
@@ -14,46 +16,56 @@ class SearchResults extends React.Component {
         searchResults: [],
         mapLat: null,
         mapLon: null,
-        mapZoom: 10
+        mapZoom: 10,
+        currentLocation: null
     }
 
 
     getSearchReults = (searchParams) => {
 
-        if (!searchParams.has("lon") || !searchParams.has("lat")) {
-            this.setState({ loaded: true, mapZoom: 1.5 })
+        // if (!searchParams.has("lon") || !searchParams.has("lat")) {
+        //     this.setState({ loaded: true, mapZoom: 1.5 })
+        // }
+
+        // if (searchParams.has("lon") && searchParams.has("lat")) {
+        //test with Boston lat=42.3601&lon=-71.0589
+        //test with PR lat=18.2208&lon=-66.5901
+        //test with this cool place lat=42.3601&lon=42.3601
+        //hatillo &lat=18.4285&lon=-66.7875
+        //middle of the pacific ocean, use for testing no location results lat=-48.52&lon=-123.23 
+
+        /* use entered location to search flickr*/
+
+        let searchLat = searchParams.get("lat");
+
+        let searchLon = searchParams.get("lon");
+
+        let options = {
+            "lat": searchLat,
+            "lon": searchLon,
+            "extras": "geo",
+            "accuracy": 6
         }
 
-        if (searchParams.has("lon") && searchParams.has("lat")) {
-            //test with Boston lat=42.3601&lon=-71.0589
-            //test with PR lat=18.2208&lon=-66.5901
-            //test with this cool place lat=42.3601&lon=42.3601
-            //hatillo &lat=18.4285&lon=-66.7875
-            //middle of the pacific ocean, use for testing no location results lat=-48.52&lon=-123.23 
-
-            let searchLat = searchParams.get("lat");
-
-            let searchLon = searchParams.get("lon");
-
-            let options = {
-                "lat":searchLat,
-                "lon":searchLon,
-                "extras": "geo",
-                "accuracy": 6
+        getFlickrPhotos(options).then(data => {
+            let photos;
+            
+            if (data) {
+                photos = data.photos
+            }
+            
+            
+            if (!photos) {
+                return this.setState({ loaded: true })
             }
 
-            getFlickrPhotos(options).then(data => {
-
-                let photos = data.photos.photo;
+            else {
+                
+                photos = photos.photo
 
                 let existingLocations = []
 
                 let list = [];
-
-                if (!photos) {
-                    this.setState({loaded: true})
-                }
-
 
                 photos.forEach(
 
@@ -77,9 +89,9 @@ class SearchResults extends React.Component {
                             let location = {
                                 "thumbnail": url,
                                 "title": title, // set to empty string after geocoding is set for name
-                                "distance": parseInt(lon + lat),
+                                "distance": this.state.currentLocation.latitude,
                                 "saves": 0,
-                                "lat" : lat,
+                                "lat": lat,
                                 "lon": lon
                             }
 
@@ -117,8 +129,19 @@ class SearchResults extends React.Component {
 
             }
 
-            )
+
+
+
+
+
+
+
+
+
         }
+
+        )
+        // }
 
     }
 
@@ -126,7 +149,7 @@ class SearchResults extends React.Component {
 
         e.preventDefault();
 
-        this.setState({ searchResults: [], loaded: false});
+        this.setState({ searchResults: [], loaded: false });
 
         let search = decodeURIComponent(this.state.query);
 
@@ -134,16 +157,31 @@ class SearchResults extends React.Component {
 
         this.props.history.push(`/explore/?q=&${search}`)
 
-        let searchParams = new URLSearchParams(this.state.query);
+        // let searchParams = new URLSearchParams(this.state.query);
 
-        this.getSearchReults(searchParams);
+        // this.getSearchReults(searchParams);
+
+        /*getCurrentLocation(
+            (position) => this.setState({currentLocation: position.coords}, this.getSearchReults(searchParams)),
+            () => this.getSearchReults(searchParams)
+        )*/
 
     }
 
 
     componentDidMount() {
         let searchParams = new URLSearchParams(this.state.query);
-        this.getSearchReults(searchParams)
+
+        if (!searchParams.has("lon") || !searchParams.has("lat")) {
+            this.setState({ loaded: true, mapZoom: 1.5 })
+        }
+
+        if (searchParams.has("lon") && searchParams.has("lat")) {
+            getCurrentLocation(
+                (position) => this.setState({ currentLocation: position.coords }, this.getSearchReults(searchParams)),
+                () => this.getSearchReults(searchParams)
+            )
+        }
     }
 
 
@@ -176,7 +214,7 @@ class SearchResults extends React.Component {
                         mapLat={mapLat}
                         mapLon={mapLon}
                         mapZoom={mapZoom}
-              
+
                     >
 
                         <ResultsList loaded={loaded} list={searchResults} />
