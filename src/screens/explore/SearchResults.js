@@ -6,18 +6,8 @@ import getFlickrPhotos from '../../utils/flickr/getFlickrPhotos';
 import createFlickrImageUrl from '../../utils/flickr/createFlickrImageUrl';
 import getFlickrPlace from '../../utils/flickr/getFlickrPlace';
 import getCurrentLocation from '../../utils/getCurrentLocation';
-import ResultsList from '../../components/content/ResultsList'
-import GoogleCalculateDistance from '../../utils/GoogleCalculateDistance';
+import ResultsList from '../../components/content/ResultsList';
 
-let dummyDest = {
-    "latitude": 42.3397917,
-    "longitude":-71.1499027
-}
-
-let dummyOrigin = {
-    "latitude": 42.3601,
-    "longitude": -71.0589
-}
 
 class SearchResults extends React.Component {
     state = {
@@ -82,23 +72,35 @@ class SearchResults extends React.Component {
                         let title = photo.title;
 
                         let lat = photo.latitude;
-
+                        
                         let lon = photo.longitude;
 
                         let woeId = photo.woeid;
 
                         if (woeId && !existingLocations.includes(woeId)) { //in location view use woeid to search for other photos
 
+                            let currentLat;
+                            let currentLon;
 
+                            if(this.state.currentLocation) {
+                                currentLat = this.state.currentLocation.latitude;
+                                currentLon = this.state.currentLocation.longitude
+                            }
+                        
                             existingLocations.push(woeId);
 
                             let location = {
                                 "thumbnail": url,
                                 "title": title, // set to empty string after geocoding is set for name
-                                "distance": this.state.currentLocation.latitude,
                                 "saves": 0,
-                                "lat": lat,
-                                "lon": lon
+                                "origin": {
+                                    "latitude" : currentLat,
+                                    "longitude": currentLon
+                                },
+                                "destination": {
+                                    "latitude" : parseFloat(lat),
+                                    "longitude": parseFloat(lon)
+                                }
                             }
 
                             let place = async (options) => {
@@ -214,7 +216,6 @@ class SearchResults extends React.Component {
                         mapZoom={mapZoom}
 
                     >
-                        <GoogleCalculateDistance origin={dummyOrigin} destination={dummyDest}/>
                         <ResultsList loaded={loaded} list={searchResults} />
                         
                     </MapWithCards>

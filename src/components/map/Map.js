@@ -6,7 +6,8 @@ import MapPopup from '../map/MapPopUp'
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 
-import ChangeMapView from './ChangeMapView'
+import ChangeMapView from './ChangeMapView';
+
 /* fix marker icon not rendering */
 import icon from 'leaflet/dist/images/marker-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
@@ -45,18 +46,18 @@ function Map(props) {
 
 
             {locations.map((location, id) => {
-                const { thumbnail, title, distance, saves, lat, lon } = location;
+                const { thumbnail, title, destination } = location;
+
+                let lat = destination.latitude;
+                let lon = destination.longitude;
+
                 return (
                     <Marker key={id} position={[lat, lon]}>
-
                         <MapPopup 
                             thumbnail={thumbnail}
                             title={title}
-                            saves={saves}
-                            distance={distance}
                              />
                     </Marker>
-
                 )
             })
 

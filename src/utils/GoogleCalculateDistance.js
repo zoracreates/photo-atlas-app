@@ -2,7 +2,7 @@ import { LoadScript, DistanceMatrixService } from "@react-google-maps/api";
 
 function GoogleCalculateDistance(props) {
 
-    let { origin, destination, handleResponse } = props;
+    let { origin, destination, handleResponse = (res) => console.log(res) } = props;
 
     let originLat = origin.latitude;
     let originLon = origin.longitude;
@@ -21,9 +21,11 @@ function GoogleCalculateDistance(props) {
                     travelMode: "DRIVING"
                 }}
                 callback={(res) => {
-
-                    console.log("RESPONSE", res.rows[0].elements[0].distance.text);
-                    
+                    if (res) {
+                    //    return handleResponse(res.rows[0].elements[0].distance.text)
+                       return handleResponse(res)
+                    }
+                    return undefined
                 }}
             />
             </LoadScript>
