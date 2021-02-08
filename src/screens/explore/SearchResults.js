@@ -17,22 +17,21 @@ class SearchResults extends React.Component {
         mapLat: null,
         mapLon: null,
         mapZoom: 10,
-        currentLocation: null
+        currentLocation: null,
+        needLocation: false
     }
 
 
-    getSearchReults = (searchParams) => {
+    getSearchReults = (lat, lon) => {
         //test with Boston lat=42.3601&lon=-71.0589
         //test with PR lat=18.2208&lon=-66.5901
         //test with this cool place lat=42.3601&lon=42.3601
         //hatillo &lat=18.4285&lon=-66.7875
         //middle of the pacific ocean, use for testing no location results lat=-48.52&lon=-123.23 
 
-        /* use entered location to search flickr*/
+        let searchLat = lat;
 
-        let searchLat = searchParams.get("lat");
-
-        let searchLon = searchParams.get("lon");
+        let searchLon = lon;
 
         let options = {
             "lat": searchLat,
@@ -147,7 +146,7 @@ class SearchResults extends React.Component {
 
         e.preventDefault();
 
-        this.setState({ searchResults: [], loaded: false });
+        this.setState({ searchResults: [], loaded: false, needLocation: false });
 
         let search = decodeURIComponent(this.state.query);
 
@@ -161,24 +160,55 @@ class SearchResults extends React.Component {
         if (!searchParams.has("lon") || !searchParams.has("lat")) {
             this.setState({ loaded: true, mapZoom: 1.5 })
         } else {
+            let lat= searchParams.get("lat");
+            let lon = searchParams.get("lon");
             getCurrentLocation(
-                (position) => this.setState({ currentLocation: position.coords }, this.getSearchReults(searchParams)),
-                () => this.getSearchReults(searchParams)
+                (position) => this.setState({ currentLocation: position.coords }, this.getSearchReults(lat, lon)),
+                () => this.getSearchReults(lat, lon)
             )
         }
 
     }
 
+    findNearby() {
+
+        this.setState({ searchResults: [], loaded: false, query:'' });
+
+        getCurrentLocation(
+            (position) => 
+            
+            this.setState({ currentLocation: position.coords }, 
+            () => {
+                let lat = this.state.currentLocation.latitude;
+                let lon = this.state.currentLocation.longitude;
+
+                this.getSearchReults(lat, lon)  
+            }),
+
+            () => this.setState({loaded: true, needLocation: true, mapZoom: 1.5})
+        )
+    }
+
 
     componentDidMount() {
         let searchParams = new URLSearchParams(this.state.query);
+        
 
         if (!searchParams.has("lon") || !searchParams.has("lat")) {
+            
             this.setState({ loaded: true, mapZoom: 1.5 })
+
         } else {
+
+            let lat= searchParams.get("lat");
+            let lon = searchParams.get("lon");
+
             getCurrentLocation(
-                (position) => this.setState({ currentLocation: position.coords }, this.getSearchReults(searchParams)),
-                () => this.getSearchReults(searchParams)
+                (position) => this.setState({ currentLocation: position.coords }, 
+                
+                this.getSearchReults(lat, lon)),
+
+                () => this.getSearchReults(lat, lon)
             )
         }
     }
@@ -187,7 +217,7 @@ class SearchResults extends React.Component {
 
     render() {
 
-        let { query, searchResults, loaded, mapLat, mapLon, mapZoom } = this.state;
+        let { query, searchResults, loaded, mapLat, mapLon, mapZoom , needLocation} = this.state;
 
         return (
             <div className={`search`}>
@@ -203,7 +233,7 @@ class SearchResults extends React.Component {
                             onClick={(e) => this.handleSubmit(e)}
                         />
                         <button className={`search-filter`}>Filter by Subject</button>
-                        <button className={`search-filter`}>Spots Near Me</button>
+                        <button className={`search-filter`} onClick={()=>{this.findNearby()}}>Spots Near Me</button>
                     </div>
                 </div>
 
@@ -216,7 +246,7 @@ class SearchResults extends React.Component {
                         mapZoom={mapZoom}
 
                     >
-                        <ResultsList loaded={loaded} list={searchResults} />
+                        <ResultsList loaded={loaded} list={searchResults} needLocation={needLocation} />
                         
                     </MapWithCards>
                 </div>
