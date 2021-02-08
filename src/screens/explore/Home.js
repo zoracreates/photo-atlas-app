@@ -33,7 +33,8 @@ class Home extends React.Component {
     renderNearby(list) {
 
         if (this.state.errorMessage && !this.state.currentLocation) {
-            return <p>Error: {this.state.errorMessage}</p>
+            console.log(`Error: ${this.state.errorMessage}`)
+            return <p>Share your location to explore what's nearby.</p>
         }
 
         if (!this.state.errorMessage && this.state.noLocations) {
