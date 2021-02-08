@@ -1,16 +1,11 @@
 import PropTypes from 'prop-types';
-import { Popup} from 'react-leaflet';
+import { Popup } from 'react-leaflet';
 
 function MapPopup(props) {
+
     let {
         thumbnail,
-        title,
-        saves,
-        distance } = props;
-
-    if (!saves) {
-        saves = 0;
-    }
+        title } = props;
 
     if (!title) {
         title = "Unamed Location"
@@ -31,14 +26,9 @@ function MapPopup(props) {
         <Popup>
             <div className={"map-popup"}>
                 <div className={"location-popup-image"}>
-                <img src={thumbnail} alt="" />
+                    <img src={thumbnail} alt="" />
                 </div>
                 <p className={`title`}>{title}</p>
-                <ul>
-                <li className={`meta-data saved`}><span>Saved by: </span>{saves}</li>
-                {distance && <li className={`meta-data distance`}><span>Distance: </span>{distance}mi</li>}
-
-                </ul>
 
             </div>
         </Popup>

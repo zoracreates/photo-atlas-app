@@ -37,13 +37,13 @@
     .location-popup-image {
         text-align: center;
         margin: auto;
-        max-width: 190px;
+        max-width: 100%;
+        min-width: 200px;
         max-height: 20vh;
         overflow: hidden;
     
 
         @media (min-width: 769px) {
-            min-width: 250px;
             width: 100%;
             max-height: none;
         }
@@ -59,9 +59,9 @@
     }
 
     .title {
-        @extend %subtitle1_font;
-        max-width: 190px;
-        margin-top: .75rem;
+        @extend %caption_font;
+        max-width: 100%;
+        margin-top: .5rem;
         &::after {
             content: '';
             background-image: url(../images/icons/48px/chevron-gray.png);

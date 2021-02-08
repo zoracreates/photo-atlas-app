@@ -16,12 +16,18 @@ function ResultsList (props)  {
     if (loaded && count > 0) {
         return (
             list.map((location, id) => {
-                const { thumbnail, title, distance, saves } = location;
+                const { thumbnail, title, saves, origin, destination } = location;
 
                 return (
                     
                     //make these into links where the search param should be the photo id
-                    <LocationCard key={id} thumbnail={thumbnail} title={title} distance={distance} saves={saves} />
+                    <LocationCard 
+                        key={id} 
+                        thumbnail={thumbnail} 
+                        title={title} 
+                        origin={origin}
+                        destination={destination}
+                        saves={saves} />
                 )
 
             })
