@@ -172,7 +172,8 @@ class SearchResults extends React.Component {
 
     findNearby() {
 
-        this.setState({ searchResults: [], loaded: false, query:'' });
+        this.setState({ searchResults: [], loaded: false, query: 'Current Location' });
+        this.props.history.push(`/explore/`)
 
         getCurrentLocation(
             (position) => 
@@ -195,7 +196,7 @@ class SearchResults extends React.Component {
         
 
         if (!searchParams.has("lon") || !searchParams.has("lat")) {
-            
+
             this.setState({ loaded: true, mapZoom: 1.5 })
 
         } else {
