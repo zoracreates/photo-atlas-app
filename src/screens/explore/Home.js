@@ -34,7 +34,14 @@ class Home extends React.Component {
             { query: e.target.value }, 
             
             () => {
-            getGeoSuggestions(this.state.query).then(results =>this.setState({searchBarSuggestions: results}))
+
+                if(!this.state.query) {
+                    this.setState({searchBarSuggestions: ''})
+                }
+                else {
+                    getGeoSuggestions(this.state.query).then(results =>this.setState({searchBarSuggestions: results}))
+                }
+           
         })
        
     }

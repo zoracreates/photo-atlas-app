@@ -28,6 +28,7 @@
     display: flex;
     max-width: 90%;
     margin: 0;
+    position: relative;
 
     &.standard-search {
         .search-back-buttton {
@@ -141,7 +142,12 @@
     background-color: $light_gray;
     color: $black_text_color;
     line-height: 1.5;
-    
+    position: absolute;
+    top: 40px;
+    left: 0;
+    right: 0;
+    list-style: none;
+    border: 1px solid $light_border_color;
     li {
         padding: .5rem;
     }
