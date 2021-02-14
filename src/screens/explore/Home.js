@@ -39,6 +39,7 @@ class Home extends React.Component {
         }
     }
 
+    
     handleInput(e) {
         this.setState(
            

@@ -11,7 +11,7 @@ import getGeoSuggestions from '../../utils/getGeoSuggestions'
 
 class SearchResults extends React.Component {
     state = {
-        query: decodeURIComponent(this.props.location.search),
+        query: '',
         loaded: false,
         searchResults: [],
         mapLat: null,
@@ -208,7 +208,9 @@ class SearchResults extends React.Component {
 
 
     componentDidMount() {
-        let searchParams = new URLSearchParams(this.state.query);
+        let query = decodeURIComponent(this.props.location.search);
+
+        let searchParams = new URLSearchParams(query);
         
         this._isMounted = true
 
@@ -217,9 +219,13 @@ class SearchResults extends React.Component {
             this._isMounted && this.setState({ loaded: true, mapZoom: 1.5 })
 
         } else {
-
+            let address = searchParams.get("address");
+            
             let lat= searchParams.get("lat");
+
             let lon = searchParams.get("lon");
+
+            this._isMounted &&  this.setState({query: address});
 
             getCurrentLocation(
                 (position) =>  this._isMounted && this.setState({ currentLocation: position.coords }, 
