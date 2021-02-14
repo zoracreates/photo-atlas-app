@@ -134,6 +134,19 @@
     }
 }
 
+.search-suggestions {
+    margin: 0px;
+    padding: 0px;
+    border-radius: 7px;
+    background-color: $light_gray;
+    color: $black_text_color;
+    line-height: 1.5;
+    
+    li {
+        padding: .5rem;
+    }
+}
+
 /* FILE INPUT */
 
 input[type="file"]{

@@ -6,6 +6,7 @@ import getFlickrPhotos from '../../utils/flickr/getFlickrPhotos';
 import createFlickrImageUrl from '../../utils/flickr/createFlickrImageUrl';
 import getFlickrPlace from '../../utils/flickr/getFlickrPlace';
 import getCurrentLocation from '../../utils/getCurrentLocation';
+import getGeoSuggestions from '../../utils/getGeoSuggestions'
 
 class Home extends React.Component {
 
@@ -14,10 +15,11 @@ class Home extends React.Component {
         currentLocation: null,
         errorMessage: '',
         noLocations: false,
-        locationResults: []
+        locationResults: [],
+        searchBarSuggestions: ''
     };
 
-
+    _isMounted = false;
 
     handleSubmit(e) {
         e.preventDefault();
@@ -27,7 +29,14 @@ class Home extends React.Component {
     }
 
     handleInput(e) {
-        this.setState({ query: e.target.value })
+        this.setState(
+           
+            { query: e.target.value }, 
+            
+            () => {
+            getGeoSuggestions(this.state.query).then(results =>this.setState({searchBarSuggestions: results}))
+        })
+       
     }
 
     renderNearby(list) {
@@ -77,7 +86,7 @@ class Home extends React.Component {
 
             getFlickrPhotos(options).then(data => {
 
-                if(!data) {
+                if (!data) {
                     return undefined
                 }
 
@@ -109,7 +118,7 @@ class Home extends React.Component {
 
                                 let location = {
                                     "thumbnail": url,
-                                    "title": title, // set to empty string after geocoding is set for name
+                                    "title": title,
                                 }
 
                                 let place = async (options) => {
@@ -122,11 +131,6 @@ class Home extends React.Component {
                                     if (placeName) {
                                         location.title = placeName
                                     }
-                                    /*else
-                                    
-                                    use geo decoding to name the place
-                                    
-                                    */
 
                                 }).then(
 
@@ -143,7 +147,7 @@ class Home extends React.Component {
                     })
 
 
-                } 
+                }
             }
 
             )
@@ -153,17 +157,23 @@ class Home extends React.Component {
 
     componentDidMount() {
 
-        getCurrentLocation(
+        this._isMounted = true;
+
+        this._isMounted && getCurrentLocation(
             position => this.setState({ currentLocation: position.coords }, () => { this.getNearbyLocations() }),
             err => this.setState({ errorMessage: err.message })
         )
 
     }
 
+    componentWillUnmount() {
+        this._isMounted = false;
+    }
+
 
 
     render() {
-        let { query, locationResults } = this.state;
+        let { query, locationResults, searchBarSuggestions } = this.state;
 
         return (
             <div className={`home`}>
@@ -184,7 +194,13 @@ class Home extends React.Component {
                             placeholder="Search a place"
 
                             onClick={(e) => this.handleSubmit(e)}
+
+                            searchSuggestions={searchBarSuggestions}
+
+                            handleSuggestion={(suggestion)=> {console.log(suggestion)}}
                         />
+
+
                     </div>
                 </div>
                 <div className={`container mobile-padding`}>

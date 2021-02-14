@@ -21,6 +21,7 @@ class SearchResults extends React.Component {
         needLocation: false
     }
 
+    _isMounted = false;
 
     getSearchReults = (lat, lon) => {
         //test with Boston lat=42.3601&lon=-71.0589
@@ -90,7 +91,7 @@ class SearchResults extends React.Component {
 
                             let location = {
                                 "thumbnail": url,
-                                "title": title, // set to empty string after geocoding is set for name
+                                "title": title, 
                                 "saves": 0,
                                 "origin": {
                                     "latitude" : currentLat,
@@ -112,10 +113,6 @@ class SearchResults extends React.Component {
                                 if (placeName) {
                                     location.title = placeName
                                 }
-                                /*else
-                                use geo decoding to name the place
-                                
-                                */
 
                             }).then(
 
@@ -194,10 +191,11 @@ class SearchResults extends React.Component {
     componentDidMount() {
         let searchParams = new URLSearchParams(this.state.query);
         
+        this._isMounted = true
 
         if (!searchParams.has("lon") || !searchParams.has("lat")) {
 
-            this.setState({ loaded: true, mapZoom: 1.5 })
+            this._isMounted && this.setState({ loaded: true, mapZoom: 1.5 })
 
         } else {
 
@@ -205,7 +203,7 @@ class SearchResults extends React.Component {
             let lon = searchParams.get("lon");
 
             getCurrentLocation(
-                (position) => this.setState({ currentLocation: position.coords }, 
+                (position) =>  this._isMounted && this.setState({ currentLocation: position.coords }, 
                 
                 this.getSearchReults(lat, lon)),
 
@@ -213,6 +211,10 @@ class SearchResults extends React.Component {
             )
         }
     }
+
+    componentWillUnmount() {
+        this._isMounted = false;
+     }
 
 
 

@@ -10,6 +10,7 @@
     "axios": "^0.21.1",
     "firebase": "^8.1.2",
     "leaflet": "^1.7.1",
+    "leaflet-geosearch": "^3.2.1",
     "node-sass": "^4.14.1",
     "prop-types": "^15.7.2",
     "react": "^17.0.1",
