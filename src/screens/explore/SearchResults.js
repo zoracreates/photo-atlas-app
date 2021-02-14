@@ -220,7 +220,7 @@ class SearchResults extends React.Component {
 
         } else {
             let address = searchParams.get("address");
-            
+
             let lat= searchParams.get("lat");
 
             let lon = searchParams.get("lon");
@@ -235,6 +235,39 @@ class SearchResults extends React.Component {
                 () => this.getSearchReults(lat, lon)
             )
         }
+    }
+
+
+    suggestionClick(suggestion) {
+
+        this.setState({ 
+            searchResults: [], 
+            loaded: false, 
+            needLocation: false,
+            query: suggestion.label, 
+            searchBarSuggestions:''
+        });
+
+        let search = `address=${suggestion.label}&lat=${suggestion.lat}&lon=${suggestion.lon}`
+
+        this.props.location.search = `?q=&${search}`;
+
+        this.props.history.push(`/explore/?q=&${search}`)
+
+
+        let searchParams = new URLSearchParams(this.state.query);
+
+        if (!suggestion.lat || !suggestion.lon) {
+            this.setState({ loaded: true, mapZoom: 1.5 })
+        } else {
+            let lat= suggestion.lat;
+            let lon = suggestion.lon;
+            getCurrentLocation(
+                (position) => this.setState({ currentLocation: position.coords }, this.getSearchReults(lat, lon)),
+                () => this.getSearchReults(lat, lon)
+            )
+        }
+
     }
 
     componentWillUnmount() {
@@ -260,6 +293,7 @@ class SearchResults extends React.Component {
                             onChange={(e) => { this.handleInput(e) }}
                             onClick={(e) => this.handleSubmit(e)}
                             searchSuggestions={searchBarSuggestions}
+                            handleSuggestion={(suggestion)=> {this.suggestionClick(suggestion)}}
                         />
                         <button className={`search-filter`}>Filter by Subject</button>
                         <button className={`search-filter`} onClick={()=>{this.findNearby()}}>Spots Near Me</button>
