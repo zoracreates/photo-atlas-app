@@ -24,8 +24,19 @@ class Home extends React.Component {
     handleSubmit(e) {
         e.preventDefault();
 
-        let search = encodeURIComponent(this.state.query);
-        this.props.history.push(`/explore/?q=&${search}`);
+        // use the first suggestion to search
+        if(this.state.searchBarSuggestions) {
+            let suggestion = this.state.searchBarSuggestions[0]
+
+            this.setState({query:suggestion.label})
+
+            //geocoding search means x = lat and y = lon https://smeijer.github.io/leaflet-geosearch/usage
+            let search = `address=${suggestion.label}&lat=${suggestion.y}&lon=${suggestion.x}`
+            this.props.history.push(`/explore/?q&${search}`);
+        }
+        else {
+            return undefined
+        }
     }
 
     handleInput(e) {
@@ -162,6 +173,12 @@ class Home extends React.Component {
 
     }
 
+    suggestionClick(suggestion) {
+        this.setState({query:suggestion.label})
+        let search = `address=${suggestion.label}&lat=${suggestion.lat}&lon=${suggestion.lon}`
+        this.props.history.push(`/explore/?q&${search}`);
+    }
+
     componentDidMount() {
 
         this._isMounted = true;
@@ -204,7 +221,7 @@ class Home extends React.Component {
 
                             searchSuggestions={searchBarSuggestions}
 
-                            handleSuggestion={(suggestion)=> {console.log(suggestion)}}
+                            handleSuggestion={(suggestion)=> {this.suggestionClick(suggestion)}}
                         />
 
 

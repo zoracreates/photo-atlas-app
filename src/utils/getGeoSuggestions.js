@@ -18,3 +18,6 @@ async function getGeoSuggestions(input) {
 }
 
 export default getGeoSuggestions;
+
+//https://smeijer.github.io/leaflet-geosearch/providers/algolia
+//https://smeijer.github.io/leaflet-geosearch/usage

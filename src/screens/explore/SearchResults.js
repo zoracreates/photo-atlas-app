@@ -7,7 +7,7 @@ import createFlickrImageUrl from '../../utils/flickr/createFlickrImageUrl';
 import getFlickrPlace from '../../utils/flickr/getFlickrPlace';
 import getCurrentLocation from '../../utils/getCurrentLocation';
 import ResultsList from '../../components/content/ResultsList';
-
+import getGeoSuggestions from '../../utils/getGeoSuggestions'
 
 class SearchResults extends React.Component {
     state = {
@@ -18,7 +18,8 @@ class SearchResults extends React.Component {
         mapLon: null,
         mapZoom: 10,
         currentLocation: null,
-        needLocation: false
+        needLocation: false,
+        searchBarSuggestions: ''
     }
 
     _isMounted = false;
@@ -139,6 +140,24 @@ class SearchResults extends React.Component {
 
     }
 
+    handleInput(e) {
+        this.setState(
+           
+            { query: e.target.value }, 
+            
+            () => {
+
+                if(!this.state.query) {
+                    this.setState({searchBarSuggestions: ''})
+                }
+                else {
+                    getGeoSuggestions(this.state.query).then(results =>this.setState({searchBarSuggestions: results}))
+                }
+           
+        })
+       
+    }
+
     handleSubmit(e) {
 
         e.preventDefault();
@@ -220,7 +239,7 @@ class SearchResults extends React.Component {
 
     render() {
 
-        let { query, searchResults, loaded, mapLat, mapLon, mapZoom , needLocation} = this.state;
+        let { query, searchResults, loaded, mapLat, mapLon, mapZoom , needLocation, searchBarSuggestions} = this.state;
 
         return (
             <div className={`search`}>
@@ -232,8 +251,9 @@ class SearchResults extends React.Component {
                             backSearch
                             placeholder="Search a place"
                             value={query}
-                            onChange={(e) => { this.setState({ query: e.target.value }) }}
+                            onChange={(e) => { this.handleInput(e) }}
                             onClick={(e) => this.handleSubmit(e)}
+                            searchSuggestions={searchBarSuggestions}
                         />
                         <button className={`search-filter`}>Filter by Subject</button>
                         <button className={`search-filter`} onClick={()=>{this.findNearby()}}>Spots Near Me</button>

@@ -64,11 +64,11 @@ function SearchBar(props) {
                             {searchSuggestions[0] && searchSuggestions.map((suggestion, id) => {
                                 return (
                                     <li key={id} onClick={() => sendData(
+                                        //geocoding search means x = lat and y = lon https://smeijer.github.io/leaflet-geosearch/usage
                                          {
-                                            'lat': suggestion.x,
-                                            'lon': suggestion.y,
+                                            'lat': suggestion.y,
+                                            'lon': suggestion.x,
                                             'label':suggestion.label
-
                                          }
                                         )}>{suggestion.label}</li>
                                 )
