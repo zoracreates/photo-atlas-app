@@ -24,12 +24,7 @@ class SearchResults extends React.Component {
 
     _isMounted = false;
 
-    getSearchReults = (lat, lon) => {
-        //test with Boston lat=42.3601&lon=-71.0589
-        //test with PR lat=18.2208&lon=-66.5901
-        //test with this cool place lat=42.3601&lon=42.3601
-        //hatillo &lat=18.4285&lon=-66.7875
-        //middle of the pacific ocean, use for testing no location results lat=-48.52&lon=-123.23 
+    getSearchReults = (lat, lon) => { 
 
         let searchLat = lat;
 
@@ -158,36 +153,40 @@ class SearchResults extends React.Component {
        
     }
 
-    handleSubmit(e) {
+    handleSubmit(e) { 
 
         e.preventDefault();
 
         this.setState({ searchResults: [], loaded: false, needLocation: false });
 
-        let search = decodeURIComponent(this.state.query);
-
-        this.props.location.search = `?q=&${search}`;
-
-        this.props.history.push(`/explore/?q=&${search}`)
-
-
-        let searchParams = new URLSearchParams(this.state.query);
-
-        if (!searchParams.has("lon") || !searchParams.has("lat")) {
+        if (!this.state.searchBarSuggestions) {
             this.setState({ loaded: true, mapZoom: 1.5 })
         } else {
-            let lat= searchParams.get("lat");
-            let lon = searchParams.get("lon");
+            let suggestion = this.state.searchBarSuggestions[0];
+            
+            this.setState({query:suggestion.label, searchBarSuggestions: '' });
+            
+            let address= suggestion.label;
+            
+            let lat= suggestion.y;
+            
+            let lon = suggestion.x;
+
+            let search = `address=${address}&lat=${lat}&lon=${lon}`
+
+            this.props.history.push(`/explore/?q=&${search}`)
+
             getCurrentLocation(
                 (position) => this.setState({ currentLocation: position.coords }, this.getSearchReults(lat, lon)),
                 () => this.getSearchReults(lat, lon)
             )
         }
 
+
+
     }
 
     findNearby() {
-
         this.setState({ searchResults: [], loaded: false, query: 'Current Location' });
         this.props.history.push(`/explore/`)
 
@@ -204,6 +203,33 @@ class SearchResults extends React.Component {
 
             () => this.setState({loaded: true, needLocation: true, mapZoom: 1.5})
         )
+    }
+
+    suggestionClick(suggestion) {
+
+        this.setState({ 
+            searchResults: [], 
+            loaded: false, 
+            needLocation: false,
+            query: suggestion.label, 
+            searchBarSuggestions:''
+        });
+
+        let search = `address=${suggestion.label}&lat=${suggestion.lat}&lon=${suggestion.lon}`
+
+        this.props.history.push(`/explore/?q=&${search}`)
+
+        if (!suggestion.lat || !suggestion.lon) {
+            this.setState({ loaded: true, mapZoom: 1.5 })
+        } else {
+            let lat= suggestion.lat;
+            let lon = suggestion.lon;
+            getCurrentLocation(
+                (position) => this.setState({ currentLocation: position.coords }, this.getSearchReults(lat, lon)),
+                () => this.getSearchReults(lat, lon)
+            )
+        }
+
     }
 
 
@@ -237,38 +263,6 @@ class SearchResults extends React.Component {
         }
     }
 
-
-    suggestionClick(suggestion) {
-
-        this.setState({ 
-            searchResults: [], 
-            loaded: false, 
-            needLocation: false,
-            query: suggestion.label, 
-            searchBarSuggestions:''
-        });
-
-        let search = `address=${suggestion.label}&lat=${suggestion.lat}&lon=${suggestion.lon}`
-
-        this.props.location.search = `?q=&${search}`;
-
-        this.props.history.push(`/explore/?q=&${search}`)
-
-
-        let searchParams = new URLSearchParams(this.state.query);
-
-        if (!suggestion.lat || !suggestion.lon) {
-            this.setState({ loaded: true, mapZoom: 1.5 })
-        } else {
-            let lat= suggestion.lat;
-            let lon = suggestion.lon;
-            getCurrentLocation(
-                (position) => this.setState({ currentLocation: position.coords }, this.getSearchReults(lat, lon)),
-                () => this.getSearchReults(lat, lon)
-            )
-        }
-
-    }
 
     componentWillUnmount() {
         this._isMounted = false;
