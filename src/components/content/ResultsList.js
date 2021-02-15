@@ -15,7 +15,9 @@ function ResultsList(props) {
 
     if (loaded && count > 0) {
         return (
-            list.map((location, id) => {
+            <>
+            <p aria-live="polite" className="sr-only">Showing search results</p>
+            {list.map((location, id) => {
                 const { thumbnail, title, saves, origin, destination } = location;
 
                 return (
@@ -30,14 +32,15 @@ function ResultsList(props) {
                         saves={saves} />
                 )
 
-            })
+            })}
+            </>
         )
 
     }
 
     if (loaded && needLocation && count === 0) {
         return (
-            <p>
+            <p aria-live="polite">
                 Share your location to explore what's nearby.
             </p>
         )
@@ -45,7 +48,7 @@ function ResultsList(props) {
 
     if (loaded && count === 0 && !needLocation) {
         return (
-            <p >
+            <p aria-live="polite">
                 Sorry, no photo spots here yet. Let's checkout a different location!
             </p>
         )

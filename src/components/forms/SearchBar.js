@@ -18,14 +18,13 @@ function SearchBar(props) {
         ...rest } = props;
 
 
-        function sendData(data){
-            if (handleSuggestion) {
-                handleSuggestion(data)
-            } else {
-                return undefined
-            }
+    function sendData(data) {
+        if (handleSuggestion) {
+            handleSuggestion(data)
+        } else {
+            return undefined
         }
-
+    }
 
     let searchStyle = backSearch ? 'back-search' : 'standard-search';
 
@@ -56,21 +55,25 @@ function SearchBar(props) {
                     />
 
 
-                    <button className={`search-button`} onClick={onClick}>Search</button>
+
                     {searchSuggestions &&
 
                         <ul className={`search-suggestions`}>
 
                             {searchSuggestions[0] && searchSuggestions.map((suggestion, id) => {
                                 return (
-                                    <li key={id} onClick={() => sendData(
-                                        //geocoding search means x = lat and y = lon https://smeijer.github.io/leaflet-geosearch/usage
-                                         {
-                                            'lat': suggestion.y,
-                                            'lon': suggestion.x,
-                                            'label':suggestion.label
-                                         }
-                                        )}>{suggestion.label}</li>
+                                    <li key={id}>
+                                        <button
+                                            tabindex="0"
+
+                                            onClick={() => sendData(
+                                                //geocoding search means x = lat and y = lon https://smeijer.github.io/leaflet-geosearch/usage
+                                                {
+                                                    'lat': suggestion.y,
+                                                    'lon': suggestion.x,
+                                                    'label': suggestion.label
+                                                }
+                                            )}>{suggestion.label}</button></li>
                                 )
 
                             }
@@ -80,6 +83,7 @@ function SearchBar(props) {
 
                         </ul>
                     }
+                    <button className={`search-button`} onClick={onClick}>Search</button>
                 </form>
             </div>
         </>

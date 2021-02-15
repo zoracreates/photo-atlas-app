@@ -141,7 +141,6 @@
     padding: 0px;
     border-radius: 7px;
     background-color: $light_gray;
-    color: $black_text_color;
     line-height: 1.5;
     position: absolute;
     top: 40px;
@@ -149,8 +148,13 @@
     right: 0;
     list-style: none;
     border: 1px solid $light_border_color;
-    li {
+    li button {
         padding: .5rem;
+        border: none;
+        width: 100%;
+        text-align: left;
+        color: $black_text_color;
+        background-color: $light_gray;
     }
 }
 

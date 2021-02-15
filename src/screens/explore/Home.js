@@ -62,15 +62,17 @@ class Home extends React.Component {
 
         if (this.state.errorMessage && !this.state.currentLocation) {
             console.log(`Error: ${this.state.errorMessage}`)
-            return <p>Share your location to explore what's nearby.</p>
+            return <p aria-live="polite" >Share your location to explore what's nearby.</p>
         }
 
         if (!this.state.errorMessage && this.state.noLocations) {
-            return <p>Looks like there aren't any photo spots nearby yet. Let's explore a different location</p>
+            return <p aria-live="polite">Looks like there aren't any photo spots nearby yet. Let's explore a different location</p>
         }
 
         if (!this.state.errorMessage && this.state.currentLocation) {
             return (
+                <>
+                <p aria-live="polite" className="sr-only">Showing nearby locations</p>
                 <TwoToThreeCols >
                     {list.map((location, id) => {
                         const { thumbnail, title } = location;
@@ -81,6 +83,7 @@ class Home extends React.Component {
 
                     })}
                 </TwoToThreeCols>
+                </>
             )
 
         }
