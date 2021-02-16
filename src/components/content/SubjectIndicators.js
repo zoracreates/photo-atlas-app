@@ -21,8 +21,6 @@ function SubjectIndicators(props) {
 
                     {subjects.includes('astro') && <li className={`astro`}>Astrophotography</li>}
 
-                    {subjects.includes('indoors') && <li className={`indoors`}>Indoors</li>}
-
                     {subjects.includes('landscape') && <li className={`landscape`}>Landscape</li>}
 
                     {subjects.includes('sunrise') && <li className={`sunrise`}>Sunrise</li>}

@@ -9,6 +9,7 @@
 @import '_cards.scss';
 @import '_buttons';
 @import '_forms.scss';
+@import '_filters.scss';
 @import '_user.scss';
 
 /* COLORS */
@@ -70,7 +71,12 @@ footer  {
   }
 }
 
-
+.sr-only {
+  font-size: 0px !important;
+  line-height: 0px !important;
+  margin: 0px !important;
+  padding: 0px !important;
+}
 
 .home-heading {
   @extend %headline3_font;
@@ -87,7 +93,6 @@ footer  {
     padding-bottom: 20px;
   }
 }
-
 
 
 p.results-status {
@@ -111,6 +116,8 @@ p.results-status {
       border-top: 1px $gray solid;
     }
 }
+
+
 
 
 .subject-indicators {
@@ -188,12 +195,6 @@ p.results-status {
 
 }
 
-.sr-only {
-  font-size: 0px;
-  line-height: 0px;
-  margin: 0px;
-  padding: 0px;
-}
 
 
 @media (min-width: 769px) {
