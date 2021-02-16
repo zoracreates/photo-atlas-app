@@ -231,8 +231,7 @@ class SubjectFilters extends React.Component {
 
     render() {
         let { 
-            open,
-            formChanged
+            open
         } = this.state;
 
         let {
