@@ -1,0 +1,74 @@
+
+  
+  .search-filter-container {
+    @extend %caption_font;
+    position: relative;
+  
+    &.open {
+      .search-filter {
+        background-color: $white;
+        color: $gray_text_color;
+      }
+    } 
+  
+    .default-button {
+      padding: .5rem;
+      margin-bottom: 0px;
+    }
+  }
+
+  .search-filter-dropdown .close-button {
+     @extend %caption_font;
+     color: $gray;
+      border: none;
+      margin-left: auto;
+      margin-right: 0px;
+      position: absolute;
+      top: 7px;
+      right: 2px;
+      background-color: transparent;
+      font-size: .5rem;
+    text-transform: uppercase;
+      &::before {
+          content: '';
+          display: block;
+          background-position: center;
+          background-repeat: no-repeat;
+          background-size: .5rem;
+          height: .5rem;
+          width: .5rem;
+          margin: auto;
+          margin-bottom: .2rem;
+          background-position: center;
+          background-image: url(../images/icons/48px/x-black.png)
+      }
+  }
+
+  .search-filter {
+    color: $white;
+    background-color: transparent;
+    border-radius: 7px;
+    border: 1px solid $white;
+    padding: .3rem .5rem;
+    line-height: 1;
+    margin-top: .5rem;
+    margin-right: .5rem;
+  }
+  
+  
+  .search-filter-dropdown {
+    position: absolute;
+    top: 28px;
+    left: 0px;
+    border: 1px solid $gray;
+    background-color: $white;
+    padding: .5rem;
+    border-radius: 7px;
+    width: 250px;
+    display: none;
+    z-index: 2;
+  }
+  
+  .open .search-filter-dropdown {
+    display: block;
+  }
