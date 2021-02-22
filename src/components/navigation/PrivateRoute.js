@@ -1,7 +1,9 @@
-import {Route, Redirect} from "react-router-dom";
+import {Route} from "react-router-dom";
 import PropTypes from 'prop-types';
+import SignIn from '../../screens/authentication/SignIn'
 
-function PrivateRoute  ({component: Component, isAuthenticated, ...rest})  {
+
+function PrivateRoute  ({component: Component, isAuthenticated, logInLocation, ...rest})  {
     return (
         <Route 
         
@@ -11,15 +13,20 @@ function PrivateRoute  ({component: Component, isAuthenticated, ...rest})  {
                 
                 isAuthenticated ? 
                 
-                    (<Component {...props}/>) :  ( <Redirect to={{ pathname: '/login', state: {from: props.location} }}/>
-                )
+                    (<Component {...props}/>) 
+                    
+                    :  
+                    
+                    ( <SignIn logInLocation={logInLocation} />)
         )}/>
 
     )
 }
 
+
 PrivateRoute.propTypes = {
-    isAuthenticated: PropTypes.bool.isRequired
+    isAuthenticated: PropTypes.bool.isRequired,
+    logInLocation: PropTypes.string
 }
 
 export default PrivateRoute;

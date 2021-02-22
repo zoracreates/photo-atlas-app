@@ -64,7 +64,7 @@ function SearchBar(props) {
                                 return (
                                     <li key={id}>
                                         <button
-                                            tabindex="0"
+                                            tabIndex="0"
 
                                             onClick={() => sendData(
                                                 //geocoding search means x = lat and y = lon https://smeijer.github.io/leaflet-geosearch/usage
