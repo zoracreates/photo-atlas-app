@@ -16,6 +16,20 @@
     background-color: transparent
 }
 
+.secondary-button {
+    @extend %button_font;
+    display: block;
+    max-width: 90%;
+    margin-top: .5rem;
+    padding: 0px;
+    border: 0px;
+    background: transparent;
+    color: $link_color;
+    font-size: 0.65rem;
+    text-transform: capitalize;
+    
+}
+
 .default-button {
     @extend %button;
     color: $light_link_color;

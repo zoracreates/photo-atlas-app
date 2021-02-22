@@ -1,6 +1,6 @@
 import {Route} from "react-router-dom";
 import PropTypes from 'prop-types';
-import SignIn from '../../screens/authentication/SignIn'
+import Authenticate from '../../screens/authentication/Authenticate'
 
 
 function PrivateRoute  ({component: Component, isAuthenticated, logInLocation, ...rest})  {
@@ -17,7 +17,7 @@ function PrivateRoute  ({component: Component, isAuthenticated, logInLocation, .
                     
                     :  
                     
-                    ( <SignIn logInLocation={logInLocation} />)
+                    ( <Authenticate logInLocation={logInLocation} />)
         )}/>
 
     )
