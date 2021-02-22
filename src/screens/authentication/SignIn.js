@@ -13,7 +13,7 @@ class SignIn extends React.Component {
     email: '',
     password: '',
     emailError: '',
-    passError:''
+    passError: ''
   }
 
 
@@ -39,15 +39,15 @@ class SignIn extends React.Component {
           firebase.auth().signInWithEmailAndPassword(email, password)
             .catch((error) => {
               var errorCode = error.code;
-              if(errorCode === "auth/too-many-requests") {
-                component.setState({passError: "Too many sign in attempts, reset password or try again later."})
+              if (errorCode === "auth/too-many-requests") {
+                component.setState({ passError: "Too many sign in attempts, reset password or try again later." })
               }
               else {
-                component.setState({passError: "Invalid password"})
+                component.setState({ passError: "Invalid password" })
               }
             });
-        } 
-        
+        }
+
         else {
           this.setState({ emailError: "Couldn't find an account with that email." })
         }
@@ -55,7 +55,7 @@ class SignIn extends React.Component {
       }
     )
 
-   
+
   }
 
   handleEmailInput(e) {
@@ -68,7 +68,7 @@ class SignIn extends React.Component {
 
   render() {
     let logInLocation = this.props.logInLocation;
-  
+
     let trips = 'trips'
     let add = 'add'
     let profile = 'profile'
@@ -92,29 +92,34 @@ class SignIn extends React.Component {
 
     return (
       <>
-        <h2>Sign In</h2>
-        <p>Create an account or log in to {text}.</p>
-        <form action={"/"} onSubmit={(e) => this.handeleSubmit(e)}>
+        <div className={`container mobile-padding`}>
+          <h2>Sign In</h2>
+          <h3 className="h5-font">Sign in to {text}.</h3>
 
-          <label className="form-component-wrapper" htmlFor="eamil" >Email</label>
-          <span className="form-component-wrapper">
-            <EmailInput autoComplete="username" id="email" value={this.state.email} onChange={(e) => this.handleEmailInput(e)} required />
-          </span>
-          <span className="form-component-wrapper">
-            {this.state.emailError && <p aria-live="polite">{this.state.emailError}</p>}
-          </span>
-          <label className="form-component-wrapper" htmlFor="pass">Password</label>
-          <span className="form-component-wrapper">
-            <PasswordInput autoComplete="current-password" id="pass" value={this.state.password} onChange={(e) => this.handlePassInput(e)} required />
-            <span className="form-component-wrapper">
-            {this.state.passError && <p aria-live="polite">{this.state.passError}</p>}
-          </span>
-          </span>
-          <span className="form-component-wrapper">
-            <SubmitButton value="Sign In" />
-          </span>
+          <form action={"/"} onSubmit={(e) => this.handeleSubmit(e)}>
 
-        </form>
+            <div className="form-component-wrapper">
+              <label htmlFor="eamil" >Email</label>
+              <EmailInput autoComplete="username" id="email" value={this.state.email} onChange={(e) => this.handleEmailInput(e)} required />
+              {this.state.emailError && <p className="error-font" aria-live="polite">{this.state.emailError}</p>}
+            </div>
+
+            <div className="form-component-wrapper">
+              <label htmlFor="pass">Password</label>
+              <PasswordInput autoComplete="current-password" id="pass" value={this.state.password} onChange={(e) => this.handlePassInput(e)} required />
+              {this.state.passError && <p className="error-font" aria-live="polite">{this.state.passError}</p>}
+            </div>
+
+            <div className="form-component-wrapper">
+              <SubmitButton value="Sign In" />
+            </div>
+
+            <div className="form-component-wrapper">
+              <button className="button-link">Create an Account</button>
+            </div>
+
+          </form>
+        </div>
       </>
     )
 

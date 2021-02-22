@@ -12,6 +12,8 @@
 
 .button-link {
     @extend %button_font;
+    border: none;
+    background-color: transparent
 }
 
 .default-button {

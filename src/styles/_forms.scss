@@ -5,11 +5,17 @@
     border: 1px solid $gray;
     background-color: $light_gray;
     color: $black_text_color;
+    min-width: 300px;
 }
 
 /* block wrapper */ 
 
 .form-component-wrapper {
+    display: block;
+    margin: 1rem 0px;
+}
+
+.form-component-wrapper label{
     display: block;
 }
 
@@ -24,6 +30,15 @@
 
 .back-search-label {
     padding-left: 62px;
+}
+
+
+input[type="search"].text-bar {
+    min-width: 230px;
+}
+
+.back-search input[type="search"].text-bar {
+    min-width: 180px;
 }
 
 @media (min-width: 769px) {
@@ -58,9 +73,10 @@
         border-right: none;
     }
 
-    input[type="search"]{
+    input[type="search"] {
         width: 180px;
         max-width: 55vw;
+        min-width: none;
     }
 
     @media (min-width: 769px) {

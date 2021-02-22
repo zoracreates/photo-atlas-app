@@ -119,6 +119,8 @@ h1,
 h2,
 .h2-font {
     @extend %headline2_font;
+    margin-bottom: 1rem;
+    margin-top: 1rem;
 }
 
 h3,
@@ -135,6 +137,7 @@ h4,
 h5,
 .h5-font {
     @extend %headline5_font;
+    margin-bottom: .83em;
 }
 
 h6,
@@ -144,6 +147,14 @@ h6,
 
 .caption-font {
     @extend %caption_font;
+}
+
+p.error-font,
+.error-font {
+    color: $alert_color;
+    font-weight: bold;
+    margin-top: 1rem;
+    
 }
 
 p.meta-data:not(:first-child) {
