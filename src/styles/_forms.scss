@@ -1,12 +1,14 @@
 /* Text Input Bars */
 .text-bar  {
     @extend %body2_font;
-    border-radius: 7px;
+    border-radius: 0px;
     border: 1px solid $gray;
     background-color: $light_gray;
     color: $black_text_color;
     min-width: 300px;
 }
+
+
 
 /* block wrapper */ 
 
@@ -57,16 +59,6 @@ input[type="search"].text-bar {
         .search-back-buttton {
             display: none;
         }
-
-        .text-bar {
-            border-radius: 7px 0px 0px 7px;
-        }
-    }
-
-    &.back-search {        
-        .text-bar {
-            border-radius: 0px;
-        }
     }
 
     .text-bar {
@@ -89,10 +81,6 @@ input[type="search"].text-bar {
             display: none;
         }
 
-        &.back-search .text-bar {
-            border-radius: 7px 0px 0px 7px;
-        }
-
     }
 
     [type="search"] {
@@ -113,7 +101,7 @@ input[type="search"].text-bar {
 }
 
 .search-button {
-    border-radius: 0px 7px 7px 0px;
+    border-radius: 0px;
     background-color: $light_gray;
     border: 1px solid $gray;
     overflow: hidden;
@@ -128,7 +116,7 @@ input[type="search"].text-bar {
 }
 
 .search-back-buttton {
-    border-radius: 7px 0px 0px 7px;
+    border-radius: 0px;
     border: 1px solid $gray;
     border-right: none;
     @extend %body2_font;
@@ -163,7 +151,7 @@ input[type="search"].text-bar {
     z-index: 1001;
     margin: 0px;
     padding: 0px;
-    border-radius: 7px;
+    border-radius: 0px;
     background-color: $light_gray;
     line-height: 1.5;
     position: absolute;

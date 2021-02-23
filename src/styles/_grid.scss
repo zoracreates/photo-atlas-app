@@ -51,6 +51,9 @@ header {
 
 
 
+.form-grid {
+    max-width: 650px;
+}
 
 .gird-70-30,
 .grid-2_3,
@@ -91,7 +94,8 @@ header {
 
 .grid-1_3 > *,
 .grid-2_3  > *,
-.grid-1_2 > * {
+.grid-1_2 > *,
+.form-grid > * {
     margin-top: 2%;
 }
 
@@ -140,6 +144,7 @@ header {
 
     .grid-1_3,
     .grid-1_2,
+    .form-grid,
     .grid-2_3, 
     .grid-map,
     .grid-scroll {
@@ -160,6 +165,7 @@ header {
     }
 
     .grid-1_2 > *,
+    .form-grid > *,
     .grid-map > * {
         flex-basis: 48%;
     }

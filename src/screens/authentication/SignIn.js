@@ -17,7 +17,7 @@ function SignIn(props) {
         <form action={"/"} onSubmit={(e) => props.handeleSubmit(e)}>
 
           <div className="form-component-wrapper">
-            <label htmlFor="eamil">Email</label>
+            <label htmlFor="email">Email</label>
             <EmailInput autoComplete="username" id="email" value={props.email} onChange={(e) => props.handleEmailInput(e)} required />
             {props.emailError && <p className="error-font" aria-live="polite">{props.emailError}</p>}
           </div>
@@ -29,11 +29,7 @@ function SignIn(props) {
           </div>
 
           <div className="form-component-wrapper">
-            <SubmitButton value="Sign In" />
-          </div>
-
-          <div className="form-component-wrapper">
-            <button className="button-link">Create an Account</button>
+            <SubmitButton value={`${props.loading ? 'Signing In...' : 'Sign In'}`} />
           </div>
 
         </form>

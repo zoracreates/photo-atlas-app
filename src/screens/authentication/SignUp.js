@@ -1,134 +1,97 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import firebase from '../../utils/firebase/firebaseConfig'
 import EmailInput from '../../components/forms/EmailInput'
+import TextInput from '../../components/forms/TextInput'
 import PasswordInput from '../../components/forms/PasswordInput'
 import SubmitButton from '../../components/forms/SubmitButton'
 
 
 
-class SignUp extends React.Component {
+function SignUp(props) {
 
-  state = {
-    email: '',
-    password: '',
-    emailError: '',
-    passError: ''
-  }
+  return (
+    <>
+      <div className={`container mobile-padding`}>
+        <h2>Sign Up</h2>
+        <h3 className="h5-font">Create an account to {props.introtext}.</h3>
 
-
-
-  handeleSubmit(e) {
-
-    e.preventDefault();
-    this.setState({
-      emailError: '',
-      passError: ''
-    })
+        <form action={"/"} onSubmit={(e) => props.handeleSubmit(e)}>
 
 
-    let email = this.state.email;
-    let password = this.state.password;
-    let component = this;
+
+          <div className="form-component-wrapper">
+            <label htmlFor="firstname">Name</label>
+            <TextInput autoComplete="name" id="firstname" value={props.firstname} onChange={(e) => props.handleNameInput(e)} required />
+            {props.nameError && <p className="error-font" aria-live="polite">{props.nameError}</p>}
+          </div>
+
+          <div className="form-component-wrapper">
+            <label htmlFor="lastname">Last Name <span>(Optional)</span></label>
+            <TextInput autoComplete="lastname" id="lastname" value={props.lastname} onChange={(e) => props.handleLastnameInput(e)} />
+            {props.lastnameError && <p className="error-font" aria-live="polite">{props.lastnameError}</p>}
+          </div>
 
 
-    firebase.auth().fetchSignInMethodsForEmail(email).then(
-      signInMethods => {
-        if (signInMethods.indexOf(firebase.auth.EmailAuthProvider.EMAIL_PASSWORD_SIGN_IN_METHOD) !== -1) {
-
-          firebase.auth().signInWithEmailAndPassword(email, password)
-            .catch((error) => {
-              var errorCode = error.code;
-              if (errorCode === "auth/too-many-requests") {
-                component.setState({ passError: "Too many sign in attempts, reset password or try again later." })
-              }
-              else {
-                component.setState({ passError: "Invalid password" })
-              }
-            });
-        }
-
-        else {
-          this.setState({ emailError: "Couldn't find an account with that email." })
-        }
-
-      }
-    )
+          <div className="form-component-wrapper">
+            <label htmlFor="email">Email</label>
+            <EmailInput autoComplete="username" id="email" value={props.email} onChange={(e) => props.handleEmailInput(e)} required />
+            {props.emailError && <p className="error-font" aria-live="polite">{props.emailError}</p>}
+          </div>
 
 
-  }
 
-  handleEmailInput(e) {
-    this.setState({ email: e.target.value })
-  }
-
-  handlePassInput(e) {
-    this.setState({ password: e.target.value })
-  }
-
-  render() {
-    let logInLocation = this.props.logInLocation;
-
-    let trips = 'trips'
-    let add = 'add'
-    let profile = 'profile'
+          <div className="form-component-wrapper">
+            <label htmlFor="pass">Password (5 character minimum)</label>
+            <PasswordInput autoComplete="current-password" id="pass" value={props.password} onChange={(e) => props.handlePassInput(e)} required />
+            {props.passError && <p className="error-font" aria-live="polite">{props.passError}</p>}
+          </div>
 
 
-    let text;
+          <div className="form-component-wrapper">
+            <label htmlFor="confirm-pass">Confirm Password</label>
+            <PasswordInput autoComplete="current-password" id="confirm-pass" value={props.confirmPassword} onChange={(e) => props.handleConfirmPassInput(e)} required />
+            {props.confirmPassError && <p className="error-font" aria-live="polite">{props.confirmPassError}</p>}
+          </div>
 
-    switch (logInLocation) {
-      case trips:
-        text = "view your trips"
-        break;
-      case add:
-        text = "add a location"
-        break;
-      case profile:
-        text = "view your profile information"
-        break;
-      default:
-        text = "continue your PhotoAtlas journey"
-    }
+          <div className="form-component-wrapper">
+            <SubmitButton value={`${props.loading ? 'Creating Account...' : 'Create Account'}`} />
+          </div>
 
-    return (
-      <>
-        <div className={`container mobile-padding`}>
-          <h2>Sign In</h2>
-          <h3 className="h5-font">Sign in to {text}.</h3>
-
-          <form action={"/"} onSubmit={(e) => this.handeleSubmit(e)}>
-
-            <div className="form-component-wrapper">
-              <label htmlFor="eamil" >Email</label>
-              <EmailInput autoComplete="username" id="email" value={this.state.email} onChange={(e) => this.handleEmailInput(e)} required />
-              {this.state.emailError && <p className="error-font" aria-live="polite">{this.state.emailError}</p>}
-            </div>
-
-            <div className="form-component-wrapper">
-              <label htmlFor="pass">Password</label>
-              <PasswordInput autoComplete="current-password" id="pass" value={this.state.password} onChange={(e) => this.handlePassInput(e)} required />
-              {this.state.passError && <p className="error-font" aria-live="polite">{this.state.passError}</p>}
-            </div>
-
-            <div className="form-component-wrapper">
-              <SubmitButton value="Sign In" />
-            </div>
-
-            <div className="form-component-wrapper">
-              <button className="button-link">Create an Account</button>
-            </div>
-
-          </form>
-        </div>
-      </>
-    )
-
-  }
+        </form>
+      </div>
+    </>
+  )
 
 }
 
+
+
 SignUp.propTypes = {
-  logInLocation: PropTypes.string
+  introtext: PropTypes.string,
+  handeleSubmit: PropTypes.func,
+
+  name: PropTypes.string,
+  handleNameInput: PropTypes.func,
+  nameError: PropTypes.string,
+
+
+  lastname: PropTypes.string,
+  handleLastnameInput: PropTypes.func,
+  lastnameError: PropTypes.string,
+
+  email: PropTypes.string,
+  handleEmailInput: PropTypes.func,
+  emailError: PropTypes.string,
+
+  password: PropTypes.string,
+  handlePassInput: PropTypes.func,
+  passError: PropTypes.string,
+
+  confirmPassword: PropTypes.string,
+  handleConfirmPassInput: PropTypes.func,
+  confirmPassError: PropTypes.string
+
+
 }
 
 
