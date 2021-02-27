@@ -13,7 +13,8 @@
 .button-link {
     @extend %button_font;
     border: none;
-    background-color: transparent
+    background-color: transparent;
+    padding: 0px;
 }
 
 .secondary-button {
@@ -27,6 +28,10 @@
     color: $link_color;
     font-size: 0.65rem;
     text-transform: capitalize;
+
+    &.back-button {
+        margin-top: 3rem;
+    }
     
 }
 

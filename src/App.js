@@ -18,7 +18,8 @@ import './styles/main.scss';
 class App extends React.Component {
 
   state = {
-    signedIn: false
+    signedIn: false,
+    userVerified: false,
   }
 
 
@@ -26,7 +27,10 @@ class App extends React.Component {
   componentDidMount () {
     firebase.auth().onAuthStateChanged(user => {
       if(user) {
-        this.setState({ signedIn: true });
+        this.setState({ 
+          signedIn: true,
+          userVerified: user.emailVerified,
+        });
       } else {
         this.setState({ signedIn: false });
       }
@@ -36,13 +40,12 @@ class App extends React.Component {
 
   render() {
 
-    let { signedIn } = this.state;
+    let { signedIn, userVerified } = this.state;
 
     return (
       <>
 
         <Navbar />
-
         <main>
 
           <Switch>
@@ -50,11 +53,11 @@ class App extends React.Component {
             
             <Route path="/explore" component={SearchResults} />
            
-            <PrivateRoute path="/trips" component={Trips} isAuthenticated={signedIn} logInLocation={"trips"} />
+            <PrivateRoute path="/trips" component={Trips} isAuthenticated={signedIn} isVerified={userVerified} logInLocation={"trips"} />
             
-            <PrivateRoute path="/add" component={AddLocation} isAuthenticated={signedIn} logInLocation={"add"}/>
+            <PrivateRoute path="/add" component={AddLocation} isAuthenticated={signedIn} isVerified={userVerified} logInLocation={"add"}/>
             
-            <PrivateRoute path="/profile" component={Profile} isAuthenticated={signedIn} logInLocation={"profile"}/>
+            <PrivateRoute path="/profile" component={Profile} isAuthenticated={signedIn} isVerified={userVerified} logInLocation={"profile"}/>
             
           
           </Switch>

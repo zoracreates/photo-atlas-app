@@ -10,6 +10,7 @@ import SignUp from './SignUp'
 class Authenticate extends React.Component {
 
     state = {
+        newUser: false,
         firstname: '',
         lastname: '',
         email: '',
@@ -44,13 +45,18 @@ class Authenticate extends React.Component {
 
                     firebase.auth().signInWithEmailAndPassword(email, password)
                         .catch((error) => {
-                            var errorCode = error.code;
+                            let errorCode = error.code;
+                            let errorMessage = error.message;
                             if (errorCode === "auth/too-many-requests") {
                                 component.setState({ passError: "Too many sign in attempts, reset password or try again later." })
                             }
-                            else {
+                            else if (errorCode === "auth/wrong-password") {
                                 component.setState({ passError: "Invalid password" })
                             }
+                            else {
+                                component.setState({ passError: errorMessage })
+                            }
+
                         });
                 }
 
@@ -61,7 +67,7 @@ class Authenticate extends React.Component {
             }
         )
 
-        this.setState({loading: false})
+        this.setState({ loading: false })
 
     }
 
@@ -77,7 +83,7 @@ class Authenticate extends React.Component {
             nameError: '',
             lastnameError: '',
             loading: true
-            })
+        })
 
 
         let email = this.state.email;
@@ -121,8 +127,8 @@ class Authenticate extends React.Component {
                     }
 
                     //check that passworrd is longer than 5 characters
-                    if (password.length < 5) {
-                        component.setState({ passError: "Passowrd must be at least 5 characters long." })
+                    if (password.length < 6) {
+                        component.setState({ passError: "Passowrd must be at least 6 characters long." })
                     }
 
                     //check that passwords match
@@ -133,23 +139,51 @@ class Authenticate extends React.Component {
                     //check that there are no errors
                     if (!this.state.emailError && !this.state.confirmPassError && !this.state.nameError && !this.state.passError) {
                         //create account
+                        let displayName = firstname;
 
-                        /* firebase.auth().METHOD()
+                        if(firstname && lastname) {
+                            displayName = `${firstname} ${lastname}`
+                        }   
+
+                        firebase.auth().createUserWithEmailAndPassword(email, password).then(userCredential => {
+                            var user = userCredential.user;
+                            user.updateProfile({
+                                displayName: displayName,
+                              }).then(function() {
+                                console.log("success")
+                              }).catch(function(error) {
+                                console.log(error)
+                              });
+                        }
+
+                        )
                             .catch((error) => {
-                                let errorCode = error.code;
-                                let errorMessage = error.errorMessage;
-                                console.log(`${errorCode} ${errorMessage}`) 
-                            });*/
+                                var errorCode = error.code;
+                                var errorMessage = error.message;
+
+                                if (errorCode === "auth/email-already-in-use") {
+                                    this.setState({ emailError: "An account exist with that email." })
+                                }
+
+                                if (errorCode === "auth/invalid-email") {
+                                    this.setState({ emailError: "Please use a valid email address" })
+                                }
+
+                                if (errorCode === "auth/operation-not-allowed") {
+                                    this.setState({ emailError: errorMessage })
+                                }
+
+                                if (errorCode === "auth/weak-password") {
+                                    component.setState({ passError: "Passowrd must be at least 6 characters long." })
+                                }
+                            });
                     }
-
-
-
 
                 }
 
             }
         )
-            this.setState({loading: false})
+        this.setState({ loading: false })
 
     }
 
@@ -174,9 +208,13 @@ class Authenticate extends React.Component {
     }
 
 
-    /*CREATE MISSING ONCHANGE HANDLERS*/
+    changeUserType() {
+        this.setState({newUser: !this.state.newUser})
+    }
 
-    render() {
+
+    renderContent(newUser) {
+
         let logInLocation = this.props.logInLocation;
 
         let trips = 'trips'
@@ -200,48 +238,69 @@ class Authenticate extends React.Component {
                 text = "continue your PhotoAtlas journey"
         }
 
+        if (newUser) {
+            return (
+                <>
+                    <SignUp
+                        introtext={text}
+                        handeleSubmit={(e) => this.handeleCreateAccount(e)}
+                        email={this.state.email}
+                        handleEmailInput={(e) => this.handleEmailInput(e)}
+                        emailError={this.state.emailError}
+                        password={this.state.password}
+                        handlePassInput={(e) => this.handlePassInput(e)}
+                        passError={this.state.passError}
+                        loading={this.state.loading}
+
+                        firstname={this.state.firstname}
+                        nameError={this.state.nameError}
+                        handleNameInput={(e) => this.handleNameInput(e)}
+
+                        lastname={this.state.lastname}
+                        lastnameError={this.state.lastnameError}
+                        handleLastnameInput={(e) => this.handleLastnameInput(e)}
+
+                        confirmPassword={this.state.confirmPassword}
+                        confirmPassError={this.state.confirmPassError}
+                        handleConfirmPassInput={(e) => this.handleConfirmPassInput(e)}
+                    />
+                </>
+            )
+        }
+        else {
+            return (
+                <>
+                    <SignIn
+                        introtext={text}
+                        handeleSubmit={(e) => this.handeleSignIn(e)}
+                        email={this.state.email}
+                        handleEmailInput={(e) => this.handleEmailInput(e)}
+                        emailError={this.state.emailError}
+                        password={this.state.password}
+                        handlePassInput={(e) => this.handlePassInput(e)}
+                        passError={this.state.passError}
+                        loading={this.state.loading}
+                    />
+                </>
+            )
+        }
+    }
+
+
+    render() {
+
+        let {newUser} = this.state;
+
         return (
             <>
-                {/* <SignIn
-                    introtext={text}
-                    handeleSubmit={(e) => this.handeleSignIn(e)}
-                    email={this.state.email}
-                    handleEmailInput={(e) => this.handleEmailInput(e)}
-                    emailError={this.state.emailError}
-                    password={this.state.password}
-                    handlePassInput={(e) => this.handlePassInput(e)}
-                    passError={this.state.passError}
-                    loading={this.state.loading}
-                /> */}
 
-                <SignUp
-                    introtext={text}
-                    handeleSubmit={(e) => this.handeleCreateAccount(e)}
-                    email={this.state.email}
-                    handleEmailInput={(e) => this.handleEmailInput(e)}
-                    emailError={this.state.emailError}
-                    password={this.state.password}
-                    handlePassInput={(e) => this.handlePassInput(e)}
-                    passError={this.state.passError}
-                    loading={this.state.loading}
+                {this.renderContent(newUser)}
 
-                    firstname={this.state.firstname}
-                    nameError={this.state.nameError}
-                    handleNameInput={(e) => this.handleNameInput(e)}
-
-                    lastname={this.state.lastname}
-                    lastnameError={this.state.lastnameError}
-                    handleLastnameInput={(e) => this.handleLastnameInput(e)}
-
-                    confirmPassword={this.state.confirmPassword}
-                    confirmPassError={this.state.confirmPassError}
-                    handleConfirmPassInput={(e) => this.handleConfirmPassInput(e)}
-                />
-                {/* 
                 <div className="container mobile-padding">
-                    <button className="button-link">Sign In</button>
-                    <button className="button-link">Create Account</button>
-                </div> */}
+                    <button className="button-link" onClick={()=>this.changeUserType()}>
+                       {newUser ? "Sign In" : "Create Account"} 
+                    </button>
+                </div>
             </>
 
         )

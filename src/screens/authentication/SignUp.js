@@ -69,29 +69,21 @@ function SignUp(props) {
 SignUp.propTypes = {
   introtext: PropTypes.string,
   handeleSubmit: PropTypes.func,
-
   name: PropTypes.string,
   handleNameInput: PropTypes.func,
   nameError: PropTypes.string,
-
-
   lastname: PropTypes.string,
   handleLastnameInput: PropTypes.func,
   lastnameError: PropTypes.string,
-
   email: PropTypes.string,
   handleEmailInput: PropTypes.func,
   emailError: PropTypes.string,
-
   password: PropTypes.string,
   handlePassInput: PropTypes.func,
   passError: PropTypes.string,
-
   confirmPassword: PropTypes.string,
   handleConfirmPassInput: PropTypes.func,
   confirmPassError: PropTypes.string
-
-
 }
 
 
