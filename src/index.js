@@ -4,7 +4,7 @@ import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 
 
-let checkAuthStatus = () => { return true}
+
 
 
 
@@ -12,7 +12,7 @@ let checkAuthStatus = () => { return true}
 ReactDOM.render(
   <React.StrictMode>
      <BrowserRouter>
-         <App userAuth={checkAuthStatus()} />  
+         <App />  
     </BrowserRouter>    
   </React.StrictMode>,
   document.getElementById('root')

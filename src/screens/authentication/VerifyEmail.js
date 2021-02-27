@@ -1,0 +1,95 @@
+import React from 'react'
+import PropTypes from 'prop-types';
+import firebase from '../../utils/firebase/firebaseConfig'
+
+
+class VerifyEmail extends React.Component {
+
+    state = {
+        error: null
+    }
+
+    componentDidMount() {
+
+        let user = firebase.auth().currentUser;
+        let component = this;
+        let location = this.props.logInLocation;
+        let locationUrl = "http://localhost:3000/"
+
+        if (location) {
+            locationUrl = `http://localhost:3000/${this.props.logInLocation}`;
+        }
+
+        let actionCodeSettings = {
+            url: `${locationUrl}`,
+        };
+
+        if (user) {
+
+
+            user.sendEmailVerification(actionCodeSettings)
+                .catch(function (error) {
+                    component.setState({ error: `${error}` })
+                });
+
+        }
+
+    }
+
+    renderContent() {
+        if (!this.state.error) {
+            return (
+                <>
+                    <h2 className="h4-font">Just one more step</h2>
+                    <p>
+                        We've sent a verification link to your email.<br />
+                        Please check your inbox to verify your account.
+                    </p>
+
+                    <h3 className="h6-font">
+                        Need a new link?
+                    </h3>
+
+                    <button className="button-link">Re-Send Link</button>
+
+                </>
+
+            )
+        }
+        else {
+            return (
+                <>
+                    <h2 className="h4-font">Sorry, there was a problem</h2>
+                    <p className="error-font">{this.state.error}</p>
+                    <p>
+                        Please contact support at photoatlasapp@gmail.com.
+                </p>
+                </>
+            )
+        }
+    }
+
+    render() {
+        return (
+            <>
+                <div className={`container mobile-padding`}>
+                    {this.renderContent()}
+                    <button className="secondary-button back-button"
+                        onClick={
+                            () => {
+                                firebase.auth().signOut()
+                            }
+                        }>
+                        Back to Sign In
+                    </button>
+                </div>
+            </>
+        )
+    }
+}
+
+VerifyEmail.propTypes = {
+    logInLocation: PropTypes.string
+}
+
+export default VerifyEmail;

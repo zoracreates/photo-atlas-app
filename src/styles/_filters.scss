@@ -47,7 +47,6 @@
   .search-filter {
     color: $white;
     background-color: transparent;
-    border-radius: 7px;
     border: 1px solid $white;
     padding: .3rem .5rem;
     line-height: 1;
@@ -58,12 +57,11 @@
   
   .search-filter-dropdown {
     position: absolute;
-    top: 28px;
+    top: 22px;
     left: 0px;
     border: 1px solid $gray;
     background-color: $white;
     padding: .5rem;
-    border-radius: 7px;
     width: 250px;
     display: none;
     z-index: 2;
