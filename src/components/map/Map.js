@@ -46,7 +46,7 @@ function Map(props) {
 
 
             {locations.map((location, id) => {
-                const { thumbnail, title, destination } = location;
+                const { thumbnail, title, destination, locationId, src } = location;
 
                 let lat = destination.latitude;
                 let lon = destination.longitude;
@@ -56,6 +56,8 @@ function Map(props) {
                         <MapPopup 
                             thumbnail={thumbnail}
                             title={title}
+                            locationId={locationId}
+                            src={src}
                              />
                     </Marker>
                 )

@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import GoogleCalculateDistance from '../../utils/GoogleCalculateDistance';
+import { Link } from 'react-router-dom'
 
 class LocationCard extends React.Component {
 
@@ -14,7 +15,9 @@ class LocationCard extends React.Component {
             title,
             saves,
             origin,
-            destination } = this.props;
+            destination,
+            src,
+            locationId } = this.props;
         
         let {distance} = this.state;
 
@@ -38,7 +41,8 @@ class LocationCard extends React.Component {
         }
 
         return (
-            <div className={`location-card`}>
+            <Link className={`location-card`} to={ `/location/${src}-${locationId}`}>
+
                 <GoogleCalculateDistance 
                     destination={destination}
                     origin={origin}
@@ -59,7 +63,7 @@ class LocationCard extends React.Component {
 
                             if(distance) {
                                 distance = distance.text
-                                this.setState({distance: distance}) //could set a call back here that once changed, send to parent
+                                this.setState({distance: distance}) 
                             }
                             
                         }
@@ -74,7 +78,8 @@ class LocationCard extends React.Component {
                     <p className={`meta-data saved`}>Saved by: {saves} {(saves > 1 || saves < 1) ? 'photographers' : 'photographer'}</p>
                     {distance && <p className={`meta-data distance`}>Driving distance: {distance}</p>}
                 </div>
-            </div>
+
+            </Link>
         )
 
     }
@@ -86,7 +91,9 @@ LocationCard.propTypes = {
     title: PropTypes.string,
     saves: PropTypes.number,
     destination: PropTypes.object,
-    origin: PropTypes.object
+    origin: PropTypes.object,
+    src: PropTypes.string,
+    locationId: PropTypes.string
 }
 
 

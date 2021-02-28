@@ -62,17 +62,18 @@
         @extend %caption_font;
         max-width: 100%;
         margin-top: .5rem;
+        text-decoration: none;
+        color: $gray;
         &::after {
             content: '';
             background-image: url(../images/icons/48px/chevron-gray.png);
             display: inline-block;
-            background-position: bottom center;
+            background-position: center 107%;
             height:0.9375rem; 
             width: 0.9375rem; 
-            background-size:  0.62rem;
+            background-size:  0.55rem;
             background-repeat: no-repeat;
             margin-right: 7px;
-            // margin-bottom: -5px;
         }
 
         @media (min-width: 769px) {

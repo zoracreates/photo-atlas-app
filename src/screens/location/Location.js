@@ -16,7 +16,7 @@ function Location(props) {
 
     return (
         <div className={`container location mobile-padding`}>
-            <PhotoSlider imageList={imageList} />
+           {imageList &&  <PhotoSlider imageList={imageList} /> }
 
             <h2 className={`title`}>{title}</h2>
             <div className={`gird-70-30`}>
@@ -38,7 +38,7 @@ function Location(props) {
 }
 
 Location.propTypes = {
-    imageList: PropTypes.arrayOf(PropTypes.object).isRequired,
+    imageList: PropTypes.arrayOf(PropTypes.object),
     title: PropTypes.string,
     saves: PropTypes.number,
     distance: PropTypes.number,

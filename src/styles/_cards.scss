@@ -1,3 +1,10 @@
+a {
+    &.location-card,
+    &.title-card{
+        text-decoration: none;
+    }
+}
+
 .location-card {
     margin: 2% auto;
     background-color: $white;
@@ -34,6 +41,7 @@
     .title {
         @extend %subtitle1_font;
         margin-bottom: .75rem;
+        color: $gray;
 
         + .meta-data {
             margin: .25rem 0px;
