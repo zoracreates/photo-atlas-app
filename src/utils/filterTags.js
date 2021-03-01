@@ -11,7 +11,7 @@
     peopleTags: 'people, portrait',
     urbanTags: 'urban, cityscape, skyline, city',
     waterTags: 'water, lake, river, ocean, waterfall',
-    natureTags: 'trees, flowers, grass, animals, forest, garden',
+    natureTags: 'trees, tree, flower, nature, foliage, leaves, flowers, grass, animals, forest, garden',
     streetArtTags: 'graffiti, mural, sreet art'
 }
 
