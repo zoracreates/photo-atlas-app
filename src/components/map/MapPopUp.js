@@ -1,11 +1,15 @@
 import PropTypes from 'prop-types';
 import { Popup } from 'react-leaflet';
+import { Link } from 'react-router-dom'
 
 function MapPopup(props) {
 
     let {
         thumbnail,
-        title } = props;
+        title,
+        src,
+        locationId,
+        woeId } = props;
 
     if (!title) {
         title = "Unamed Location"
@@ -25,10 +29,11 @@ function MapPopup(props) {
     return (
         <Popup>
             <div className={"map-popup"}>
+
                 <div className={"location-popup-image"}>
                     <img src={thumbnail} alt="" />
                 </div>
-                <p className={`title`}>{title}</p>
+                <Link to={ `/location/${src}-${locationId}?woe=${woeId}`} className={`title`}>{title}</Link>
 
             </div>
         </Popup>
@@ -38,8 +43,9 @@ function MapPopup(props) {
 MapPopup.propTypes = {
     thumbnail: PropTypes.string,
     title: PropTypes.string,
-    saves: PropTypes.number,
-    distance: PropTypes.number
+    src: PropTypes.string,
+    locationId: PropTypes.string,
+    woeId: PropTypes.string
 }
 
 

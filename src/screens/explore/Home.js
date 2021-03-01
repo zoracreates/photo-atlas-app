@@ -75,10 +75,17 @@ class Home extends React.Component {
                 <p aria-live="polite" className="sr-only">Showing nearby locations</p>
                 <TwoToThreeCols >
                     {list.map((location, id) => {
-                        const { thumbnail, title } = location;
+                        const { thumbnail, title, src, locationId, woeId } = location;
                         return (
                             //make these into links where the search param should be the photo id
-                            <TitleCard key={id} thumbnail={thumbnail} title={title} />
+                            <TitleCard 
+                                key={id} 
+                                thumbnail={thumbnail} 
+                                title={title} 
+                                src={src}
+                                locationId={locationId}
+                                woeId={woeId}
+                            />
                         )
 
                     })}
@@ -103,8 +110,13 @@ class Home extends React.Component {
                 "lat": currentLat,
                 "lon": currentLon,
                 "accuracy": 6,
-                "extras": "geo"
+                "extras": "geo, tags"
             }
+
+            //create a list of locations
+            let existingLocations = [];
+
+            let list = [];
 
             getFlickrPhotos(options).then(data => {
 
@@ -113,10 +125,6 @@ class Home extends React.Component {
                 }
 
                 let photos = data.photos.photo;
-
-                let existingLocations = []
-
-                let list = [];
 
                 if (!photos[0]) {
                     this.setState({ noLocations: true })
@@ -134,13 +142,21 @@ class Home extends React.Component {
 
                             let woeId = photo.woeid;
 
-                            if (woeId && !existingLocations.includes(woeId)) {
+                            let locationId = photo.id; 
+
+                            let tags = photo.tags;
+                            
+                            //prevent duplicate locations and locations with no tags
+                            if (woeId && !existingLocations.includes(woeId) && tags) {
 
                                 existingLocations.push(woeId);
 
                                 let location = {
+                                    "src": "flickr",
+                                    "locationId" : locationId, 
                                     "thumbnail": url,
                                     "title": title,
+                                    "woeId" : woeId
                                 }
 
                                 let place = async (options) => {
@@ -191,7 +207,6 @@ class Home extends React.Component {
             position => this.setState({ currentLocation: position.coords }, () => { this.getNearbyLocations() }),
             err => this.setState({ errorMessage: err.message })
         )
-
     }
 
     componentWillUnmount() {

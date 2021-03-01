@@ -1,9 +1,13 @@
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom'
 
 function TitleCard(props) {
     let {
         thumbnail,
-        title } = props;
+        title,
+        src,
+        locationId,
+        woeId } = props;
 
     if (!title) {
         title = "Unamed Location"
@@ -21,20 +25,22 @@ function TitleCard(props) {
     }
 
     return (
-        <div className={`title-card`}>
+        <Link className={`title-card`} to={ `/location/${src}-${locationId}?woe=${woeId}`}>
             <div className={`title-card-image`}>
                 <img src={thumbnail} alt="" />
             </div>
 
-            <p className={`title`}>{title}</p>
-
-        </div>
+            <p className={`title`}>{title}</p> 
+        </Link>
     )
 }
 
 TitleCard.propTypes = {
     thumbnail: PropTypes.string,
-    title: PropTypes.string
+    title: PropTypes.string,
+    src: PropTypes.string,
+    locationId: PropTypes.string,
+    woeId: PropTypes.string
 }
 
 

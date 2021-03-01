@@ -26,7 +26,7 @@ class SearchResults extends React.Component {
 
     _isMounted = false;
 
-    getSearchReults = (lat, lon, tags) => {
+    getSearchResults = (lat, lon, tags) => {
 
         let searchLat = lat;
 
@@ -39,9 +39,19 @@ class SearchResults extends React.Component {
             "accuracy": 6
         }
 
-        if(tags) {
+        if (tags) {
             options.tags = tags
         }
+
+        //create a list of locations
+        let existingLocations = [1];
+
+        let list = [];
+
+
+        //get from firebase
+        //in firebase I need to store the photo.id and the photo.woeid
+
 
         getFlickrPhotos(options).then(data => {
 
@@ -60,10 +70,6 @@ class SearchResults extends React.Component {
 
                 photos = photos.photo
 
-                let existingLocations = []
-
-                let list = [];
-
 
                 photos.forEach(
 
@@ -79,26 +85,36 @@ class SearchResults extends React.Component {
 
                         let woeId = photo.woeid;
 
+                        let locationId = photo.id;
 
-                        if (woeId && !existingLocations.includes(woeId)) { //in location view use woeid to search for other photos
+                        let tags = photo.tags;
 
-                            let currentLat;
-                            let currentLon;
+
+                        // prevent duplicate locations, and locations with no tags
+                        if (woeId && !existingLocations.includes(woeId) && tags ) {
+
+                            let currentLat = 0;
+                            let currentLon = 0;
 
                             if (this.state.currentLocation) {
                                 currentLat = this.state.currentLocation.latitude;
                                 currentLon = this.state.currentLocation.longitude
                             }
 
+                            
+                            //add photo locations to existing list
                             existingLocations.push(woeId);
 
                             let location = {
+                                "src": "flickr", //added,
+                                "locationId": locationId,
+                                "woeId" : woeId,
                                 "thumbnail": url,
                                 "title": title,
                                 "saves": 0,
                                 "origin": {
-                                    "latitude": currentLat,
-                                    "longitude": currentLon
+                                    "latitude": parseFloat(currentLat),
+                                    "longitude": parseFloat(currentLon)
                                 },
                                 "destination": {
                                     "latitude": parseFloat(lat),
@@ -106,6 +122,7 @@ class SearchResults extends React.Component {
                                 }
                             }
 
+    
                             let place = async (options) => {
                                 let placeName = await getFlickrPlace(options);
                                 return placeName
@@ -175,16 +192,16 @@ class SearchResults extends React.Component {
 
             let suggestion;
 
-            if(this.state.searchBarSuggestions) {
+            if (this.state.searchBarSuggestions) {
                 suggestion = this.state.searchBarSuggestions[0];
             } else {
                 suggestion = {
-                    "label" : this.state.query,
+                    "label": this.state.query,
                     "y": this.state.mapLat,
                     "x": this.state.mapLon
                 }
             }
-            
+
 
             this.setState({ query: suggestion.label, searchBarSuggestions: '' });
 
@@ -200,7 +217,7 @@ class SearchResults extends React.Component {
 
             getCurrentLocation(
                 (position) => this.setState({ currentLocation: position.coords },
-                () => this.getSearchReults(lat, lon))
+                    () => this.getSearchResults(lat, lon))
             )
         }
 
@@ -220,7 +237,7 @@ class SearchResults extends React.Component {
                         let lat = this.state.currentLocation.latitude;
                         let lon = this.state.currentLocation.longitude;
 
-                        this.getSearchReults(lat, lon)
+                        this.getSearchResults(lat, lon)
                     }),
 
             () => this.setState({ loaded: true, needLocation: true, mapZoom: 1.5 })
@@ -251,7 +268,7 @@ class SearchResults extends React.Component {
             getCurrentLocation(
                 (position) => this.setState(
                     { currentLocation: position.coords },
-                () => this.getSearchReults(lat, lon))
+                    () => this.getSearchResults(lat, lon))
             )
         }
 
@@ -266,11 +283,11 @@ class SearchResults extends React.Component {
         } else {
 
             let suggestion = {
-                "label" : this.state.query,
-                    "y": this.state.mapLat,
-                    "x": this.state.mapLon
+                "label": this.state.query,
+                "y": this.state.mapLat,
+                "x": this.state.mapLon
             }
-            
+
 
             let address = suggestion.label;
 
@@ -284,7 +301,7 @@ class SearchResults extends React.Component {
 
             getCurrentLocation(
                 (position) => this.setState({ currentLocation: position.coords },
-                () => this.getSearchReults(lat, lon, data))
+                    () => this.getSearchResults(lat, lon, data))
             )
         }
     }
@@ -312,9 +329,9 @@ class SearchResults extends React.Component {
             getCurrentLocation(
                 (position) => this._isMounted && this.setState({ currentLocation: position.coords },
 
-                    this.getSearchReults(lat, lon)),
+                    this.getSearchResults(lat, lon)),
 
-                () => this.getSearchReults(lat, lon)
+                () => this.getSearchResults(lat, lon)
             )
         }
     }
@@ -345,7 +362,7 @@ class SearchResults extends React.Component {
                             searchSuggestions={searchBarSuggestions}
                             handleSuggestion={(suggestion) => { this.suggestionClick(suggestion) }}
                         />
-                        <SubjectFilters handleSubmit={(data)=> this.handleFilters(data)} resetFilters={this.state.resetFilters}/>
+                        <SubjectFilters handleSubmit={(data) => this.handleFilters(data)} resetFilters={this.state.resetFilters} />
                         <button className={`search-filter`} onClick={() => { this.findNearby() }}>Spots Near Me</button>
                     </div>
                 </div>

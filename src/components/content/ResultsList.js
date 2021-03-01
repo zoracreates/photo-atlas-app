@@ -18,7 +18,7 @@ function ResultsList(props) {
             <>
             <p aria-live="polite" className="sr-only">Showing search results</p>
             {list.map((location, id) => {
-                const { thumbnail, title, saves, origin, destination } = location;
+                const { thumbnail, title, saves, origin, destination, src, locationId, woeId } = location;
 
                 return (
 
@@ -29,7 +29,11 @@ function ResultsList(props) {
                         title={title}
                         origin={origin}
                         destination={destination}
-                        saves={saves} />
+                        saves={saves}
+                        src={src}
+                        locationId={locationId}
+                        woeId={woeId}
+                        />
                 )
 
             })}
@@ -58,7 +62,7 @@ function ResultsList(props) {
 
 ResultsList.propTypes = {
     loaded: PropTypes.bool.isRequired,
-    list: PropTypes.arrayOf(PropTypes.object).isRequired
+    list: PropTypes.arrayOf(PropTypes.object).isRequired,
 }
 
 export default ResultsList;

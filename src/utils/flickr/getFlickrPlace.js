@@ -16,16 +16,14 @@ async function getFlickrPlace(options = {}) {
 
         try {
             response = await axios.get(url)
-            
+            if (response.data) {
+                if(response.data.place.woe_name) {
+                    return response.data.place.woe_name
+                 }
+            }
          } catch(err) {
              alert(err); 
          }
-
-         if(response.data.place.woe_name) {
-            return response.data.place.woe_name
-         }
-
-         
      
 };
 

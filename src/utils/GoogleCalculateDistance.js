@@ -22,7 +22,6 @@ function GoogleCalculateDistance(props) {
                 }}
                 callback={(res) => {
                     if (res) {
-                    //    return handleResponse(res.rows[0].elements[0].distance.text)
                        return handleResponse(res)
                     }
                     return undefined

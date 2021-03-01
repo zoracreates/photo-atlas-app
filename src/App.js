@@ -10,6 +10,7 @@ import Profile from './screens/Profile';
 import Trips from './screens/trips/Trips';
 import PrivateRoute from './components/navigation/PrivateRoute';
 import Footer from './components/content/Footer';
+import Location from './screens/location/Location'
 
 
 import './styles/main.scss';
@@ -52,6 +53,8 @@ class App extends React.Component {
             <Route exact path="/" component={Home} />
             
             <Route path="/explore" component={SearchResults} />
+
+            <Route path="/location" component={Location} />
            
             <PrivateRoute path="/trips" component={Trips} isAuthenticated={signedIn} isVerified={userVerified} logInLocation={"trips"} />
             

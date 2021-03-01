@@ -23,6 +23,10 @@ function SubjectIndicators(props) {
 
                     {subjects.includes('landscape') && <li className={`landscape`}>Landscape</li>}
 
+                    {subjects.includes('nature') && <li className={`nature`}>Nature</li>}
+
+                    {subjects.includes('street art') && <li className={`street-art`}>Street Art</li>}
+
                     {subjects.includes('sunrise') && <li className={`sunrise`}>Sunrise</li>}
 
                     {subjects.includes('sunset') && <li className={`sunset`}>Sunset</li>}
