@@ -22,7 +22,7 @@ async function getFlickrPlace(options = {}) {
                  }
             }
          } catch(err) {
-             alert(err); 
+             console.log(err); 
          }
      
 };

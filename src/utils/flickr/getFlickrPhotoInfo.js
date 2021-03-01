@@ -12,7 +12,7 @@ async function getFlickrPhotoInfo(photoId, handleResponse =
                 handleResponse(data);
             });
         }).catch(error => {
-            alert(error)
+            console.log(error)
         }
         )
 };

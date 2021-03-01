@@ -23,7 +23,7 @@ async function getFlickrPhotos(options = {}) {
        return response.data
        
     } catch(err) {
-        alert(err); 
+        console.log(err); 
     }
 
 };
