@@ -61,6 +61,7 @@ class Location extends React.Component {
 
                         //get the photo data
                         let photo = this.state.firstPhoto;
+                        console.log(photo.tags)
                         let src = createFlickrImageUrl(photo);
                         let title = photo.title._content;
                         let alt = photo.description._content;
