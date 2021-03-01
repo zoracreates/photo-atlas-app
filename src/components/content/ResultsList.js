@@ -18,7 +18,7 @@ function ResultsList(props) {
             <>
             <p aria-live="polite" className="sr-only">Showing search results</p>
             {list.map((location, id) => {
-                const { thumbnail, title, saves, origin, destination, src, locationId } = location;
+                const { thumbnail, title, saves, origin, destination, src, locationId, woeId } = location;
 
                 return (
 
@@ -32,6 +32,7 @@ function ResultsList(props) {
                         saves={saves}
                         src={src}
                         locationId={locationId}
+                        woeId={woeId}
                         />
                 )
 

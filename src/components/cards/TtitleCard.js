@@ -6,7 +6,8 @@ function TitleCard(props) {
         thumbnail,
         title,
         src,
-        locationId } = props;
+        locationId,
+        woeId } = props;
 
     if (!title) {
         title = "Unamed Location"
@@ -24,12 +25,12 @@ function TitleCard(props) {
     }
 
     return (
-        <Link className={`title-card`} to={ `/location/${src}-${locationId}`}>
+        <Link className={`title-card`} to={ `/location/${src}-${locationId}?woe=${woeId}`}>
             <div className={`title-card-image`}>
                 <img src={thumbnail} alt="" />
             </div>
 
-            <p className={`title`}>{title}</p>
+            <p className={`title`}>{title}</p> 
         </Link>
     )
 }
@@ -38,7 +39,8 @@ TitleCard.propTypes = {
     thumbnail: PropTypes.string,
     title: PropTypes.string,
     src: PropTypes.string,
-    locationId: PropTypes.string
+    locationId: PropTypes.string,
+    woeId: PropTypes.string
 }
 
 

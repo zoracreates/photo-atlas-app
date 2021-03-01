@@ -26,7 +26,7 @@ class SearchResults extends React.Component {
 
     _isMounted = false;
 
-    getSearchReults = (lat, lon, tags) => {
+    getSearchResults = (lat, lon, tags) => {
 
         let searchLat = lat;
 
@@ -87,9 +87,11 @@ class SearchResults extends React.Component {
 
                         let locationId = photo.id;
 
+                        let tags = photo.tags;
 
-                        // prevent duplicate locations
-                        if (woeId && !existingLocations.includes(woeId)) { //in location view use woeid to search for other photos
+
+                        // prevent duplicate locations, and locations with no tags
+                        if (woeId && !existingLocations.includes(woeId) && tags ) {
 
                             let currentLat = 0;
                             let currentLon = 0;
@@ -106,6 +108,7 @@ class SearchResults extends React.Component {
                             let location = {
                                 "src": "flickr", //added,
                                 "locationId": locationId,
+                                "woeId" : woeId,
                                 "thumbnail": url,
                                 "title": title,
                                 "saves": 0,
@@ -119,6 +122,7 @@ class SearchResults extends React.Component {
                                 }
                             }
 
+    
                             let place = async (options) => {
                                 let placeName = await getFlickrPlace(options);
                                 return placeName
@@ -213,7 +217,7 @@ class SearchResults extends React.Component {
 
             getCurrentLocation(
                 (position) => this.setState({ currentLocation: position.coords },
-                    () => this.getSearchReults(lat, lon))
+                    () => this.getSearchResults(lat, lon))
             )
         }
 
@@ -233,7 +237,7 @@ class SearchResults extends React.Component {
                         let lat = this.state.currentLocation.latitude;
                         let lon = this.state.currentLocation.longitude;
 
-                        this.getSearchReults(lat, lon)
+                        this.getSearchResults(lat, lon)
                     }),
 
             () => this.setState({ loaded: true, needLocation: true, mapZoom: 1.5 })
@@ -264,7 +268,7 @@ class SearchResults extends React.Component {
             getCurrentLocation(
                 (position) => this.setState(
                     { currentLocation: position.coords },
-                    () => this.getSearchReults(lat, lon))
+                    () => this.getSearchResults(lat, lon))
             )
         }
 
@@ -297,7 +301,7 @@ class SearchResults extends React.Component {
 
             getCurrentLocation(
                 (position) => this.setState({ currentLocation: position.coords },
-                    () => this.getSearchReults(lat, lon, data))
+                    () => this.getSearchResults(lat, lon, data))
             )
         }
     }
@@ -325,9 +329,9 @@ class SearchResults extends React.Component {
             getCurrentLocation(
                 (position) => this._isMounted && this.setState({ currentLocation: position.coords },
 
-                    this.getSearchReults(lat, lon)),
+                    this.getSearchResults(lat, lon)),
 
-                () => this.getSearchReults(lat, lon)
+                () => this.getSearchResults(lat, lon)
             )
         }
     }

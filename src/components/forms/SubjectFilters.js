@@ -1,6 +1,8 @@
 import React from 'react';
 import CheckBox from './CheckBox';
 import SubmitButton from './SubmitButton';
+import filterTags from '../../utils/filterTags'
+
 
 class SubjectFilters extends React.Component {
 
@@ -16,7 +18,9 @@ class SubjectFilters extends React.Component {
             transport: false,
             people: false,
             urban: false,
-            water: false
+            water: false,
+            nature: false,
+            streetArt: false
         },
         formChanged: false,
         previousFilters: []
@@ -24,44 +28,47 @@ class SubjectFilters extends React.Component {
 
 
     componentDidUpdate(prevProps) {
-       
-        if (this.props.resetFilters !== prevProps.resetFilters) {
-           
-            if(this.props.resetFilters) {
-                this.setState(
-                    {filters: 
-                      {
-                          abandoned: false,
-                          architecture: false,
-                          astro: false,
-                          landscape: false,
-                          sunrise: false,
-                          sunset: false,
-                          transport: false,
-                          people: false,
-                          urban: false,
-                          water: false
-                      }
-              })
-              }
 
+        if (this.props.resetFilters !== prevProps.resetFilters) {
+
+            if (this.props.resetFilters) {
+                this.setState(
+                    {
+                        filters:
+                        {
+                            abandoned: false,
+                            architecture: false,
+                            astro: false,
+                            landscape: false,
+                            sunrise: false,
+                            sunset: false,
+                            transport: false,
+                            people: false,
+                            urban: false,
+                            water: false,
+                            nature: false,
+                            streetArt: false
+                        }
+                    })
             }
 
+        }
 
-      }
 
-    
+    }
+
+
     toggleDropdown() {
         this.setState({ open: !this.state.open })
     }
 
     closeDropdown() {
 
-        if(this.state.formChanged && this.state.previousFilters ) {
-            this.setState({filters: this.state.previousFilters})
+        if (this.state.formChanged && this.state.previousFilters) {
+            this.setState({ filters: this.state.previousFilters })
         }
-        this.setState({ open: false, formChanged: false})
-       
+        this.setState({ open: false, formChanged: false })
+
     }
 
     sendData(e) {
@@ -77,23 +84,24 @@ class SubjectFilters extends React.Component {
             transport,
             people,
             urban,
-            water
+            water,
+            nature,
+            streetArt
         } = this.state.filters;
 
 
-        let abandonedTags = abandoned ? 'abandoned, ruins, ghost' : false;
-        let architectureTags = architecture ? 'architecture' : false;
-        let astroTags = astro ? 'astrophotography, stars, moon' : false;
-        let landscapeTags = landscape ? 'landscape, mountains, outdoors' : false;
-        let sunriseTags = sunrise ? 'sunrise' : false;
-        let sunsetTags = sunset ? 'sunset' : false;
-        let transportTags = transport ? 'transport, train, bus, boat, airplane, airport' : false;
-        let peopleTags = people ? 'people, portrait' : false;
-        let urbanTags = urban ? 'urban, cityscape, city' : false;
-        let waterTags = water ? 'water, lake, river, ocean, waterfall' : false;
-
-    
-
+        let abandonedTags = abandoned ? filterTags.abandonedTags : false;
+        let architectureTags = architecture ? filterTags.architectureTags : false;
+        let astroTags = astro ? filterTags.astroTags : false;
+        let landscapeTags = landscape ? filterTags.landscapeTags : false;
+        let sunriseTags = sunrise ? filterTags.sunriseTags : false;
+        let sunsetTags = sunset ? filterTags.sunsetTags : false;
+        let transportTags = transport ? filterTags.transportTags : false;
+        let peopleTags = people ? filterTags.peopleTags : false;
+        let urbanTags = urban ? filterTags.urbanTags : false;
+        let waterTags = water ? filterTags.urbanTags : false;
+        let natureTags = nature ? filterTags.natureTags : false;
+        let streetArtTags = streetArt ? filterTags.streetArtTags : false;
 
         let filterString = '';
         let allFilterTags = [
@@ -106,7 +114,9 @@ class SubjectFilters extends React.Component {
             transportTags,
             peopleTags,
             urbanTags,
-            waterTags
+            waterTags,
+            natureTags,
+            streetArtTags
         ];
 
         let activeFilters = [];
@@ -122,15 +132,15 @@ class SubjectFilters extends React.Component {
 
         activeFilters.forEach(
             (filter, index) => {
-                    if (index === 0) {
-                        filterString = filterString.concat(filter)
-                    } else {
-                        filterString = filterString.concat(`, ${filter}`)
-                    }
+                if (index === 0) {
+                    filterString = filterString.concat(filter)
+                } else {
+                    filterString = filterString.concat(`, ${filter}`)
                 }
+            }
         )
 
-        this.setState({ open: !this.state.open, formChanged: false, previousFilters: this.state.filters})
+        this.setState({ open: !this.state.open, formChanged: false, previousFilters: this.state.filters })
 
 
 
@@ -224,13 +234,29 @@ class SubjectFilters extends React.Component {
                     }
                 }));
                 break;
+            case 'nature':
+                this.setState(prevState => ({
+                    filters: {                   // object that we want to update
+                        ...prevState.filters,    // keep all other key-value pairs
+                        nature: e.target.checked      // update the value of specific key
+                    }
+                }));
+                break;
+            case 'street-art':
+                this.setState(prevState => ({
+                    filters: {                   // object that we want to update
+                        ...prevState.filters,    // keep all other key-value pairs
+                        streetArt: e.target.checked      // update the value of specific key
+                    }
+                }));
+                break;
             default:
                 console.log('filter does not exist')
         }
     }
 
     render() {
-        let { 
+        let {
             open
         } = this.state;
 
@@ -244,7 +270,9 @@ class SubjectFilters extends React.Component {
             transport,
             people,
             urban,
-            water
+            water,
+            nature,
+            streetArt
         } = this.state.filters;
 
         return (
@@ -254,20 +282,24 @@ class SubjectFilters extends React.Component {
                 </button>
                 <div className={`search-filter-dropdown`}>
                     <button className={`close-button`} onClick={() => this.closeDropdown()}>Close</button>
-                <form onChange={() => {this.setState({formChanged: true})}}>
-                    <CheckBox name="abandoned" checked={abandoned}  labelText="Abandoned" onChange={(e) => { this.handleChange(e) }} />
-                    <CheckBox name="architecture"  checked={architecture}  labelText="Architecture" onChange={(e) => { this.handleChange(e) } } />
-                    <CheckBox name="astro" checked={astro} labelText="Astrophotography" onChange={(e) => { this.handleChange(e) }} />
-                    <CheckBox name="landscape" checked={landscape} labelText="Landscape" onChange={(e) => { this.handleChange(e) }} />
-                    <CheckBox name="sunrise" checked={sunrise} labelText="Sunrise" onChange={(e) => { this.handleChange(e) }} />
-                    <CheckBox name="sunset" checked={sunset} labelText="Sunset" onChange={(e) => { this.handleChange(e) }} />
-                    <CheckBox name="transport" checked={transport} labelText="Transport" onChange={(e) => { this.handleChange(e) }} />
-                    <CheckBox name="people" checked={people} labelText="People" onChange={(e) => { this.handleChange(e) }} />
-                    <CheckBox name="urban" checked={urban} labelText="Urban" onChange={(e) => { this.handleChange(e) }} />
-                    <CheckBox name="water"  checked={water} labelText="Water" onChange={(e) => { this.handleChange(e) }} />
+                    <form onChange={() => { this.setState({ formChanged: true }) }}>
+                        <CheckBox name="abandoned" checked={abandoned} labelText="Abandoned" onChange={(e) => { this.handleChange(e) }} />
+                        <CheckBox name="architecture" checked={architecture} labelText="Architecture" onChange={(e) => { this.handleChange(e) }} />
+                        <CheckBox name="astro" checked={astro} labelText="Astrophotography" onChange={(e) => { this.handleChange(e) }} />
+                        <CheckBox name="landscape" checked={landscape} labelText="Landscape" onChange={(e) => { this.handleChange(e) }} />
+                        <CheckBox name="nature" checked={nature} labelText="Nature" onChange={(e) => { this.handleChange(e) }} />
+                        <CheckBox name="street-art" checked={streetArt} labelText="Street Art" onChange={(e) => { this.handleChange(e) }} />
+                        <CheckBox name="sunrise" checked={sunrise} labelText="Sunrise" onChange={(e) => { this.handleChange(e) }} />
+                        <CheckBox name="sunset" checked={sunset} labelText="Sunset" onChange={(e) => { this.handleChange(e) }} />
+                        <CheckBox name="transport" checked={transport} labelText="Transport" onChange={(e) => { this.handleChange(e) }} />
+                        <CheckBox name="people" checked={people} labelText="People" onChange={(e) => { this.handleChange(e) }} />
+                        <CheckBox name="urban" checked={urban} labelText="Urban" onChange={(e) => { this.handleChange(e) }} />
+                        <CheckBox name="water" checked={water} labelText="Water" onChange={(e) => { this.handleChange(e) }} />
+                        
+                        
 
-                    <SubmitButton onClick={(e) => { this.sendData(e) }} value="Apply Filters" />
-                </form>
+                        <SubmitButton onClick={(e) => { this.sendData(e) }} value="Apply Filters" />
+                    </form>
                 </div>
             </span>
         )

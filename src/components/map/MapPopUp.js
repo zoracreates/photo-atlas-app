@@ -8,7 +8,8 @@ function MapPopup(props) {
         thumbnail,
         title,
         src,
-        locationId } = props;
+        locationId,
+        woeId } = props;
 
     if (!title) {
         title = "Unamed Location"
@@ -32,7 +33,7 @@ function MapPopup(props) {
                 <div className={"location-popup-image"}>
                     <img src={thumbnail} alt="" />
                 </div>
-                <Link to={ `/location/${src}-${locationId}`} className={`title`}>{title}</Link>
+                <Link to={ `/location/${src}-${locationId}?woe=${woeId}`} className={`title`}>{title}</Link>
 
             </div>
         </Popup>
@@ -43,7 +44,8 @@ MapPopup.propTypes = {
     thumbnail: PropTypes.string,
     title: PropTypes.string,
     src: PropTypes.string,
-    locationId: PropTypes.string
+    locationId: PropTypes.string,
+    woeId: PropTypes.string
 }
 
 

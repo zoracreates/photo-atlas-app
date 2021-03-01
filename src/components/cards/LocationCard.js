@@ -17,7 +17,8 @@ class LocationCard extends React.Component {
             origin,
             destination,
             src,
-            locationId } = this.props;
+            locationId,
+            woeId } = this.props;
         
         let {distance} = this.state;
 
@@ -41,8 +42,16 @@ class LocationCard extends React.Component {
         }
 
         return (
-            <Link className={`location-card`} to={ `/location/${src}-${locationId}`}>
+            <Link className={`location-card`} to={ `/location/${src}-${locationId}?woe=${woeId}`}>
 
+                <div className={`location-card-image`}>
+                    <img src={thumbnail} alt="" />
+                </div>
+                <div className={`location-card-content`}>
+                    <p className={`title`}>{title}</p>
+                    <p className={`meta-data saved`}>Saved by: {saves} {(saves > 1 || saves < 1) ? 'photographers' : 'photographer'}</p>
+                    {distance && <p className={`meta-data distance`}>Driving distance: {distance}</p>}
+                </div>
                 <GoogleCalculateDistance 
                     destination={destination}
                     origin={origin}
@@ -70,14 +79,6 @@ class LocationCard extends React.Component {
                     }
 
                 /> 
-                <div className={`location-card-image`}>
-                    <img src={thumbnail} alt="" />
-                </div>
-                <div className={`location-card-content`}>
-                    <p className={`title`}>{title}</p>
-                    <p className={`meta-data saved`}>Saved by: {saves} {(saves > 1 || saves < 1) ? 'photographers' : 'photographer'}</p>
-                    {distance && <p className={`meta-data distance`}>Driving distance: {distance}</p>}
-                </div>
 
             </Link>
         )
@@ -93,7 +94,8 @@ LocationCard.propTypes = {
     destination: PropTypes.object,
     origin: PropTypes.object,
     src: PropTypes.string,
-    locationId: PropTypes.string
+    locationId: PropTypes.string,
+    woeId: PropTypes.string
 }
 
 
