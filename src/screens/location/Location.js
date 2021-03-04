@@ -1,13 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import GoogleCalculateDistance from '../../utils/GoogleCalculateDistance';
 
 import PhotoSlider from '../../components/slider/PhotoSlider'
 import SubjectIndicators from '../../components/content/SubjectIndicators'
 import getFlickrPhotoInfo from '../../utils/flickr/getFlickrPhotoInfo'
-import createFlickrImageUrl from '../../utils/flickr/createFlickrImageUrl'
-import getFlickrPlace from '../../utils/flickr/getFlickrPlace'
-import getCurrentLocation from '../../utils/getCurrentLocation';
+import createFlickrImageUrl from '../../utils/flickr/createFlickrImageUrl';
+import getFlickrPlace from '../../utils/flickr/getFlickrPlace';
 import getFlickrPhotos from '../../utils/flickr/getFlickrPhotos';
 import filterTags from '../../utils/filterTags'
 
@@ -17,10 +15,6 @@ class Location extends React.Component {
         distance: 'loading...',
         saves: 0,
         destination: {
-            latitude: 0,
-            longitude: 0,
-        },
-        origin: {
             latitude: 0,
             longitude: 0,
         },
@@ -96,7 +90,6 @@ class Location extends React.Component {
                                         tagsString = tagsString.concat(`, ${tag}`)
                                     }
                                 }
-
                             }
                         )
 
@@ -282,21 +275,6 @@ class Location extends React.Component {
 
                                     }
                                 )
-
-                                //get the current location and set the distance
-                                getCurrentLocation(
-                                    (position) => {
-
-                                        let coordinates = position.coords;
-                                        this.setState({
-                                            origin: {
-                                                latitude: coordinates.latitude,
-                                                longitude: coordinates.longitude
-                                            }
-                                        })
-                                    },
-                                    () => this.setState({ distance: "Unavailable" })
-                                )
                             }
 
                         )
@@ -316,7 +294,6 @@ class Location extends React.Component {
         let { title,
             distance,
             saves,
-            origin,
             destination,
             imageList,
             subjects } = this.state;
@@ -329,6 +306,7 @@ class Location extends React.Component {
             saves = 0;
         }
 
+
         return (
             <div className={`container location mobile-padding`}>
 
@@ -338,42 +316,15 @@ class Location extends React.Component {
                 <div className={`gird-70-30`}>
                     <div className={`col-70`}>
                         <p className={`meta-data saved`}>Saved by: {saves} {(saves > 1 || saves < 1) ? 'photographers' : 'photographer'}</p>
-                        {distance && <p className={`meta-data distance`}>Distance: {distance}</p>}
+                        <p className={`meta-data distance`}>Coordinates: {destination.latitude}, {destination.longitude}</p>
                     </div>
                     <div className={`col-30`}>
                         <a href={`https://maps.google.com/?q=${destination.latitude},${destination.longitude}`} className={`action-button directions`}>Directions</a>
                     </div>
-
                 </div>
 
                 {subjects.length > 0 && <SubjectIndicators subjects={subjects} />}
-                <GoogleCalculateDistance
-                    destination={destination}
-                    origin={origin}
-
-                    handleResponse={
-                        (response) => {
-                            let row, element, distance;
-
-                            row = response.rows[0]
-
-                            if (row) {
-                                element = row.elements[0]
-                            }
-
-                            if (element) {
-                                distance = element.distance
-                            }
-
-                            if (distance) {
-                                distance = distance.text
-                                this.setState({ distance: distance })
-                            }
-
-                        }
-                    }
-
-                />
+               
 
 
             </div>
