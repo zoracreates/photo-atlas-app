@@ -30,11 +30,22 @@ class Trips extends React.Component {
     render() {
         return (
             <>
-                <div className={`container mobile-padding`}>
+                <div className={`container trips mobile-padding`}>
                     <h2>Trips</h2>
-                    <ul>
-                        <li><button onClick={() => this.switchTabs(true)}>All Public Trips</button></li>
-                        <li><button onClick={() => this.switchTabs(false)}>My Trips</button></li>
+                    <ul className={`tabs`}>
+                        <li>
+                            <button 
+                                className={this.state.public ? 'active' : 'inactive'} 
+                                onClick={() => this.switchTabs(true)}>All Public Trips
+                            </button>
+                        </li>
+                        <li>
+                            <button
+                            className={this.state.public ? 'inactive' : 'active' } 
+                            onClick={() => this.switchTabs(false)}>
+                                My Trips
+                            </button>
+                            </li>
                     </ul>
                     {this.renderContent()}
                 </div>

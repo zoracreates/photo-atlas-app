@@ -1,9 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Text&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap');
 
-$pimary_accent_color: #3F5ED2;
+$primary_accent_color: #3F5ED2;
 $secondary_accent_color: #CA4747;
-$pimary_dark_color: darken($pimary_accent_color, 5%);
+$primary_dark_color: darken($primary_accent_color, 5%);
 $gray: #4A5968;
 $light_gray: #F0F2F4;
 $light_accent_gray: #E4E8EC;
@@ -11,13 +11,13 @@ $light_accent_gray_dark: darken($light_accent_gray, 5%);
 $white: #FFF;
 $black: #323232;
 
-$pimary_button_color: $pimary_accent_color;
-$pimary_button_pressed_color: $pimary_dark_color;
+$primary_button_color: $primary_accent_color;
+$primary_button_pressed_color: $primary_dark_color;
 $light_gray_accent_button_pressed: $light_accent_gray_dark;
 $black_text_color: $black;
 $gray_text_color: $gray;
 $white_text_color: $white;
-$link_color: $pimary_accent_color;
+$link_color: $primary_accent_color;
 $light_link_color: $white_text_color;
 
 $alert_color: $secondary_accent_color;

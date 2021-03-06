@@ -10,11 +10,33 @@
     transition-duration: $default-transition-duration;
 }
 
-.button-link {
+.button-link,
+.tabs button {
     @extend %button_font;
     border: none;
     background-color: transparent;
     padding: 0px;
+}
+
+.tabs {
+    list-style: none;
+    margin: 0px;
+    padding: 0px;
+
+    li {
+        display: inline-block;
+        padding: 1rem 1rem 1rem 0px;
+    }
+
+    button {
+        color: $gray;
+        padding-bottom: 1rem;
+    }
+
+    button.active {
+        color: $primary_button_color;
+        border-bottom: 4px solid $primary_button_color;
+    }
 }
 
 .secondary-button {
@@ -38,11 +60,11 @@
 .default-button {
     @extend %button;
     color: $light_link_color;
-    background-color: $pimary_button_color;
+    background-color: $primary_button_color;
 }
 
 .default-button:hover {
-    background-color: $pimary_button_pressed_color;
+    background-color: $primary_button_pressed_color;
 }
 
 input[type='submit'] {

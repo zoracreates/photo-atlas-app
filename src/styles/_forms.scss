@@ -226,7 +226,7 @@ input[type="file"]{
         /* When the checkbox is checked, add a blue background */
         &:checked ~ .checkmark,
         &:checked ~ .radiomark {
-            background-color: $pimary_accent_color;
+            background-color: $primary_accent_color;
             
             /* Show the checkmark when checked */
             &:after {

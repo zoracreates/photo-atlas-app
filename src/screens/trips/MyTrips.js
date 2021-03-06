@@ -1,6 +1,5 @@
 import React from 'react'
-import Authenticate from '../authentication/Authenticate'
-import VerifyEmail from '../authentication/VerifyEmail'
+import PrivateTab from '../../components/navigation/PrivateTab'
 
 
 
@@ -15,27 +14,10 @@ class MyTrips extends React.Component {
         )
     }
 
-    renderContent() {
-
-        if (this.props.isAuthenticated) {
-            if (!this.props.isVerified) {
-                return <VerifyEmail logInLocation={"trips"} tabContent={true}/>
-            } else {
-                return this.tripsContent()
-            }
-        }
-        else {
-            return (
-                <Authenticate logInLocation={"trips"} tabContent={true}/>
-            )
-        }
-    }
-
-
     render() {
         return (
             <>
-                {this.renderContent()}
+                <PrivateTab componentContent={this.tripsContent()}  logInLocation={"trips"} />
             </>
         )
     }
