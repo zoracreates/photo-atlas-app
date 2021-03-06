@@ -40,7 +40,9 @@ class VerifyEmail extends React.Component {
         if (!this.state.error) {
             return (
                 <>
-                    <h2 className="h4-font">Just one more step</h2>
+                    {this.props.tabContent ? 
+                        <h3 className="h4-font">Just one more step</h3> :
+                        <h2 className="h4-font">Just one more step</h2>}
                     <p>
                         We've sent a verification link to your email.<br />
                         Please check your inbox to verify your account.
@@ -89,7 +91,8 @@ class VerifyEmail extends React.Component {
 }
 
 VerifyEmail.propTypes = {
-    logInLocation: PropTypes.string
+    logInLocation: PropTypes.string,
+    tabContent: PropTypes.bool
 }
 
 export default VerifyEmail;

@@ -12,8 +12,12 @@ function SignUp(props) {
   return (
     <>
       <div className={`container mobile-padding`}>
-        <h2>Sign Up</h2>
-        <h3 className="h5-font">Create an account to {props.introtext}.</h3>
+  
+        {props.tabContent ? <h3>Sign Up</h3> : <h2>Sign Up</h2>}
+
+        {props.tabContent ?
+          <h4 className="h5-font">Create an account to {props.introtext}.</h4> :
+          <h3 className="h5-font">Create an account to {props.introtext}.</h3>}
 
         <form action={"/"} onSubmit={(e) => props.handeleSubmit(e)}>
 
@@ -83,7 +87,8 @@ SignUp.propTypes = {
   passError: PropTypes.string,
   confirmPassword: PropTypes.string,
   handleConfirmPassInput: PropTypes.func,
-  confirmPassError: PropTypes.string
+  confirmPassError: PropTypes.string,
+  tabContent: PropTypes.bool
 }
 
 

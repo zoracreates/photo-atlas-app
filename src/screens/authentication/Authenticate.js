@@ -242,6 +242,7 @@ class Authenticate extends React.Component {
             return (
                 <>
                     <SignUp
+                        tabContent={this.props.tabContent}
                         introtext={text}
                         handeleSubmit={(e) => this.handeleCreateAccount(e)}
                         email={this.state.email}
@@ -271,6 +272,7 @@ class Authenticate extends React.Component {
             return (
                 <>
                     <SignIn
+                        tabContent={this.props.tabContent}
                         introtext={text}
                         handeleSubmit={(e) => this.handeleSignIn(e)}
                         email={this.state.email}
@@ -310,7 +312,8 @@ class Authenticate extends React.Component {
 }
 
 Authenticate.propTypes = {
-    logInLocation: PropTypes.string
+    logInLocation: PropTypes.string,
+    tabContent: PropTypes.bool
 }
 
 

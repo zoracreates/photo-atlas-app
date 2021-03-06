@@ -55,9 +55,14 @@ class App extends React.Component {
             <Route path="/explore" component={SearchResults} />
 
             <Route path="/location" component={Location} />
+
+            <Route path="/trips" 
+
+              render={
+                ()=> <Trips isAuthenticated={signedIn} isVerified={userVerified} />
+                
+            } />
            
-            <PrivateRoute path="/trips" component={Trips} isAuthenticated={signedIn} isVerified={userVerified} logInLocation={"trips"} />
-            
             <PrivateRoute path="/add" component={AddLocation} isAuthenticated={signedIn} isVerified={userVerified} logInLocation={"add"}/>
             
             <PrivateRoute path="/profile" component={Profile} isAuthenticated={signedIn} isVerified={userVerified} logInLocation={"profile"}/>

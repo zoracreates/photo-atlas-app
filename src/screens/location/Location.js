@@ -292,7 +292,6 @@ class Location extends React.Component {
 
     render() {
         let { title,
-            distance,
             saves,
             destination,
             imageList,
