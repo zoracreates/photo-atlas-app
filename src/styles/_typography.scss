@@ -160,6 +160,7 @@ p.error-font,
 p.meta-data:not(:first-child) {
     margin-top: .5rem;
 }
+
 .meta-data {
     @extend %caption_font;
     color: $gray;
@@ -170,7 +171,9 @@ p.meta-data:not(:first-child) {
     }
 
     &.saved::before,
-    &.distance::before {
+    &.marker::before,
+    &.public::before,
+    &.private::before {
         content:'';
         display: inline-block;
         width: 0.6rem;
@@ -185,8 +188,16 @@ p.meta-data:not(:first-child) {
         background-image:  url(../images/icons/48px/heart-gray.png);
     }
 
-    &.distance::before {
+    &.marker::before {
         background-image:  url(../images/icons/48px/marker-gray.png);
+    }
+
+    &.public::before {
+        background-image:  url(../images/icons/48px/profile-gray.png);
+    }
+
+    &.private::before {
+        background-image:  url(../images/icons/48px/lock-gray.png);
     }
 }
 

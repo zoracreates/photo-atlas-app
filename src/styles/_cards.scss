@@ -1,11 +1,13 @@
 a {
     &.location-card,
-    &.title-card{
+    &.title-card,
+    &.trip-card {
         text-decoration: none;
     }
 }
 
-.location-card {
+.location-card,
+.trip-card {
     margin: 2% auto;
     background-color: $white;
     display: flex;
@@ -15,17 +17,17 @@ a {
         padding-top: 0px;
     }
     
-    .location-card-content {
+    .location-card-content,
+    .trip-card-content {
         flex-basis: 75%;
         margin-left: 7px;
         padding: 7px 7px 7px 0px;
     }
-    .location-card-image {
-        flex-basis: 20%;
-        min-width: 100px;
-        height: 110px;
-        overflow: hidden;
 
+    .location-card-image,
+    .trip-card-image {
+        overflow: hidden;
+        flex-basis: 20%;
         img {
             width: 100%;
             height: auto;
@@ -37,17 +39,34 @@ a {
         }
     }
 
+
+    .location-card-image {
+        min-width: 100px;
+        height: 110px;
+    }
+
+    .trip-card-image {
+        min-width: 120px;
+        height: 160px;
+    }
     
     .title {
-        @extend %subtitle1_font;
+       
         margin-bottom: .75rem;
         color: $gray;
 
         + .meta-data {
             margin: .25rem 0px;
         }
-        
     }
+}
+
+.location-card .title {
+    @extend %subtitle1_font;
+}
+
+.trip-card .title {
+    @extend %headline6_font;
 }
 
 .title-card {

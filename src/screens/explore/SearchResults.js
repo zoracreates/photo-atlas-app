@@ -16,12 +16,8 @@ class SearchResults extends React.Component {
         loaded: false,
         searchResults: [],
         mapLat: null,
-        mapLon: null,
-        mapZoom: 10,
-        currentLocation: null,
-        needLocation: false,
-        searchBarSuggestions: '',
-        resetFilters: false
+        mapLon: null, //set map to the location of the first location
+        mapZoom: 10
     }
 
     _isMounted = false;

@@ -315,7 +315,7 @@ class Location extends React.Component {
                 <div className={`gird-70-30`}>
                     <div className={`col-70`}>
                         <p className={`meta-data saved`}>Saved by: {saves} {(saves > 1 || saves < 1) ? 'photographers' : 'photographer'}</p>
-                        <p className={`meta-data distance`}>Coordinates: {destination.latitude}, {destination.longitude}</p>
+                        <p className={`meta-data marker`}>Coordinates: {destination.latitude}, {destination.longitude}</p>
                     </div>
                     <div className={`col-30`}>
                         <a href={`https://maps.google.com/?q=${destination.latitude},${destination.longitude}`} className={`action-button directions`}>Directions</a>

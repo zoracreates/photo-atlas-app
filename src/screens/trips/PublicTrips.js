@@ -1,4 +1,6 @@
 import React from 'react'
+import OneToTwoCols from '../../components/layout/OneToTwoCols'
+import TripCard from '../../components/cards/TripCard'
 
 
 
@@ -8,7 +10,10 @@ class PublicTrips extends React.Component {
     render() {
         return (
             <>
-                <h3>Public Trips</h3>
+                <OneToTwoCols>
+                    <TripCard />
+                    <TripCard />
+                </OneToTwoCols>
             </>
         )
     }

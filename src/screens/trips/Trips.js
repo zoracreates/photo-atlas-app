@@ -7,12 +7,12 @@ import MyTrips from './MyTrips'
 class Trips extends React.Component {
 
     state = {
-        public: true
+        isPublic: true
     }
 
     renderContent() {
 
-        if (this.state.public) {
+        if (this.state.isPublic) {
             return <PublicTrips />
         }
         else {
@@ -24,7 +24,7 @@ class Trips extends React.Component {
     }
 
     switchTabs(value) {
-        this.setState({public: value})
+        this.setState({isPublic: value})
     }
 
     render() {
@@ -35,13 +35,13 @@ class Trips extends React.Component {
                     <ul className={`tabs`}>
                         <li>
                             <button 
-                                className={this.state.public ? 'active' : 'inactive'} 
+                                className={this.state.isPublic ? 'active' : 'inactive'} 
                                 onClick={() => this.switchTabs(true)}>All Public Trips
                             </button>
                         </li>
                         <li>
                             <button
-                            className={this.state.public ? 'inactive' : 'active' } 
+                            className={this.state.isPublic ? 'inactive' : 'active' } 
                             onClick={() => this.switchTabs(false)}>
                                 My Trips
                             </button>

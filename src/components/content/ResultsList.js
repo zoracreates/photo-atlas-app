@@ -53,7 +53,7 @@ function ResultsList(props) {
     if (loaded && count === 0 && !needLocation) {
         return (
             <p aria-live="polite">
-                Sorry, no photo spots here yet. Let's checkout a different location!
+                Sorry, no photo spots here yet.
             </p>
         )
     }
@@ -63,6 +63,7 @@ function ResultsList(props) {
 ResultsList.propTypes = {
     loaded: PropTypes.bool.isRequired,
     list: PropTypes.arrayOf(PropTypes.object).isRequired,
+    needLocation: PropTypes.bool
 }
 
 export default ResultsList;
