@@ -102,23 +102,34 @@ p.results-status {
 
 .location {
     h2 {
-      @extend %headline4_font;
+      @extend %headline5_font;
       margin-bottom: 1rem;
     }
 
     h3 {
-      @extend %headline5_font;
+      @extend %headline6_font;
       margin-bottom: .5rem;
-      
     }
 
     .data-container {
       border-top: 1px $gray solid;
     }
+
+    .actions {
+      margin: 0px;
+      padding: 0px;
+      list-style: none;
+      li {
+        &:not(:first-child) {
+          display: none;
+        }
+        &:not(:last-child) {
+          padding-right: 20px;
+        }
+      }
+      
+    }
 }
-
-
-
 
 .subject-indicators {
   margin: 10px 0px 0px 0px;
@@ -233,5 +244,29 @@ p.results-status {
 
   .search {
     margin-bottom: -20px;
+  }
+
+  .location {
+    h2 {
+     // @extend %headline4_font;
+      font-family: $serif_font;
+      font-size: 2.375rem; // 38px
+      font-weight: $normal_weight;
+      letter-spacing: 0.01625rem; // 0.25px 
+    }
+
+    h3 {
+      //@extend %headline5_font;
+      font-family: $serif_font;
+      font-size: 1.625rem; // 26px
+      font-weight: $normal_weight;
+      letter-spacing: 0px; // 0px  
+    }
+
+    .actions {
+      li {
+        display: inline-block !important;
+      }
+    }
   }
 }

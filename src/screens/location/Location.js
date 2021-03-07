@@ -8,6 +8,8 @@ import createFlickrImageUrl from '../../utils/flickr/createFlickrImageUrl';
 import getFlickrPlace from '../../utils/flickr/getFlickrPlace';
 import getFlickrPhotos from '../../utils/flickr/getFlickrPhotos';
 import filterTags from '../../utils/filterTags'
+import { DirectionsLarge } from '../../components/buttons/DirectionsButtons'
+import { AddToTripsLarge, AddToTripsSmall } from '../../components/buttons/AddToTripsButtons'
 
 class Location extends React.Component {
     state = {
@@ -104,12 +106,12 @@ class Location extends React.Component {
                             //use a "for" loop instead of "forEach" so that it breaks on first match
 
                             let setSubject = (tagsArray, subject) => {
-                                for (let i = 0; i < tagsArray.length; i++ ) {
+                                for (let i = 0; i < tagsArray.length; i++) {
                                     let tag = tagsArray[i];
-                                    if(tagsString.includes(tag)) {
+                                    if (tagsString.includes(tag)) {
                                         subjects.push(subject)
                                         break;
-                                     }
+                                    }
                                 }
                             }
 
@@ -175,7 +177,7 @@ class Location extends React.Component {
 
                             //if the location contains any subjects, update the state
                             if (subjects.length > 0) {
-                                this.setState( {subjects: subjects})
+                                this.setState({ subjects: subjects })
                             }
                         }
 
@@ -297,6 +299,8 @@ class Location extends React.Component {
             imageList,
             subjects } = this.state;
 
+        let inTrips = false;
+
         if (!title) {
             title = "Untitled Location"
         }
@@ -305,27 +309,44 @@ class Location extends React.Component {
             saves = 0;
         }
 
+        if (saves > 0) {
+            inTrips = true;
+        }
 
         return (
-            <div className={`container location mobile-padding`}>
-
-                {imageList && <PhotoSlider imageList={imageList} />}
-
-                <h2 className={`title`}>{title}</h2>
-                <div className={`gird-70-30`}>
-                    <div className={`col-70`}>
-                        <p className={`meta-data saved`}>Saved by: {saves} {(saves > 1 || saves < 1) ? 'photographers' : 'photographer'}</p>
-                        <p className={`meta-data marker`}>Coordinates: {destination.latitude}, {destination.longitude}</p>
+            <div className="location">
+                <div className='dark-background mobile-header'>
+                    <div className={`container mobile-padding`}>
+                    <button onClick={() => { window.history.back() }} className={`secondary-button back-button`}>Back</button>
+                    <AddToTripsSmall added={inTrips} />
                     </div>
-                    <div className={`col-30`}>
-                        <a href={`https://maps.google.com/?q=${destination.latitude},${destination.longitude}`} className={`action-button directions`}>Directions</a>
-                    </div>
+
                 </div>
+                <div className={`container mobile-padding`}>
 
-                {subjects.length > 0 && <SubjectIndicators subjects={subjects} />}
-               
+                    {imageList && <PhotoSlider imageList={imageList} />}
 
+                    <h2 className={`title`}>{title}</h2>
+                    <div className={`gird-70-30`}>
+                        <div className={`col-70`}>
+                            <p className={`meta-data saved`}>Saved by: {saves} {(saves > 1 || saves < 1) ? 'photographers' : 'photographer'}</p>
+                            <p className={`meta-data marker`}>Coordinates: <a href={`https://maps.google.com/?q=${destination.latitude},${destination.longitude}`}>{destination.latitude}, {destination.longitude}</a></p>
+                        </div>
+                        <div className={`col-30`}>
+                            <ul className="actions">
+                                <li>
+                                <DirectionsLarge latitude={destination.latitude} longitude={destination.longitude} />
+                                </li>
+                                <li>
+                                    <AddToTripsLarge added={inTrips} />
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
 
+                    {subjects.length > 0 && <SubjectIndicators subjects={subjects} />}
+
+                </div>
             </div>
 
         )

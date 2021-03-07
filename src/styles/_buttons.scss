@@ -57,6 +57,26 @@
     
 }
 
+.mobile-header {
+    .back-button {
+        @extend %caption_font;
+        color: $light_link_color;
+        margin: auto 0px;
+
+        &::before {
+            content: '';
+            display: inline-block;
+            width:  0.75rem;
+            height: 0.75rem;
+            background-image:  url(../images/icons/48px/chevron-white.png);
+            background-repeat: no-repeat;
+            background-size: 0.5rem;
+            background-position: center bottom;
+            transform: rotateY(180deg);
+        }
+    }
+}
+
 .default-button {
     @extend %button;
     color: $light_link_color;
@@ -91,10 +111,51 @@ input[type='submit'] {
         background-repeat: no-repeat;
         background-size: 30px;
         margin-bottom: .5rem;
-
     }
 
     &.directions::before {
         background-image: url(../images/icons/96px/directions-blue.png);  
     }
+
+    &.added::before  {
+        background-image: url(../images/icons/96px/heart-fill-blue.png);   
+    }
+
+    &.add::before {
+        background-image: url(../images/icons/96px/heart-outline-blue.png);   
+    }
+}
+
+.action-button-small {
+    @extend %caption_font;
+    text-transform: none;
+    font-size: 0.75rem;
+    background: transparent;
+    border: none;
+    color: $white_text_color;
+    text-decoration: none;
+    display: block;
+    margin: auto 0px;
+    text-align: center;
+
+    &::before {
+        content:'';
+        display: block;
+        margin: auto;
+        height: 20px;
+        width: 20px;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: 20px;
+        margin-bottom: .5rem;
+    }
+
+    &.added::before  {
+        background-image: url(../images/icons/96px/heart-fill-white.png);   
+    }
+
+    &.add::before {
+        background-image: url(../images/icons/96px/heart-outline-white.png);   
+    }
+
 }

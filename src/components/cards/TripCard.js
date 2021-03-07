@@ -10,6 +10,7 @@ function TripCard(props) {
         title,
         tripId,
         isPublic,
+        isShared,
         locationCount } = props;
 
     return (
@@ -21,7 +22,7 @@ function TripCard(props) {
             <div className={`trip-card-content`}>
                 <p className={`title`}>{title}</p>
                 <p className={`meta-data ${isPublic ? 'public' : 'private'}`}>
-                    {isPublic ? 'Public' : 'Private'}</p>
+                    {isPublic ? 'Public' : isShared ? 'Shared' : 'Private'}</p>
                 <p className={`meta-data marker`}>
                    {locationCount} {locationCount > 1 ? 'Locations' : 'Location'}</p>
             </div>
@@ -37,6 +38,7 @@ TripCard.propTypes = {
     isPublic: PropTypes.bool,
     locationCount: PropTypes.number,
     tripId: PropTypes.string,
+    isShared: PropTypes.bool
 }
 
 
