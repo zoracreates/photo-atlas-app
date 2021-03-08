@@ -5,7 +5,7 @@ function Modal({ modalId, modalTitle, modalDescription, isOpen, handleClose, chi
     let modalTitleId = `${modalId}-title`
 
     function closeModal() {
-        handleClose();
+        handleClose(); //this should set props.isOpen to false on the parent
     }
 
     return (
