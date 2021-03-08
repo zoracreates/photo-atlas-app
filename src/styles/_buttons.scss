@@ -159,3 +159,30 @@ input[type='submit'] {
     }
 
 }
+
+.close-button {
+    @extend %caption_font;
+    color: $gray;
+     border: none;
+     margin-left: auto;
+     margin-right: 0px;
+     position: absolute;
+     top: 7px;
+     right: 2px;
+     background-color: transparent;
+     font-size: .5rem;
+   text-transform: uppercase;
+     &::before {
+         content: '';
+         display: block;
+         background-position: center;
+         background-repeat: no-repeat;
+         background-size: .5rem;
+         height: .5rem;
+         width: .5rem;
+         margin: auto;
+         margin-bottom: .2rem;
+         background-position: center;
+         background-image: url(../images/icons/48px/x-black.png)
+     }
+ }

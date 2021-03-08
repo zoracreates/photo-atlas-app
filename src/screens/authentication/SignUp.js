@@ -12,14 +12,14 @@ function SignUp(props) {
   return (
     <>
       <div className={`container mobile-padding`}>
-  
-        {props.tabContent ? <h3>Sign Up</h3> : <h2>Sign Up</h2>}
+        <div className={props.hideTitle ? "hidden" : "visible"}>
+          {props.tabContent ? <h3>Sign Up</h3> : <h2>Sign Up</h2>}
 
-        {props.tabContent ?
-          <h4 className="h5-font">Create an account to {props.introtext}.</h4> :
-          <h3 className="h5-font">Create an account to {props.introtext}.</h3>}
-
-        <form action={"/"} onSubmit={(e) => props.handeleSubmit(e)}>
+          {props.tabContent ?
+            <h4 className="h5-font">Create an account to {props.introtext}.</h4> :
+            <h3 className="h5-font">Create an account to {props.introtext}.</h3>}
+        </div>
+        <form action={"/"} onSubmit={(e) => props.handleSubmit(e)}>
 
 
 
@@ -45,7 +45,7 @@ function SignUp(props) {
 
 
           <div className="form-component-wrapper">
-            <label htmlFor="pass">Password (5 character minimum)</label>
+            <label htmlFor="pass">Password (6 characters minimum)</label>
             <PasswordInput autoComplete="current-password" id="pass" value={props.password} onChange={(e) => props.handlePassInput(e)} required />
             {props.passError && <p className="error-font" aria-live="polite">{props.passError}</p>}
           </div>
@@ -72,7 +72,7 @@ function SignUp(props) {
 
 SignUp.propTypes = {
   introtext: PropTypes.string,
-  handeleSubmit: PropTypes.func,
+  handleSubmit: PropTypes.func,
   name: PropTypes.string,
   handleNameInput: PropTypes.func,
   nameError: PropTypes.string,
@@ -88,7 +88,8 @@ SignUp.propTypes = {
   confirmPassword: PropTypes.string,
   handleConfirmPassInput: PropTypes.func,
   confirmPassError: PropTypes.string,
-  tabContent: PropTypes.bool
+  tabContent: PropTypes.bool,
+  hiddeTitle: PropTypes.bool
 }
 
 

@@ -26,10 +26,10 @@ class App extends React.Component {
 
 
 
-  componentDidMount () {
+  componentDidMount() {
     firebase.auth().onAuthStateChanged(user => {
-      if(user) {
-        this.setState({ 
+      if (user) {
+        this.setState({
           signedIn: true,
           userVerified: user.emailVerified,
         });
@@ -52,25 +52,25 @@ class App extends React.Component {
 
           <Switch>
             <Route exact path="/" component={Home} />
-            
+
             <Route path="/explore" component={SearchResults} />
 
             <Route path="/location" component={Location} />
 
-            <Route path="/trips" 
+            <Route path="/trips"
 
               render={
-                ()=> <Trips isAuthenticated={signedIn} isVerified={userVerified} />
-                
-            } />
+                () => <Trips isAuthenticated={signedIn} isVerified={userVerified} />
+
+              } />
 
             <Route path="/trip" component={TripContent} />
-           
-            <PrivateRoute path="/add" component={AddLocation} isAuthenticated={signedIn} isVerified={userVerified} logInLocation={"add"}/>
-            
-            <PrivateRoute path="/profile" component={Profile} isAuthenticated={signedIn} isVerified={userVerified} logInLocation={"profile"}/>
-            
-          
+
+            <PrivateRoute path="/add" component={AddLocation} isAuthenticated={signedIn} isVerified={userVerified} logInLocation={"add"} />
+
+            <PrivateRoute path="/profile" component={Profile} isAuthenticated={signedIn} isVerified={userVerified} logInLocation={"profile"} />
+
+
           </Switch>
 
 

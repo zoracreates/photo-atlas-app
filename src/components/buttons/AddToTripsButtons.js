@@ -1,21 +1,33 @@
-export const AddToTripsLarge = (props) => {
+import PropTypes from 'prop-types'
+
+const AddToTripsLarge = ({added, ...rest}) => {
 
     return (
-        <button className={`action-button ${props.added ? 'added' : 'add'}`}>
+        <button className={`action-button ${added ? 'added' : 'add'}`} {...rest}>
             {
-                props.added ? 'Change Trips' : 'Add to Trip'
+                added ? 'Change Trips' : 'Add to Trip'
             }
         </button>
     )
 }
 
-export const AddToTripsSmall = (props) => {
+const AddToTripsSmall = ({added, ...rest}) => {
 
     return (
-        <button className={`action-button-small ${props.added ? 'added' : 'add'}`}>
+        <button className={`action-button-small ${added ? 'added' : 'add'}`} {...rest}>
             {
-                props.added ? 'Change Trips' : 'Add to Trip'
+                added ? 'Change Trips' : 'Add to Trip'
             }
         </button>
     )
 }
+
+AddToTripsLarge.propTypes = {
+    add: PropTypes.bool
+}
+
+AddToTripsSmall.propTypes = {
+    add: PropTypes.bool
+}
+
+export {AddToTripsLarge, AddToTripsSmall};

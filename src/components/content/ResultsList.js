@@ -16,7 +16,9 @@ function ResultsList(props) {
     if (loaded && count > 0) {
         return (
             <>
-            <p aria-live="polite" className="sr-only">Showing search results</p>
+            <div aria-live="polite" className="sr-only">
+                <p>Showing search results</p>
+            </div>
             {list.map((location, id) => {
                 const { thumbnail, title, saves, origin, destination, src, locationId, woeId } = location;
 

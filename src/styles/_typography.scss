@@ -96,6 +96,10 @@
     letter-spacing: 0.09375rem; // 1.5px
 }
 
+.center-text {
+    text-align: center;
+}
+
 body {
    @extend %body2_font;
 }

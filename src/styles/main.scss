@@ -11,6 +11,7 @@
 @import '_forms.scss';
 @import '_filters.scss';
 @import '_user.scss';
+@import '_modals.scss';
 
 /* COLORS */
 body {
@@ -20,6 +21,11 @@ body {
 a,
 .button-link {
     color: $link_color;
+}
+
+.hidden {
+  display: none;
+  visibility: hidden;
 }
 
 .caption {
@@ -218,6 +224,23 @@ p.results-status {
   h3 {
     margin-top: 0px;
   }
+}
+
+.manage-trips-modal ul.existing-trips {
+  padding: 0px;
+  margin: 0px;
+  list-style: none;
+  max-height: 90vh;
+  overflow: scroll;
+}
+
+.manage-trips-modal form:not(:last-child){
+  border-bottom: 1px solid $light_border_color;
+}
+
+.manage-trips-modal .modal-main h3 {
+  margin-top: 0px;
+  margin-bottom: 0px;
 }
 
 

@@ -1,15 +1,16 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from 'react'
+import PropTypes from 'prop-types'
 
 import PhotoSlider from '../../components/slider/PhotoSlider'
 import SubjectIndicators from '../../components/content/SubjectIndicators'
 import getFlickrPhotoInfo from '../../utils/flickr/getFlickrPhotoInfo'
-import createFlickrImageUrl from '../../utils/flickr/createFlickrImageUrl';
-import getFlickrPlace from '../../utils/flickr/getFlickrPlace';
-import getFlickrPhotos from '../../utils/flickr/getFlickrPhotos';
+import createFlickrImageUrl from '../../utils/flickr/createFlickrImageUrl'
+import getFlickrPlace from '../../utils/flickr/getFlickrPlace'
+import getFlickrPhotos from '../../utils/flickr/getFlickrPhotos'
 import filterTags from '../../utils/filterTags'
 import { DirectionsLarge } from '../../components/buttons/DirectionsButtons'
 import { AddToTripsLarge, AddToTripsSmall } from '../../components/buttons/AddToTripsButtons'
+import ManageTripsModal from '../../components/modals/ManageTripsModal'
 
 class Location extends React.Component {
     state = {
@@ -22,10 +23,16 @@ class Location extends React.Component {
         },
         imageList: [],
         subjects: [],
-        firstPhoto: {}
+        firstPhoto: {},
+        showTripsModal: false
     };
 
     _isMounted = false;
+
+
+    manageTripsModal() {
+        this.setState({showTripsModal: !this.state.showTripsModal})
+    }
 
 
     componentDidMount() {
@@ -57,7 +64,6 @@ class Location extends React.Component {
 
                         //get the photo data
                         let photo = this.state.firstPhoto;
-                        console.log(photo.tags)
                         let src = createFlickrImageUrl(photo);
                         let title = photo.title._content;
                         let alt = photo.description._content;
@@ -293,6 +299,7 @@ class Location extends React.Component {
     }
 
     render() {
+
         let { title,
             saves,
             destination,
@@ -314,11 +321,12 @@ class Location extends React.Component {
         }
 
         return (
+            <>
             <div className="location">
                 <div className='dark-background mobile-header'>
                     <div className={`container mobile-padding`}>
-                    <button onClick={() => { window.history.back() }} className={`secondary-button back-button`}>Back</button>
-                    <AddToTripsSmall added={inTrips} />
+                        <button onClick={() => { window.history.back() }} className={`secondary-button back-button`}>Back</button>
+                        <AddToTripsSmall added={inTrips} onClick={() => { this.manageTripsModal() }} />
                     </div>
 
                 </div>
@@ -335,10 +343,10 @@ class Location extends React.Component {
                         <div className={`col-30`}>
                             <ul className="actions">
                                 <li>
-                                <DirectionsLarge latitude={destination.latitude} longitude={destination.longitude} />
+                                    <DirectionsLarge latitude={destination.latitude} longitude={destination.longitude} />
                                 </li>
                                 <li>
-                                    <AddToTripsLarge added={inTrips} />
+                                    <AddToTripsLarge data-micromodal-trigger="modal-1" onClick={() => { this.manageTripsModal() }} added={inTrips} />
                                 </li>
                             </ul>
                         </div>
@@ -347,7 +355,11 @@ class Location extends React.Component {
                     {subjects.length > 0 && <SubjectIndicators subjects={subjects} />}
 
                 </div>
+            
+
             </div>
+            <ManageTripsModal isOpen={this.state.showTripsModal} handleClose={()=>this.manageTripsModal()}/>
+            </>
 
         )
 

@@ -8,50 +8,29 @@ a {
 
 .location-card,
 .trip-card {
+    border: 1px solid $light_border_color;
     margin: 2% auto;
+}
+
+.trip-card-small {
+    border-bottom: 1px solid $light_border_color;
+    &:first-child {
+        border-top: 1px solid $light_border_color;
+    }
+}
+
+.location-card,
+.trip-card,
+.trip-card-small {
     background-color: $white;
     display: flex;
-    border: 1px solid $light_border_color;
+    
     
     p:first-child {
         padding-top: 0px;
     }
     
-    .location-card-content,
-    .trip-card-content {
-        flex-basis: 75%;
-        margin-left: 7px;
-        padding: 7px 7px 7px 0px;
-    }
-
-    .location-card-image,
-    .trip-card-image {
-        overflow: hidden;
-        flex-basis: 20%;
-        img {
-            width: 100%;
-            height: auto;
-            @supports (object-fit: cover) {
-                height: 100%;
-                object-fit: cover;
-            }
-           
-        }
-    }
-
-
-    .location-card-image {
-        min-width: 100px;
-        height: 110px;
-    }
-
-    .trip-card-image {
-        min-width: 120px;
-        height: 160px;
-    }
-    
     .title {
-       
         margin-bottom: .75rem;
         color: $gray;
 
@@ -61,7 +40,76 @@ a {
     }
 }
 
-.location-card .title {
+
+
+.location-card-content,
+.trip-card-content {
+    flex-basis: 75%;
+    margin-left: 7px;
+    padding: 7px 7px 7px 0px;
+}
+
+.location-card-image,
+.trip-card-image {
+    overflow: hidden;
+    flex-basis: 20%;
+    img {
+        width: 100%;
+        height: auto;
+        @supports (object-fit: cover) {
+            height: 100%;
+            object-fit: cover;
+        }
+       
+    }
+}
+
+.trip-card-small {
+    .trip-card-content {
+        flex-basis: 80%;
+    }
+    .trip-card-image {
+        flex-basis: 15%;
+    }
+    .trip-card-image {
+        min-width: 90px;
+        height: 120px;
+    }
+
+    .title {
+        @extend %subtitle2_font;
+    }
+
+    .add-or-remove {
+        @extend %caption_font;
+        font-weight: 400;
+        text-transform: uppercase;
+        color: $link_color;
+        display: block;
+        margin-top: 1rem;
+        text-align: right;
+        span {
+            font-size: 0px;
+            width: 0px;
+            height: 0px;
+            line-height: 0px;
+            letter-spacing: 0px;
+        }
+    }
+}
+
+
+.location-card-image {
+    min-width: 100px;
+    height: 110px;
+}
+
+.trip-card-image {
+    min-width: 120px;
+    height: 160px;
+}
+
+.location-card .title{
     @extend %subtitle1_font;
 }
 
