@@ -47,6 +47,14 @@ class ManageTripsModal extends React.Component {
 
     _isMounted = false;
 
+    closeModal() {
+        this.setState({
+            newTripCreated: false,
+            newTripPrivacy: 'public',
+            newTripName: ''
+        }, () => this.props.handleClose());
+    }
+
     changeUserType(newUserValue) {
         this.setState({ newUser: newUserValue }, () => {
 
@@ -313,7 +321,7 @@ class ManageTripsModal extends React.Component {
                 modalTitle={modalTitle}
                 modalDescription={modalDescription}
                 isOpen={this.props.isOpen}
-                handleClose={this.props.handleClose}
+                handleClose={()=>this.closeModal()}
             >
                 {this.renderModalContent()}
             </Modal>
