@@ -243,6 +243,12 @@ class ManageTripsModal extends React.Component {
                         <label className="caption-font" htmlFor="private">Only you and those you share this trip with</label>
                     </fieldset>
 
+                    {/* 
+                        INSERT A TEXT INPUT TO ALLOW PEOPLE TO ADD TAGS TO TRIPS FOR SEARCHABILITY, 
+                        I THINK IT'LL BE GOOD TO ALSO ALLOW PEOPLE TO SEARCH BY LOCATIONS IN THE TRIPS
+                        SO MAYBE THE TRIPS SCREEN HAS 2 SEARCH BARS
+                        AND WITH THAT IN MIND MAYBE I SHOULD ALSO ADD ABILITY TO SEARCH BY FLICKR TAGS
+                    */}
 
                     <div className="form-component-wrapper">
                         <SubmitButton onClick={(e)=>this.createNewTrip(e)} value={`${this.state.creatingTrip ? 'Creating Trip...' : 'Create Trip'}`} />
