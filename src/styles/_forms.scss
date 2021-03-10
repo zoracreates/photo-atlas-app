@@ -8,7 +8,23 @@
     min-width: 300px;
 }
 
+/*character count*/
+form .character-count {
+    @extend %caption_font;
+    color: $gray;
+    font-weight: 400;
+    margin-top: .5rem
+}
 
+/*fieldset*/
+
+fieldset {
+    padding: 0px;
+    border: 0px;
+    legend {
+        margin-bottom: 1rem;
+    }
+}
 
 /* block wrapper */ 
 
@@ -226,7 +242,7 @@ input[type="file"]{
         /* When the checkbox is checked, add a blue background */
         &:checked ~ .checkmark,
         &:checked ~ .radiomark {
-            background-color: $pimary_accent_color;
+            background-color: $primary_accent_color;
             
             /* Show the checkmark when checked */
             &:after {

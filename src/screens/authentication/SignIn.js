@@ -11,10 +11,15 @@ function SignIn(props) {
   return (
     <>
       <div className={`container mobile-padding`}>
-        <h2>Sign In</h2>
-        <h3 className="h5-font">Sign in to {props.introtext}.</h3>
+        <div className={props.hideTitle ? "hidden" : "visible"}>
+          {props.tabContent ? <h3>Sign In</h3> : <h2>Sign In</h2>}
 
-        <form action={"/"} onSubmit={(e) => props.handeleSubmit(e)}>
+          {props.tabContent ?
+            <h4 className="h5-font">Sign in to {props.introtext}.</h4> :
+            <h3 className="h5-font">Sign in to {props.introtext}.</h3>}
+        </div>
+
+        <form action={"/"} onSubmit={(e) => props.handleSubmit(e)}>
 
           <div className="form-component-wrapper">
             <label htmlFor="email">Email</label>
@@ -43,13 +48,15 @@ function SignIn(props) {
 
 SignIn.propTypes = {
   introtext: PropTypes.string,
-  handeleSubmit: PropTypes.func,
+  handleSubmit: PropTypes.func,
   email: PropTypes.string,
   handleEmailInput: PropTypes.func,
   emailError: PropTypes.string,
   password: PropTypes.string,
   handlePassInput: PropTypes.func,
-  passError:  PropTypes.string
+  passError: PropTypes.string,
+  tabContent: PropTypes.bool,
+  hiddeTitle: PropTypes.bool
 }
 
 

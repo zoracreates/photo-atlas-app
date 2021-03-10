@@ -11,6 +11,7 @@
 @import '_forms.scss';
 @import '_filters.scss';
 @import '_user.scss';
+@import '_modals.scss';
 
 /* COLORS */
 body {
@@ -20,6 +21,11 @@ body {
 a,
 .button-link {
     color: $link_color;
+}
+
+.hidden {
+  display: none;
+  visibility: hidden;
 }
 
 .caption {
@@ -102,23 +108,34 @@ p.results-status {
 
 .location {
     h2 {
-      @extend %headline4_font;
+      @extend %headline5_font;
       margin-bottom: 1rem;
     }
 
     h3 {
-      @extend %headline5_font;
+      @extend %headline6_font;
       margin-bottom: .5rem;
-      
     }
 
     .data-container {
       border-top: 1px $gray solid;
     }
+
+    .actions {
+      margin: 0px;
+      padding: 0px;
+      list-style: none;
+      li {
+        &:not(:first-child) {
+          display: none;
+        }
+        &:not(:last-child) {
+          padding-right: 20px;
+        }
+      }
+      
+    }
 }
-
-
-
 
 .subject-indicators {
   margin: 10px 0px 0px 0px;
@@ -203,6 +220,29 @@ p.results-status {
 
 }
 
+.trips {
+  h3 {
+    margin-top: 0px;
+  }
+}
+
+.manage-trips-modal ul.existing-trips {
+  padding: 0px;
+  margin: 0px;
+  list-style: none;
+  max-height: 90vh;
+  overflow: scroll;
+}
+
+.manage-trips-modal form:not(:last-child){
+  border-bottom: 1px solid $light_border_color;
+}
+
+.manage-trips-modal .modal-main h3 {
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
 
 
 @media (min-width: 769px) {
@@ -227,5 +267,29 @@ p.results-status {
 
   .search {
     margin-bottom: -20px;
+  }
+
+  .location {
+    h2 {
+     // @extend %headline4_font;
+      font-family: $serif_font;
+      font-size: 2.375rem; // 38px
+      font-weight: $normal_weight;
+      letter-spacing: 0.01625rem; // 0.25px 
+    }
+
+    h3 {
+      //@extend %headline5_font;
+      font-family: $serif_font;
+      font-size: 1.625rem; // 26px
+      font-weight: $normal_weight;
+      letter-spacing: 0px; // 0px  
+    }
+
+    .actions {
+      li {
+        display: inline-block !important;
+      }
+    }
   }
 }

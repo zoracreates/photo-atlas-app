@@ -1,0 +1,100 @@
+body {
+    position: relative;
+}
+
+.modal-wrapper,
+.modal-overlay {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0px;
+    right: 0px;
+}
+
+.modal-wrapper {
+    max-height: 100vh;
+}
+
+.modal-overlay.closed,
+.modal-wrapper.closed {
+    display: none;
+    visibility: hidden;
+}
+
+.modal-overlay.open {
+    display: block;
+}
+
+.modal-wrapper.open {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    visibility: visible;
+}
+
+.modal-overlay {
+    background-color: rgba(255, 255, 255, 0.5);
+    z-index: 1000;
+}
+
+.modal-body {
+    min-height: 200px;
+    position: relative;
+    width: 310px;
+    z-index: 1001;
+    background-color: $white;
+    border: 1px solid $light_border_color;
+
+    .caption-font {
+        color: $gray;
+    }
+
+    label.caption-font {
+        margin-bottom: .75rem;
+        padding-left: 1.7em;
+    }
+    .modal-header {
+        padding: 2%;
+        text-align: center;
+        
+        &::after {
+            content: '';
+            display: block;
+            margin: 0px auto;
+            height: 1px;
+            width: 100px;
+            background-color: $gray;
+        }
+        
+
+        h2 {
+            @extend %overline_font;
+            margin-top: 1.625rem;
+            margin-bottom: 0px;
+        }
+
+        h3 {
+            @extend %caption_font;
+            font-size: 0.625rem;
+            color: $gray_text_color;
+            margin-bottom: .5rem;
+        }
+    }
+
+    .modal-content-padding {
+        padding: 4%;
+    }
+
+    .secondary-button.back-button {
+        margin: 0px
+    }
+    
+    
+}
+
+.modal-main {
+    input.text-bar {
+        min-width: 0px;
+        width: 100%;
+    }
+}

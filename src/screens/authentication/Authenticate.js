@@ -24,7 +24,7 @@ class Authenticate extends React.Component {
         loading: false
     }
 
-    handeleSignIn(e) {
+    handleSignIn(e) {
 
         e.preventDefault();
         this.setState({
@@ -43,7 +43,14 @@ class Authenticate extends React.Component {
             signInMethods => {
                 if (signInMethods.indexOf(firebase.auth.EmailAuthProvider.EMAIL_PASSWORD_SIGN_IN_METHOD) !== -1) {
 
-                    firebase.auth().signInWithEmailAndPassword(email, password)
+                    firebase.auth().signInWithEmailAndPassword(email, password).then(
+                        (userCredential) => {
+                            if(this.props.afterSignIn) {
+                                let user = userCredential.user;
+                                this.props.afterSignIn(user)
+                            }
+                        }
+                    )
                         .catch((error) => {
                             let errorCode = error.code;
                             let errorMessage = error.message;
@@ -72,7 +79,7 @@ class Authenticate extends React.Component {
     }
 
 
-    handeleCreateAccount(e) {
+    handleCreateAccount(e) {
 
         e.preventDefault();
         this.setState({
@@ -154,8 +161,14 @@ class Authenticate extends React.Component {
                               }).catch(function(error) {
                                 console.log(error)
                               });
-                        }
 
+                                if(this.props.afterCreateAccount) {
+                                    let user = userCredential.user;
+                                    this.props.afterCreateAccount(user)
+                                }
+                            
+                            }
+                            
                         )
                             .catch((error) => {
                                 var errorCode = error.code;
@@ -209,7 +222,11 @@ class Authenticate extends React.Component {
 
 
     changeUserType() {
-        this.setState({newUser: !this.state.newUser})
+        this.setState({newUser: !this.state.newUser}, () => {
+            if(this.props.changeUserOnParent) {
+                this.props.changeUserOnParent(this.state.newUser)
+            }
+        })
     }
 
 
@@ -242,8 +259,10 @@ class Authenticate extends React.Component {
             return (
                 <>
                     <SignUp
+                        hideTitle={this.props.hideTitle ? true : false }
+                        tabContent={this.props.tabContent}
                         introtext={text}
-                        handeleSubmit={(e) => this.handeleCreateAccount(e)}
+                        handleSubmit={(e) => this.handleCreateAccount(e)}
                         email={this.state.email}
                         handleEmailInput={(e) => this.handleEmailInput(e)}
                         emailError={this.state.emailError}
@@ -271,8 +290,10 @@ class Authenticate extends React.Component {
             return (
                 <>
                     <SignIn
+                        hideTitle={this.props.hideTitle ? true : false }
+                        tabContent={this.props.tabContent}
                         introtext={text}
-                        handeleSubmit={(e) => this.handeleSignIn(e)}
+                        handleSubmit={(e) => this.handleSignIn(e)}
                         email={this.state.email}
                         handleEmailInput={(e) => this.handleEmailInput(e)}
                         emailError={this.state.emailError}
@@ -310,7 +331,11 @@ class Authenticate extends React.Component {
 }
 
 Authenticate.propTypes = {
-    logInLocation: PropTypes.string
+    logInLocation: PropTypes.string,
+    tabContent: PropTypes.bool,
+    hideTitle: PropTypes.bool,
+    afterSignIn: PropTypes.func,
+    afterCreateAccount: PropTypes.func
 }
 
 

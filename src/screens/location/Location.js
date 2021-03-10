@@ -1,13 +1,16 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from 'react'
+import PropTypes from 'prop-types'
 
 import PhotoSlider from '../../components/slider/PhotoSlider'
 import SubjectIndicators from '../../components/content/SubjectIndicators'
 import getFlickrPhotoInfo from '../../utils/flickr/getFlickrPhotoInfo'
-import createFlickrImageUrl from '../../utils/flickr/createFlickrImageUrl';
-import getFlickrPlace from '../../utils/flickr/getFlickrPlace';
-import getFlickrPhotos from '../../utils/flickr/getFlickrPhotos';
+import createFlickrImageUrl from '../../utils/flickr/createFlickrImageUrl'
+import getFlickrPlace from '../../utils/flickr/getFlickrPlace'
+import getFlickrPhotos from '../../utils/flickr/getFlickrPhotos'
 import filterTags from '../../utils/filterTags'
+import { DirectionsLarge } from '../../components/buttons/DirectionsButtons'
+import { AddToTripsLarge, AddToTripsSmall } from '../../components/buttons/AddToTripsButtons'
+import ManageTripsModal from '../../components/modals/ManageTripsModal'
 
 class Location extends React.Component {
     state = {
@@ -20,10 +23,16 @@ class Location extends React.Component {
         },
         imageList: [],
         subjects: [],
-        firstPhoto: {}
+        firstPhoto: {},
+        showTripsModal: false
     };
 
     _isMounted = false;
+
+
+    manageTripsModal() {
+        this.setState({showTripsModal: !this.state.showTripsModal})
+    }
 
 
     componentDidMount() {
@@ -55,7 +64,6 @@ class Location extends React.Component {
 
                         //get the photo data
                         let photo = this.state.firstPhoto;
-                        console.log(photo.tags)
                         let src = createFlickrImageUrl(photo);
                         let title = photo.title._content;
                         let alt = photo.description._content;
@@ -104,12 +112,12 @@ class Location extends React.Component {
                             //use a "for" loop instead of "forEach" so that it breaks on first match
 
                             let setSubject = (tagsArray, subject) => {
-                                for (let i = 0; i < tagsArray.length; i++ ) {
+                                for (let i = 0; i < tagsArray.length; i++) {
                                     let tag = tagsArray[i];
-                                    if(tagsString.includes(tag)) {
+                                    if (tagsString.includes(tag)) {
                                         subjects.push(subject)
                                         break;
-                                     }
+                                    }
                                 }
                             }
 
@@ -175,7 +183,7 @@ class Location extends React.Component {
 
                             //if the location contains any subjects, update the state
                             if (subjects.length > 0) {
-                                this.setState( {subjects: subjects})
+                                this.setState({ subjects: subjects })
                             }
                         }
 
@@ -291,12 +299,14 @@ class Location extends React.Component {
     }
 
     render() {
+
         let { title,
-            distance,
             saves,
             destination,
             imageList,
             subjects } = this.state;
+
+        let inTrips = false;
 
         if (!title) {
             title = "Untitled Location"
@@ -306,28 +316,50 @@ class Location extends React.Component {
             saves = 0;
         }
 
+        if (saves > 0) {
+            inTrips = true;
+        }
 
         return (
-            <div className={`container location mobile-padding`}>
-
-                {imageList && <PhotoSlider imageList={imageList} />}
-
-                <h2 className={`title`}>{title}</h2>
-                <div className={`gird-70-30`}>
-                    <div className={`col-70`}>
-                        <p className={`meta-data saved`}>Saved by: {saves} {(saves > 1 || saves < 1) ? 'photographers' : 'photographer'}</p>
-                        <p className={`meta-data distance`}>Coordinates: {destination.latitude}, {destination.longitude}</p>
+            <>
+            <div className="location">
+                <div className='dark-background mobile-header'>
+                    <div className={`container mobile-padding`}>
+                        <button onClick={() => { window.history.back() }} className={`secondary-button back-button`}>Back</button>
+                        <AddToTripsSmall added={inTrips} onClick={() => { this.manageTripsModal() }} />
                     </div>
-                    <div className={`col-30`}>
-                        <a href={`https://maps.google.com/?q=${destination.latitude},${destination.longitude}`} className={`action-button directions`}>Directions</a>
-                    </div>
+
                 </div>
+                <div className={`container mobile-padding`}>
 
-                {subjects.length > 0 && <SubjectIndicators subjects={subjects} />}
-               
+                    {imageList && <PhotoSlider imageList={imageList} />}
 
+                    <h2 className={`title`}>{title}</h2>
+                    <div className={`gird-70-30`}>
+                        <div className={`col-70`}>
+                            <p className={`meta-data saved`}>Saved by: {saves} {(saves > 1 || saves < 1) ? 'photographers' : 'photographer'}</p>
+                            <p className={`meta-data marker`}>Coordinates: <a href={`https://maps.google.com/?q=${destination.latitude},${destination.longitude}`}>{destination.latitude}, {destination.longitude}</a></p>
+                        </div>
+                        <div className={`col-30`}>
+                            <ul className="actions">
+                                <li>
+                                    <DirectionsLarge latitude={destination.latitude} longitude={destination.longitude} />
+                                </li>
+                                <li>
+                                    <AddToTripsLarge data-micromodal-trigger="modal-1" onClick={() => { this.manageTripsModal() }} added={inTrips} />
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    {subjects.length > 0 && <SubjectIndicators subjects={subjects} />}
+
+                </div>
+            
 
             </div>
+            <ManageTripsModal isOpen={this.state.showTripsModal} handleClose={()=>this.manageTripsModal()}/>
+            </>
 
         )
 

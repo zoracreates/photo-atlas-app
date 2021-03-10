@@ -10,11 +10,33 @@
     transition-duration: $default-transition-duration;
 }
 
-.button-link {
+.button-link,
+.tabs button {
     @extend %button_font;
     border: none;
     background-color: transparent;
     padding: 0px;
+}
+
+.tabs {
+    list-style: none;
+    margin: 0px;
+    padding: 0px;
+
+    li {
+        display: inline-block;
+        padding: 1rem 1rem 1rem 0px;
+    }
+
+    button {
+        color: $gray;
+        padding-bottom: 1rem;
+    }
+
+    button.active {
+        color: $primary_button_color;
+        border-bottom: 4px solid $primary_button_color;
+    }
 }
 
 .secondary-button {
@@ -35,14 +57,34 @@
     
 }
 
+.mobile-header {
+    .back-button {
+        @extend %caption_font;
+        color: $light_link_color;
+        margin: auto 0px;
+
+        &::before {
+            content: '';
+            display: inline-block;
+            width:  0.75rem;
+            height: 0.75rem;
+            background-image:  url(../images/icons/48px/chevron-white.png);
+            background-repeat: no-repeat;
+            background-size: 0.5rem;
+            background-position: center bottom;
+            transform: rotateY(180deg);
+        }
+    }
+}
+
 .default-button {
     @extend %button;
     color: $light_link_color;
-    background-color: $pimary_button_color;
+    background-color: $primary_button_color;
 }
 
 .default-button:hover {
-    background-color: $pimary_button_pressed_color;
+    background-color: $primary_button_pressed_color;
 }
 
 input[type='submit'] {
@@ -69,10 +111,78 @@ input[type='submit'] {
         background-repeat: no-repeat;
         background-size: 30px;
         margin-bottom: .5rem;
-
     }
 
     &.directions::before {
         background-image: url(../images/icons/96px/directions-blue.png);  
     }
+
+    &.added::before  {
+        background-image: url(../images/icons/96px/heart-fill-blue.png);   
+    }
+
+    &.add::before {
+        background-image: url(../images/icons/96px/heart-outline-blue.png);   
+    }
 }
+
+.action-button-small {
+    @extend %caption_font;
+    text-transform: none;
+    font-size: 0.75rem;
+    background: transparent;
+    border: none;
+    color: $white_text_color;
+    text-decoration: none;
+    display: block;
+    margin: auto 0px;
+    text-align: center;
+
+    &::before {
+        content:'';
+        display: block;
+        margin: auto;
+        height: 20px;
+        width: 20px;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: 20px;
+        margin-bottom: .5rem;
+    }
+
+    &.added::before  {
+        background-image: url(../images/icons/96px/heart-fill-white.png);   
+    }
+
+    &.add::before {
+        background-image: url(../images/icons/96px/heart-outline-white.png);   
+    }
+
+}
+
+.close-button {
+    @extend %caption_font;
+    color: $gray;
+     border: none;
+     margin-left: auto;
+     margin-right: 0px;
+     position: absolute;
+     top: 7px;
+     right: 2px;
+     background-color: transparent;
+     font-size: .5rem;
+   text-transform: uppercase;
+     &::before {
+         content: '';
+         display: block;
+         background-position: center;
+         background-repeat: no-repeat;
+         background-size: .5rem;
+         height: .5rem;
+         width: .5rem;
+         margin: auto;
+         margin-bottom: .2rem;
+         background-position: center;
+         background-image: url(../images/icons/48px/x-black.png)
+     }
+ }
