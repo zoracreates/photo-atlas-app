@@ -6,16 +6,21 @@ class PasswordInput extends React.Component {
     state = {
         type: "password"
     }
-
+    preventKeyDownTrigger(e) {
+       if(e.keyCode === 13 ) {
+        e.preventDefault();
+        return false
+       }
+    }
     changeType(e) {
         e.preventDefault();
+
         if (this.state.type === "password") {
             this.setState(
                 { type: "text" }
             )
         }
         else {
-
             this.setState(
                 { type: "password" }
             )
@@ -31,9 +36,13 @@ class PasswordInput extends React.Component {
 
         return (
             <>
-                <input type={this.state.type} className={`text-bar ${className ? className : ''}`} {...rest} />
+                <input type={this.state.type} 
+                    className={`text-bar ${className ? className : ''}`} 
+                    {...rest} 
+                    onKeyDown={(e)=> this.preventKeyDownTrigger(e)}  />
                 <button className="secondary-button"
-                    onClick={(e) => { this.changeType(e) }}
+                    onClick={(e) => { this.changeType(e, e.keyCode) }}
+                    
                 >Show password</button>
             </>
         )
