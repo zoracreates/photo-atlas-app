@@ -186,3 +186,20 @@ input[type='submit'] {
          background-image: url(../images/icons/48px/x-black.png)
      }
  }
+
+ ul.button-group {
+    margin: 0px;
+    padding: 0px;
+    list-style: none;
+
+    li {
+        display: inline-block;
+    }
+
+    li button.default-button,
+    li button.button-link {
+        font-size: .65rem;
+        min-width: 100px;
+        padding: .65rem;
+    }
+ }

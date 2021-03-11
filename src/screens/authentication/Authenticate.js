@@ -235,7 +235,7 @@ class Authenticate extends React.Component {
 
         let trips = 'trips'
         let add = 'add'
-        let profile = 'profile'
+        let account = 'account'
 
 
         let text;
@@ -247,8 +247,8 @@ class Authenticate extends React.Component {
             case add:
                 text = "add a location"
                 break;
-            case profile:
-                text = "view your profile information"
+            case account:
+                text = "view your account information"
                 break;
             default:
                 text = "continue your PhotoAtlas journey"
