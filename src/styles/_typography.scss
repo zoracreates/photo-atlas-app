@@ -152,11 +152,21 @@ h6,
 }
 
 p.error-font,
-.error-font {
-    color: $alert_color;
+.error-font,
+p.success-font,
+.succes-font  {
     font-weight: bold;
     margin-top: 1rem;
-    
+}
+
+p.error-font,
+.error-font {
+    color: $alert_color;  
+}
+
+p.success-font,
+.success-font {
+    color: $primary_accent_color;
 }
 
 p.meta-data:not(:first-child) {
