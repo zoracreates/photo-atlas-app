@@ -45,7 +45,7 @@ class Authenticate extends React.Component {
 
                     firebase.auth().signInWithEmailAndPassword(email, password).then(
                         (userCredential) => {
-                            if(this.props.afterSignIn) {
+                            if (this.props.afterSignIn) {
                                 let user = userCredential.user;
                                 this.props.afterSignIn(user)
                             }
@@ -148,27 +148,27 @@ class Authenticate extends React.Component {
                         //create account
                         let displayName = firstname;
 
-                        if(firstname && lastname) {
+                        if (firstname && lastname) {
                             displayName = `${firstname} ${lastname}`
-                        }   
+                        }
 
                         firebase.auth().createUserWithEmailAndPassword(email, password).then(userCredential => {
                             var user = userCredential.user;
                             user.updateProfile({
                                 displayName: displayName,
-                              }).then(function() {
+                            }).then(function () {
                                 console.log("success")
-                              }).catch(function(error) {
+                            }).catch(function (error) {
                                 console.log(error)
-                              });
+                            });
 
-                                if(this.props.afterCreateAccount) {
-                                    let user = userCredential.user;
-                                    this.props.afterCreateAccount(user)
-                                }
-                            
+                            if (this.props.afterCreateAccount) {
+                                let user = userCredential.user;
+                                this.props.afterCreateAccount(user)
                             }
-                            
+
+                        }
+
                         )
                             .catch((error) => {
                                 var errorCode = error.code;
@@ -222,13 +222,12 @@ class Authenticate extends React.Component {
 
 
     changeUserType() {
-        this.setState({newUser: !this.state.newUser}, () => {
-            if(this.props.changeUserOnParent) {
+        this.setState({ newUser: !this.state.newUser }, () => {
+            if (this.props.changeUserOnParent) {
                 this.props.changeUserOnParent(this.state.newUser)
             }
         })
     }
-
 
     renderContent(newUser) {
 
@@ -259,7 +258,7 @@ class Authenticate extends React.Component {
             return (
                 <>
                     <SignUp
-                        hideTitle={this.props.hideTitle ? true : false }
+                        hideTitle={this.props.hideTitle ? true : false}
                         tabContent={this.props.tabContent}
                         introtext={text}
                         handleSubmit={(e) => this.handleCreateAccount(e)}
@@ -290,7 +289,7 @@ class Authenticate extends React.Component {
             return (
                 <>
                     <SignIn
-                        hideTitle={this.props.hideTitle ? true : false }
+                        hideTitle={this.props.hideTitle ? true : false}
                         tabContent={this.props.tabContent}
                         introtext={text}
                         handleSubmit={(e) => this.handleSignIn(e)}
@@ -301,6 +300,7 @@ class Authenticate extends React.Component {
                         handlePassInput={(e) => this.handlePassInput(e)}
                         passError={this.state.passError}
                         loading={this.state.loading}
+                        logInLocation={logInLocation}
                     />
                 </>
             )
@@ -310,7 +310,7 @@ class Authenticate extends React.Component {
 
     render() {
 
-        let {newUser} = this.state;
+        let { newUser } = this.state;
 
         return (
             <>
@@ -318,8 +318,8 @@ class Authenticate extends React.Component {
                 {this.renderContent(newUser)}
 
                 <div className="container mobile-padding">
-                    <button className="button-link" onClick={()=>this.changeUserType()}>
-                       {newUser ? "Sign In" : "Create Account"} 
+                    <button className="button-link" onClick={() => this.changeUserType()}>
+                        {newUser ? "Sign In" : "Create Account"}
                     </button>
                 </div>
             </>
