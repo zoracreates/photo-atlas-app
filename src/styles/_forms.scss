@@ -41,6 +41,13 @@ fieldset {
     margin: 40px 0;
 }
 
+.show-pass {
+    @extend %caption_font;
+    margin-top: .25rem;
+}
+
+
+
 
 
 /* Search Bar */

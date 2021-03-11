@@ -9,7 +9,7 @@ function Navbar() {
 
     let tripsPath = new RegExp('/trips/?');
     let addPath = new RegExp('/add/?');
-    let profilePath = new RegExp('/profile/?');
+    let profilePath = new RegExp('/account/?');
     let logInPath = new RegExp('/login/?');
 
     let tripsActive = tripsPath.test(location);
@@ -49,8 +49,8 @@ function Navbar() {
                         </li>
 
                         <li>
-                            <Link to="/profile" className={`profile ${profileActive ? 'active' : 'normal'}`}>
-                                <span>Profile</span>
+                            <Link to="/account" className={`profile ${profileActive ? 'active' : 'normal'}`}>
+                                <span>Account</span>
                             </Link>
                         </li>
                     </ul>

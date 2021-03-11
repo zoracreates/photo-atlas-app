@@ -6,7 +6,7 @@ import Navbar from './components/navigation/Navbar';
 import AddLocation from './screens/AddLocation';
 import Home from './screens/explore/Home';
 import SearchResults from './screens/explore/SearchResults';
-import Profile from './screens/Profile';
+import Account from './screens/Account';
 import Trips from './screens/trips/Trips';
 import PrivateRoute from './components/navigation/PrivateRoute';
 import Footer from './components/content/Footer';
@@ -68,7 +68,7 @@ class App extends React.Component {
 
             <PrivateRoute path="/add" component={AddLocation} isAuthenticated={signedIn} isVerified={userVerified} logInLocation={"add"} />
 
-            <PrivateRoute path="/profile" component={Profile} isAuthenticated={signedIn} isVerified={userVerified} logInLocation={"profile"} />
+            <PrivateRoute path="/account" component={Account} isAuthenticated={signedIn} isVerified={userVerified} logInLocation={"account"} />
 
 
           </Switch>

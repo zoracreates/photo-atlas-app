@@ -68,7 +68,7 @@ class SignIn extends React.Component {
           </div>
 
     
-          <p className={`${this.state.successReset ? "visible" : "hidden"} success-font`}>Check your email to reset your password.</p> 
+          <p className={`${this.state.successReset ? "visible" : "hidden"} success-font`} aria-live="polite">Check your email to reset your password.</p> 
 
           <form className={this.state.forgotPassword? 'hidden' : 'visible'} action={"/"} onSubmit={(e) => this.props.handleSubmit(e)}>
 

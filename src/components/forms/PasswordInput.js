@@ -1,20 +1,14 @@
 import PropTypes from 'prop-types';
 import React from 'react'
+import CheckBox from './CheckBox'
 
 
 class PasswordInput extends React.Component {
     state = {
         type: "password"
     }
-    preventKeyDownTrigger(e) {
-       if(e.keyCode === 13 ) {
-        e.preventDefault();
-        return false
-       }
-    }
-    changeType(e) {
-        e.preventDefault();
 
+    changeType() {
         if (this.state.type === "password") {
             this.setState(
                 { type: "text" }
@@ -28,7 +22,6 @@ class PasswordInput extends React.Component {
         }
     }
 
-
     render() {
 
         let { className, ...rest } = this.props;
@@ -39,11 +32,11 @@ class PasswordInput extends React.Component {
                 <input type={this.state.type} 
                     className={`text-bar ${className ? className : ''}`} 
                     {...rest} 
-                    onKeyDown={(e)=> this.preventKeyDownTrigger(e)}  />
-                <button className="secondary-button"
-                    onClick={(e) => { this.changeType(e, e.keyCode) }}
-                    
-                >Show password</button>
+                  /><br/>
+                
+
+            <CheckBox className="show-pass" onChange={() => { this.changeType()}} labelText="Show password" />
+
             </>
         )
     }
