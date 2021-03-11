@@ -32,7 +32,7 @@ class ResetPasswordModal extends React.Component {
 
         let form = this;
 
-        form.setState({ emailError: '' })
+        form.setState({ error: '' })
 
         let actionCodeSettings = { url: `http://localhost:3000/${logInLocation}` }
 
@@ -63,7 +63,7 @@ class ResetPasswordModal extends React.Component {
                 <div className="modal-content-padding center-text">
 
                     {!this.state.error && !this.state.successReset && 
-                    <h3 className="h5-font center-text">Are you sure you want to reset your password?</h3>}
+                    <h3 className="h5-font">Are you sure you want to reset your password?</h3>}
                     {this.state.error &&
                         <p className="error-font" aria-live="polite">
                             {this.state.error}
