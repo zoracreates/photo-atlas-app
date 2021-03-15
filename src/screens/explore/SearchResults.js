@@ -40,7 +40,7 @@ class SearchResults extends React.Component {
         }
 
         //create a list of locations
-        let existingLocations = [1];
+        let existingLocations = [];
 
         let list = [];
 
@@ -48,6 +48,8 @@ class SearchResults extends React.Component {
         //get from firebase
         //in firebase I need to store the photo.id and the photo.woeid
 
+
+        //get from Flickr
 
         getFlickrPhotos(options).then(data => {
 

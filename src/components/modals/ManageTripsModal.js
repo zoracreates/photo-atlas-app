@@ -6,6 +6,8 @@ import Modal from './Modal'
 import TexInput from '../forms/TextInput'
 import SubmitButton from '../forms/SubmitButton'
 import RadioButton from '../forms/RadioButton'
+import { generateDate, generateTimeNumber } from '../../utils/generateDateAndTime'
+import generateID from '../../utils/generateId'
 
 /*let tripsListPalceholder = [
     {
@@ -29,20 +31,28 @@ import RadioButton from '../forms/RadioButton'
     }
 ] */
 
+
+
 class ManageTripsModal extends React.Component {
     state = {
         modalTitle: 'Add or Remove from Trips',
         modalDescription: '',
         isAuthenticated: false,
+        userId: '',
         existingTrips: [],
         newTripPrivacy: 'public',
         newTripName: '',
+        newTripTags: '',
         newUser: false,
         creatingTrip: false,
         tripNameLength: 0,
         tripNameError: '',
+        tripTagsError: '',
         newTripCreated: false,
-        needNewTrip: false
+        needNewTrip: false,
+        errorCreatingTrip: '',
+        errorCreatingLocation: '',
+        errorUpdatingUserTrips: ''
     }
 
     _isMounted = false;
@@ -51,7 +61,11 @@ class ManageTripsModal extends React.Component {
         this.setState({
             newTripCreated: false,
             newTripPrivacy: 'public',
-            newTripName: ''
+            newTripName: '',
+            newTripTags: '',
+            errorCreatingTrip: '',
+            errorCreatingLocation: '',
+            errorUpdatingUserTrips: ''
         }, () => this.props.handleClose());
     }
 
@@ -79,13 +93,13 @@ class ManageTripsModal extends React.Component {
     checkAuth(user) {
         if (this._isMounted) {
 
-            if(!user) {
+            if (!user) {
                 user = firebase.auth().currentUser;
             }
 
             if (user) {
-                this.setState({ isAuthenticated: true })
-           
+                this.setState({ isAuthenticated: true, userId: user.uid })
+
                 if (this.state.existingTrips.length < 1) {
                     this.setState(
                         {
@@ -113,6 +127,7 @@ class ManageTripsModal extends React.Component {
         this._isMounted = true;
 
         this.checkAuth();
+        //set a listner or trips https://firebase.google.com/docs/database/web/read-and-write#web_value_events
     }
 
     renderModalContent() {
@@ -123,13 +138,13 @@ class ManageTripsModal extends React.Component {
         if (!this.state.isAuthenticated) {
             return (
                 <div className="modal-content-padding">
-                    <Authenticate 
-                        hideTitle 
+                    <Authenticate
+                        hideTitle
                         changeUserOnParent={(newUserValue) => this.changeUserType(newUserValue)}
-                        afterSignIn={(user)=> this.checkAuth(user)}
-                        afterCreateAccount={(user)=> this.checkAuth(user)}
-                    
-                     />
+                        afterSignIn={(user) => this.checkAuth(user)}
+                        afterCreateAccount={(user) => this.checkAuth(user)}
+
+                    />
                 </div>
             )
         } else {
@@ -138,12 +153,12 @@ class ManageTripsModal extends React.Component {
                 return this.selectExistingTrip();
             }
             else {
-                if(!this.state.newTripCreated) {
+                if (!this.state.newTripCreated) {
                     return this.getNewTripInfo();
                 } else {
                     return this.newTripCreated()
                 }
-                
+
             }
 
         }
@@ -157,7 +172,7 @@ class ManageTripsModal extends React.Component {
             <>
                 {this.renderExistingTrips()}
                 <div className="modal-content-padding center-text">
-                    <button onClick={()=>this.switchForm()} className="button-link"> + Create a New Trip</button>
+                    <button onClick={() => this.switchForm()} className="button-link"> + Create a New Trip</button>
                 </div>
 
             </>
@@ -165,7 +180,7 @@ class ManageTripsModal extends React.Component {
     }
 
     switchForm() {
-        this.setState({needNewTrip: !this.state.needNewTrip})
+        this.setState({ needNewTrip: !this.state.needNewTrip })
     }
 
     renderExistingTrips() {
@@ -213,85 +228,270 @@ class ManageTripsModal extends React.Component {
             tripNameLength: valueLength,
             tripNameError: ""
         })
-        if(valueLength > 50) {
+        if (valueLength > 50) {
             this.setState({
                 tripNameError: "Your trip name is too long."
             })
-        }     
+        }
     }
 
+    handleTripTagsInput(e) {
+        e.preventDefault();
+
+        this.setState({
+            newTripTags: e.target.value,
+            tripTagsError: ""
+        }, () => {
+            //check if tags have special characters other than comma
+            let testString = /^[a-zA-Z ,0-9]+$/;
+
+            if (this.state.newTripTags && !testString.test(this.state.newTripTags)) {
+                this.setState({
+                    tripTagsError: "Tags may only contain letters, numbers, and commas"
+                })
+            }
+        });
 
 
+    }
+
+    renderDatabaseErrors() {
+        if (
+            this.state.errorCreatingLocation ||
+            this.state.errorUpdatingUserTrips ||
+            this.state.errorCreatingTrip
+        ) {
+            return (
+                <div className="error-font" aria-live="polite">
+                    <ul>
+                        {this.state.errorCreatingTrip && <li>{this.state.errorCreatingTrip}</li>}
+                        {this.state.errorUpdatingUserTrips && <li >{this.state.errorUpdatingUserTrips}</li>}
+                        {this.state.errorCreatingLocation && <li>{this.state.errorCreatingLocation}</li>}
+                    </ul>
+                </div>
+            )
+        }
+
+
+    }
 
     getNewTripInfo() {
         return (
             <>
                 <h3 className="h5-font center-text">Create a New Trip</h3>
+                {this.renderDatabaseErrors()}
+
                 <form className="modal-content-padding">
                     <div className="form-component-wrapper">
                         <label htmlFor="trip-name">Trip Name (Max 50 Characters)</label>
-                        <TexInput id="trip-name" value={this.state.newTripName} onChange={(e) => this.handleTripNamelInput(e)} required />
+                        <TexInput placeholder="Beautiful City" id="trip-name" value={this.state.newTripName} onChange={(e) => this.handleTripNamelInput(e)} required />
                         {this.state.tripNameLength !== 0 && <p className="character-count" aria-live="polite">Characters left: {50 - this.state.tripNameLength}</p>}
                         {this.state.tripNameError && <p className="error-font" aria-live="polite">{this.state.tripNameError}</p>}
                     </div>
 
+                    <div className="form-component-wrapper">
+                        <label htmlFor="trip-tags">Tags (Comma separated keywords)</label>
+                        <TexInput placeholder="city, urban architecture" id="trip-tags" value={this.state.newTripTags} onChange={(e) => this.handleTripTagsInput(e)} />
+                        {this.state.tripTagsError && <p className="error-font" aria-live="polite">{this.state.tripTagsError}</p>}
+                    </div>
+
                     <fieldset className="form-component-wrapper">
-                    <legend>Visibility Settings</legend>
-                        <RadioButton onChange={(e) => this.handleNewTripPrivacy(e)} labelText="Public" defaultChecked name="trip-privacy" value="public"/>
+                        <legend>Visibility Settings</legend>
+                        <RadioButton onChange={(e) => this.handleNewTripPrivacy(e)} labelText="Public" defaultChecked name="trip-privacy" value="public" />
                         <label className="caption-font" htmlFor="public">Anyone on Photo Atlas</label>
-                        <RadioButton  onChange={(e) => this.handleNewTripPrivacy(e)} labelText="Private" name="trip-privacy" value="private"/>
+                        <RadioButton onChange={(e) => this.handleNewTripPrivacy(e)} labelText="Private" name="trip-privacy" value="private" />
                         <label className="caption-font" htmlFor="private">Only you and those you share this trip with</label>
                     </fieldset>
 
-                    {/* 
-                        INSERT A TEXT INPUT TO ALLOW PEOPLE TO ADD TAGS TO TRIPS FOR SEARCHABILITY, 
-                        I THINK IT'LL BE GOOD TO ALSO ALLOW PEOPLE TO SEARCH BY LOCATIONS IN THE TRIPS
-                        SO MAYBE THE TRIPS SCREEN HAS 2 SEARCH BARS
-                        AND WITH THAT IN MIND MAYBE I SHOULD ALSO ADD ABILITY TO SEARCH BY FLICKR TAGS
-                    */}
-
                     <div className="form-component-wrapper">
-                        <SubmitButton onClick={(e)=>this.createNewTrip(e)} value={`${this.state.creatingTrip ? 'Creating Trip...' : 'Create Trip'}`} />
+                        <SubmitButton onClick={(e) => this.createNewTrip(e)} value={`${this.state.creatingTrip ? 'Creating Trip...' : 'Create Trip'}`} />
                     </div>
 
 
                 </form>
 
                 {this.state.existingTrips.length > 0 &&
-                <div className="modal-content-padding">
-                    <button onClick={()=>this.switchForm()} className="secondary-button back-button">Back to Existing Trips</button>
-                </div>
-                } 
+                    <div className="modal-content-padding">
+                        <button onClick={() => this.switchForm()} className="secondary-button back-button">Back to Existing Trips</button>
+                    </div>
+                }
             </>
         )
 
     }
 
-    newTripCreated() {  
-        return(
+    newTripCreated() {
+        return (
             <div className="modal-content-padding center-text">
-            <h3 className="h5-font center-text">
-                This location was added to your new trip.
-            </h3>
+                <h3 className="h5-font center-text">
+                    This location was added to your new trip.
+                </h3>
             </div>
         )
 
     }
 
-    createNewTrip(e){
+    createNewTrip(e) {
         e.preventDefault();
-        if(!this.state.newTripName) {
-            this.setState({tripNameError: 'Please name your trip.'})
+
+        this.setState(
+            {
+                errorCreatingTrip: '',
+                errorCreatingLocation: '',
+                errorUpdatingUserTrips: ''
+            }
+        )
+
+        if (!this.state.newTripName) {
+            this.setState({ tripNameError: 'Please name your trip.' })
         }
-        if(!this.state.tripNameError && this.state.newTripName) {
-            this.setState({creatingTrip: true})
-            console.log('created trip')
-            this.setState({
-                creatingTrip: false,
-                newTripCreated: true,
-                modalTitle: 'You have a New Trip',
-                modalDescription: ''
+
+        if (!this.state.tripNameError && this.state.newTripName && !this.state.tripTagsError) {
+            this.setState({ creatingTrip: true })
+
+            let locationId = this.props.locationId;
+            let locationPhotosArray = this.props.photos;
+            let locationName = locationPhotosArray[0].title;
+            let locationCoordinates = this.props.coordinates;
+            let locationFiltersArray = this.props.filters;
+
+            // arrays are handled like objects on Firebase Realtime Database
+            //https://firebase.googleblog.com/2014/04/best-practices-arrays-in-firebase.html
+            //convert props arrays into objects for better database handling
+            let locationFilters = {};
+            let locationPhotos = {};
+
+            locationPhotosArray.forEach(photo => {
+                let flickrId = photo.flickrId;
+                let photoId;
+                if (flickrId) {
+                    photoId = `flickrPhoto-${flickrId}`
+                }
+
+                locationPhotos[photoId] = {
+                    title: photo.title,
+                    author: photo.author,
+                    src: photo.src,
+                    creditUrl: photo.creditUrl ? photo.creditUrl : null
+                }
+            }
+            )
+
+
+            locationFiltersArray.forEach(filter => {
+
+                locationFilters[filter] = true
+
+            });
+
+            let tripPrivacy = this.state.newTripPrivacy;
+            let tripName = this.state.newTripName;
+            let tripFeaturedImg = locationPhotosArray[0];
+            let tripFeaturedImgSrc = tripFeaturedImg.src;
+            let tripAuthor = this.state.userId;
+            let tripTags = this.state.newTripTags;
+            if (tripTags.endsWith(",") || tripTags.endsWith(" ,")) {
+                tripTags = tripTags.slice(0, -1)
+            }
+            let date = generateDate();
+            let time = generateTimeNumber();
+            let tripId = generateID(7, `trip-${date}`, `${time}`)
+
+            let locations = {}
+            locations[locationId] = true;
+
+            let database = firebase.database();
+
+
+
+
+            // create new trip
+            database.ref(`${tripPrivacy}Trips/` + tripId).set({
+                tripName: tripName,
+                featuredImg: tripFeaturedImgSrc,
+                author: tripAuthor,
+                loacationsCount: 1,
+                locations: locations,
+                tags: tripTags,
+                createdOn: date,
+                lastEdited: date
+            }).catch((error) => {
+                this.setState({ errorCreatingTrip: `Could not create trip: ${error.message}` })
+            }).then(() => {
+                //add trips to user trips
+                database.ref(`userTrips/${tripAuthor}/${tripId}`).set({
+                    tripName: tripName,
+                    featuredImg: tripFeaturedImgSrc,
+                    tripPrivacy: tripPrivacy,
+                    locationsCount: 1
+                }).catch((error) => {
+                    this.setState({ errorUpdatingUserTrips: `Could to your list of trips: ${error.message}` })
+                });
+            }).then(() => {
+                if (locationId.startsWith("flickr-")) { // check if primary source is from flickr or user created
+
+                    let locationRef = `appLocations/flickrSourced/${locationId}`;
+
+            //check if location exists in lists of locations if not, then add location
+            //https://firebase.google.com/docs/database/web/read-and-write#save_data_as_transactions
+
+                    database.ref(locationRef).transaction((location) => {
+                        if (location) {
+                            //if this author has not saved this location before, add them to the list of saved
+                            if (!location.savedBy[tripAuthor]) {
+                                location.savedBy[tripAuthor] = true;
+                                if (location.savedCount) {
+                                    location.savedCount++;
+                                } else {
+                                    location.savedCount = 1;
+                                }
+                            }
+                        } else {
+                            //create the location
+                            let savedBy = {};
+                            savedBy[tripAuthor] = true;
+
+                            database.ref(locationRef).set({
+                                locationName: locationName,
+                                photos: locationPhotos,
+                                coordinates: locationCoordinates,
+                                savedCount: 1,
+                                savedBy: savedBy,
+                                filters: locationFilters,
+                                addedDate: date,
+                                curated: false, //indicates that app has not been curated by a PhotoAtlas user
+                                userLastEditedDate: null
+                            }).catch(
+                                (error) => {
+                                    this.setState({ errorCreatingLocation: `Could not add location to database: ${error.message}` })
+                                }
+                            );
+
+                        }
+                    })
+                } 
+
+            }).then(() =>{
+                //TODO //IMPORTANT HEY DON'T FOGET THIS
+                console.log("add filters to filters node of database")
+            }
+
+            ).then( () => {
+
+            if (!this.state.errorCreatingTrip && !this.state.errorCreatingLocation && !this.state.errorUpdatingUserTrips) {
+                this.setState({
+                    creatingTrip: false,
+                    newTripCreated: true,
+                    modalTitle: 'You have a New Trip',
+                    modalDescription: ''
+                })
+            } else {
+                this.setState({
+                    creatingTrip: false
+                })
+            }
             })
+
         }
 
     }
@@ -308,7 +508,7 @@ class ManageTripsModal extends React.Component {
     }
 
     handleNewTripPrivacy(e) {
-        this.setState({newTripPrivacy: e.target.value},() => console.log(this.state.newTripPrivacy))
+        this.setState({ newTripPrivacy: e.target.value }, () => console.log(this.state.newTripPrivacy))
     }
 
     componentWillUnmount() {
@@ -327,7 +527,7 @@ class ManageTripsModal extends React.Component {
                 modalTitle={modalTitle}
                 modalDescription={modalDescription}
                 isOpen={this.props.isOpen}
-                handleClose={()=>this.closeModal()}
+                handleClose={() => this.closeModal()}
             >
                 {this.renderModalContent()}
             </Modal>

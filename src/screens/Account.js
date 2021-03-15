@@ -37,7 +37,6 @@ class Account extends React.Component {
         this.setState({ resetPassword: false })
     }
 
-
     openDisplayNameModal() {
         this.setState({ changeName: true })
     }
