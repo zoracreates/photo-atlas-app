@@ -56,31 +56,29 @@ class Account extends React.Component {
 
             if (userId) {
                 let database = firebase.database();
-                
 
-                database.ref(`users/${userId}`).get().then(function(snapshot) {
+
+                database.ref(`users/${userId}`).get().then(function (snapshot) {
                     if (snapshot.exists()) {
-                      console.log(user.email); 
-                      
-                      
-                      let displayName = snapshot.val().displayName;
-                        let email =  user.email;
-                      
+
+                        let displayName = snapshot.val().displayName;
+                        let email = user.email;
 
 
-                      component.setState({
-                        displayName: displayName,
-                        email: email
-                    })
+
+                        component.setState({
+                            displayName: displayName,
+                            email: email
+                        })
                     }
                     else {
-                      console.log("No data available");
+                        console.log("No data available");
                     }
-                  }).catch(function(error) {
+                }).catch(function (error) {
                     console.error(error);
-                  });
+                });
 
-                
+
 
             }
         }
@@ -95,7 +93,7 @@ class Account extends React.Component {
                     <ul className="settings-list">
                         <li aria-live="polite">
                             Display Name: {this.state.displayName}
-                            <button onClick={() => this.openDisplayNameModal()}className="secondary-button">Change Display Name</button>
+                            <button onClick={() => this.openDisplayNameModal()} className="secondary-button">Change Display Name</button>
                         </li>
                         <li>
                             <p>Email: {this.state.email}</p>
@@ -122,7 +120,7 @@ class Account extends React.Component {
                 <ChangeDisplayNameModal
                     handleClose={() => this.closeDisplayNameModal()}
                     isOpen={this.state.changeName}
-                    triggerUpdate={()=>this.updateUser()}
+                    triggerUpdate={() => this.updateUser()}
                 />
 
             </>

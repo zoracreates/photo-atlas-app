@@ -10,7 +10,6 @@ import filterTags from '../../utils/filterTags'
 import { DirectionsLarge } from '../../components/buttons/DirectionsButtons'
 import { AddToTripsLarge, AddToTripsSmall } from '../../components/buttons/AddToTripsButtons'
 import ManageTripsModal from '../../components/modals/ManageTripsModal'
-import {generateDate, generateTimeNumber} from '../../utils/generateDateAndTime'
 
 
 class Location extends React.Component {
