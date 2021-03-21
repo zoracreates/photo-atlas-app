@@ -69,9 +69,26 @@ class ChangeDisplayNameModal extends React.Component {
         if (!testString.test(newName)) {
             form.setState({ error: "Display can only contain letters, apostrophes, hypens and spaces." })
         } else {
-            user.updateProfile({
-                displayName: newName
-            }).then(function () {
+           // user.updateProfile({
+                //displayName: newName
+                //update in database too
+           // }).then(() => {
+
+                //need to test this !!!!HERE ATTENTION
+                let database = firebase.database();
+
+                let userId = user.uid
+                
+
+                database.ref(`users/${userId}`).set({
+                    displayName: newName
+                }
+                   
+                ).catch((error) => {
+                    console.log(error)
+                })
+           // })
+            .then(function () {
                 // Update successful.
                 form.props.triggerUpdate();
                 form.props.handleClose()

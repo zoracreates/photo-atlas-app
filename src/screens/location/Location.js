@@ -405,7 +405,7 @@ class Location extends React.Component {
                     locationId={this.state.locationId} 
                     photos={this.state.imageList}  
                     coordinates={this.state.destination}
-                    filters={this.state.subjects}
+                    subjects={this.state.subjects}
                     
                     />
             </>

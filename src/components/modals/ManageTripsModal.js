@@ -52,7 +52,8 @@ class ManageTripsModal extends React.Component {
         needNewTrip: false,
         errorCreatingTrip: '',
         errorCreatingLocation: '',
-        errorUpdatingUserTrips: ''
+        errorUpdatingUserTrips: '',
+        errorAddingFilters: ''
     }
 
     _isMounted = false;
@@ -65,7 +66,8 @@ class ManageTripsModal extends React.Component {
             newTripTags: '',
             errorCreatingTrip: '',
             errorCreatingLocation: '',
-            errorUpdatingUserTrips: ''
+            errorUpdatingUserTrips: '',
+            errorAddingFilters: ''
         }, () => this.props.handleClose());
     }
 
@@ -158,9 +160,7 @@ class ManageTripsModal extends React.Component {
                 } else {
                     return this.newTripCreated()
                 }
-
             }
-
         }
 
     }
@@ -259,7 +259,8 @@ class ManageTripsModal extends React.Component {
         if (
             this.state.errorCreatingLocation ||
             this.state.errorUpdatingUserTrips ||
-            this.state.errorCreatingTrip
+            this.state.errorCreatingTrip ||
+            this.state.errorAddingFilters
         ) {
             return (
                 <div className="error-font" aria-live="polite">
@@ -267,6 +268,7 @@ class ManageTripsModal extends React.Component {
                         {this.state.errorCreatingTrip && <li>{this.state.errorCreatingTrip}</li>}
                         {this.state.errorUpdatingUserTrips && <li >{this.state.errorUpdatingUserTrips}</li>}
                         {this.state.errorCreatingLocation && <li>{this.state.errorCreatingLocation}</li>}
+                        {this.state.errorAddingFilters && <li>{this.state.errorAddingFilters}</li>}
                     </ul>
                 </div>
             )
@@ -338,7 +340,8 @@ class ManageTripsModal extends React.Component {
             {
                 errorCreatingTrip: '',
                 errorCreatingLocation: '',
-                errorUpdatingUserTrips: ''
+                errorUpdatingUserTrips: '',
+                errorAddingFilters: ''
             }
         )
 
@@ -353,12 +356,12 @@ class ManageTripsModal extends React.Component {
             let locationPhotosArray = this.props.photos;
             let locationName = locationPhotosArray[0].title;
             let locationCoordinates = this.props.coordinates;
-            let locationFiltersArray = this.props.filters;
+            let locationSubjectsArray = this.props.subjects;
 
             // arrays are handled like objects on Firebase Realtime Database
             //https://firebase.googleblog.com/2014/04/best-practices-arrays-in-firebase.html
             //convert props arrays into objects for better database handling
-            let locationFilters = {};
+            let locationSubjects = {};
             let locationPhotos = {};
 
             locationPhotosArray.forEach(photo => {
@@ -378,9 +381,9 @@ class ManageTripsModal extends React.Component {
             )
 
 
-            locationFiltersArray.forEach(filter => {
+            locationSubjectsArray.forEach(subject => {
 
-                locationFilters[filter] = true
+                locationSubjects[subject] = true
 
             });
 
@@ -423,7 +426,8 @@ class ManageTripsModal extends React.Component {
                     tripName: tripName,
                     featuredImg: tripFeaturedImgSrc,
                     tripPrivacy: tripPrivacy,
-                    locationsCount: 1
+                    locationsCount: 1,
+                    tags: tripTags
                 }).catch((error) => {
                     this.setState({ errorUpdatingUserTrips: `Could to your list of trips: ${error.message}` })
                 });
@@ -432,8 +436,8 @@ class ManageTripsModal extends React.Component {
 
                     let locationRef = `appLocations/flickrSourced/${locationId}`;
 
-            //check if location exists in lists of locations if not, then add location
-            //https://firebase.google.com/docs/database/web/read-and-write#save_data_as_transactions
+                    //check if location exists in lists of locations if not, then add location
+                    //https://firebase.google.com/docs/database/web/read-and-write#save_data_as_transactions
 
                     database.ref(locationRef).transaction((location) => {
                         if (location) {
@@ -457,39 +461,54 @@ class ManageTripsModal extends React.Component {
                                 coordinates: locationCoordinates,
                                 savedCount: 1,
                                 savedBy: savedBy,
-                                filters: locationFilters,
+                                subjects: locationSubjects,
                                 addedDate: date,
                                 curated: false, //indicates that app has not been curated by a PhotoAtlas user
                                 userLastEditedDate: null
+                            }).then(() => {
+
+                                // add subjects record
+                                locationSubjectsArray.forEach(
+
+                                    subject => {
+
+                                        let subjectRef = subject;
+
+                                        let update = {};
+
+                                        update[locationId] = true;
+
+                                        database.ref(`subjects/${subjectRef}`).set(
+                                            update
+                                        ).catch(
+                                            (error) => {
+                                                this.setState({ errorAddingFilter: `Could not add all filters to database: ${error.message}` })
+                                            });
+
+                                    })
+
                             }).catch(
                                 (error) => {
                                     this.setState({ errorCreatingLocation: `Could not add location to database: ${error.message}` })
                                 }
-                            );
-
-                        }
+                            )}
                     })
-                } 
+                }
 
-            }).then(() =>{
-                //TODO //IMPORTANT HEY DON'T FOGET THIS
-                console.log("add filters to filters node of database")
-            }
+            }).then(() => {
 
-            ).then( () => {
-
-            if (!this.state.errorCreatingTrip && !this.state.errorCreatingLocation && !this.state.errorUpdatingUserTrips) {
-                this.setState({
-                    creatingTrip: false,
-                    newTripCreated: true,
-                    modalTitle: 'You have a New Trip',
-                    modalDescription: ''
-                })
-            } else {
-                this.setState({
-                    creatingTrip: false
-                })
-            }
+                if (!this.state.errorCreatingTrip && !this.state.errorCreatingLocation && !this.state.errorUpdatingUserTrips && !this.state.errorAddingFilters) {
+                    this.setState({
+                        creatingTrip: false,
+                        newTripCreated: true,
+                        modalTitle: 'You have a New Trip',
+                        modalDescription: ''
+                    })
+                } else {
+                    this.setState({
+                        creatingTrip: false
+                    })
+                }
             })
 
         }
@@ -508,7 +527,7 @@ class ManageTripsModal extends React.Component {
     }
 
     handleNewTripPrivacy(e) {
-        this.setState({ newTripPrivacy: e.target.value }, () => console.log(this.state.newTripPrivacy))
+        this.setState({ newTripPrivacy: e.target.value })
     }
 
     componentWillUnmount() {

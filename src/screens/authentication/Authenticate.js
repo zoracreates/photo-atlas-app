@@ -151,16 +151,25 @@ class Authenticate extends React.Component {
                         if (firstname && lastname) {
                             displayName = `${firstname} ${lastname}`
                         }
-
+                        //create credentials
                         firebase.auth().createUserWithEmailAndPassword(email, password).then(userCredential => {
-                            var user = userCredential.user;
-                            user.updateProfile({
-                                displayName: displayName,
-                            }).then(function () {
-                                console.log("success")
-                            }).catch(function (error) {
+                            let user = userCredential.user;
+                            let userId = user.uid;
+                            let email = user.email;
+                        
+
+                            //add user displayName and email to databsse
+                            let userInfo = {
+                                email: email,
+                                displayName: displayName
+                            }
+                            let database = firebase.database();
+
+                            database.ref(`users/${userId}`).set(
+                                userInfo
+                            ).catch((error) => {
                                 console.log(error)
-                            });
+                            })
 
                             if (this.props.afterCreateAccount) {
                                 let user = userCredential.user;

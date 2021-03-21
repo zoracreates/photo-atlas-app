@@ -46,16 +46,42 @@ class Account extends React.Component {
     }
 
     updateUser() {
+
+        let component = this;
+
         if (this._isMounted) {
 
             let user = firebase.auth().currentUser;
+            let userId = user.uid;
+
+            if (userId) {
+                let database = firebase.database();
+                
+
+                database.ref(`users/${userId}`).get().then(function(snapshot) {
+                    if (snapshot.exists()) {
+                      console.log(user.email); 
+                      
+                      
+                      let displayName = snapshot.val().displayName;
+                        let email =  user.email;
+                      
 
 
-            if (user) {
-                this.setState({
-                    displayName: user.displayName,
-                    email: user.email
-                })
+                      component.setState({
+                        displayName: displayName,
+                        email: email
+                    })
+                    }
+                    else {
+                      console.log("No data available");
+                    }
+                  }).catch(function(error) {
+                    console.error(error);
+                  });
+
+                
+
             }
         }
     }

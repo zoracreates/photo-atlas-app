@@ -24,7 +24,7 @@ class PasswordInput extends React.Component {
 
     render() {
 
-        let { className, ...rest } = this.props;
+        let { className, checkName, ...rest } = this.props;
 
 
         return (
@@ -35,7 +35,7 @@ class PasswordInput extends React.Component {
                   /><br/>
                 
 
-            <CheckBox className="show-pass" name="show-pass" onChange={() => { this.changeType()}} labelText="Show password" />
+            <CheckBox className="show-pass" name={checkName ?  checkName : 'show-pass'} onChange={() => { this.changeType()}} labelText="Show password" />
 
             </>
         )
