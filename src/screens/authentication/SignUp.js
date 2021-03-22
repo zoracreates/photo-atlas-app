@@ -46,14 +46,14 @@ function SignUp(props) {
 
           <div className="form-component-wrapper">
             <label htmlFor="pass">Password (6 characters minimum)</label>
-            <PasswordInput autoComplete="current-password" id="pass" value={props.password} onChange={(e) => props.handlePassInput(e)} required />
+            <PasswordInput autoComplete="new-password" id="pass" value={props.password} onChange={(e) => props.handlePassInput(e)} required />
             {props.passError && <p className="error-font" aria-live="polite">{props.passError}</p>}
           </div>
 
 
           <div className="form-component-wrapper">
             <label htmlFor="confirm-pass">Confirm Password</label>
-            <PasswordInput autoComplete="current-password" id="confirm-pass" value={props.confirmPassword} onChange={(e) => props.handleConfirmPassInput(e)} required />
+            <PasswordInput  autoComplete="new-password" checkName="show-confirm-pass" id="confirm-pass" value={props.confirmPassword} onChange={(e) => props.handleConfirmPassInput(e)} required />
             {props.confirmPassError && <p className="error-font" aria-live="polite">{props.confirmPassError}</p>}
           </div>
 

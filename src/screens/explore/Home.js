@@ -193,7 +193,8 @@ class Home extends React.Component {
 
     }
 
-    suggestionClick(suggestion) {
+    suggestionClick(suggestion, e) {
+        
         this.setState({query:suggestion.label})
         let search = `address=${suggestion.label}&lat=${suggestion.lat}&lon=${suggestion.lon}`
         this.props.history.push(`/explore/?q&${search}`);
@@ -240,7 +241,7 @@ class Home extends React.Component {
 
                             searchSuggestions={searchBarSuggestions}
 
-                            handleSuggestion={(suggestion)=> {this.suggestionClick(suggestion)}}
+                            handleSuggestion={(suggestion, e)=> {this.suggestionClick(suggestion)}}
                         />
 
 

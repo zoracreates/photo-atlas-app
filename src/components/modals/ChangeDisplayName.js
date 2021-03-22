@@ -10,6 +10,7 @@ class ChangeDisplayNameModal extends React.Component {
     state = {
         error: '',
         newName: '',
+        currentName: '',
         loading: false
     }
 
@@ -25,7 +26,7 @@ class ChangeDisplayNameModal extends React.Component {
 
     componentDidMount() {
         this._isMounted = true;
-        this.updateUser();
+        // this.updateUser();
     }
 
     componentWillUnmount() {
@@ -40,7 +41,7 @@ class ChangeDisplayNameModal extends React.Component {
 
             if (user) {
                 this.setState({
-                    newName: user.displayName,
+                    currentName: user.displayName
                 })
             }
         }
@@ -69,9 +70,20 @@ class ChangeDisplayNameModal extends React.Component {
         if (!testString.test(newName)) {
             form.setState({ error: "Display can only contain letters, apostrophes, hypens and spaces." })
         } else {
-            user.updateProfile({
-                displayName: newName
-            }).then(function () {
+                let database = firebase.database();
+
+                let userId = user.uid
+                
+
+                database.ref(`users/${userId}`).update({
+                    displayName: newName
+                }
+                   
+                ).catch((error) => {
+                    console.log(error)
+                })
+           // })
+            .then(function () {
                 // Update successful.
                 form.props.triggerUpdate();
                 form.props.handleClose()
@@ -104,7 +116,7 @@ class ChangeDisplayNameModal extends React.Component {
                         </p>
                     }
                     <label htmlFor="new-name">New Name</label>
-                    <TextInput id="new-name" value={this.state.newName} onChange={(e) => this.handleInput(e)} />
+                    <TextInput id="new-name" value={this.state.newName ? this.state.newName : this.state.currentName} onChange={(e) => this.handleInput(e)} />
 
 
                     <div aria-live="polite">
