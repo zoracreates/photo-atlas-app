@@ -40,7 +40,7 @@ function LocationCard(props) {
             </div>
             <div className={`location-card-content`}>
                 <p className={`title`}>{title}</p>
-                <p className={`meta-data saved`}>Saved by: {saves} {(saves > 1 || saves < 1) ? 'photographers' : 'photographer'}</p>
+                <p className={`meta-data saved`}>Saved in: {saves} {(saves > 1 || saves < 1) ? 'trips' : 'trip'}</p>
             </div>
 
         </Link>

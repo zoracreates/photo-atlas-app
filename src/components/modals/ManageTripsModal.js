@@ -29,7 +29,8 @@ class ManageTripsModal extends React.Component {
         errorCreatingTrip: '',
         errorCreatingLocation: '',
         errorUpdatingUserTrips: '',
-        errorAddingFilters: ''
+        errorAddingFilters: '',
+        updatingTrips: true
     }
 
     _isMounted = false;
@@ -69,88 +70,93 @@ class ManageTripsModal extends React.Component {
         })
     }
 
+    checkExistingTrips(userId) {
+        let database = firebase.database();
+        let existingTrips = [];
+
+        this.setState({ updatingTrips: true })
+
+        database.ref(`userTrips/${userId}`).get().then((snapshot) => {
+
+            let trips = snapshot.val();
+
+
+            for (const tripId in trips) {
+                let trip = trips[tripId]
+
+                //get privacy setting 
+                let privacy = trip['tripPrivacy']
+                let isPublic = privacy === 'public';
+                let isShared = trip['isShared']
+
+                let tripRef = `${privacy}Trips/${tripId}`
+
+                database.ref(`${tripRef}`).get().then(
+                    (snapshot) => {
+                        let tripData = snapshot.val()
+                        //get title
+                        let title = tripData['tripName']
+
+                        //get locationsCount
+                        let locationsCount = tripData['locationsCount']
+
+                        //get thumnail
+                        let thumbnail = tripData['featuredImg']
+
+                        //see if location is in trip
+                        let inTrip;
+
+                        let locations = tripData.locations;
+
+
+                        if (locations) {
+                            let location = locations[this.props.locationId]
+                            if (location) {
+                                inTrip = true
+                            } else {
+                                inTrip = false
+                            }
+                        } else {
+                            inTrip = false
+                        }
+
+                        let existingTripUpdate = {
+                            tripId: tripId,
+                            thumbnail: thumbnail,
+                            title: title,
+                            locationsCount: locationsCount,
+                            isPublic: isPublic,
+                            isShared: isShared,
+                            inTrip: inTrip
+                        }
+
+                        existingTrips.push(existingTripUpdate)
+
+
+                    }
+                ).then(() => this.setState({ existingTrips: existingTrips, updatingTrips: false }))
+
+            }
+
+        })
+
+    }
+
+
+
     checkAuth(user) {
+
         if (this._isMounted) {
-
-            let database = firebase.database();
-
 
             if (!user) {
                 user = firebase.auth().currentUser;
             }
 
-
-
             if (user) {
-               
+
                 let userId = user.uid;
                 //get user trips
-                database.ref(`userTrips/${userId}`).on(
-                    'value',
-                    (snapshot) => {
-                        let existingTrips = [];
-
-                        let trips = snapshot.val();
-                        
-
-                        for(const tripId in trips) {
-                            let trip = trips[tripId]
-
-
-                            //need 
-                            //get title
-                            let title = trip['tripName']
-
-                            //get locationsCount
-                            let locationsCount =  trip['locationsCount']
-
-                            //get thumnail
-                            let thumbnail = trip['featuredImg']
-
-                            //get privacy setting 
-                            let privacy = trip['tripPrivacy']
-                            let isPublic = privacy === 'public';
-                            let isShared = trip['isShared']
-
-                            //check if current locationId is in locations
-                            let inTrip;
-                            
-                            let tripRef = `${privacy}Trips/${tripId}/${this.props.locationId}` 
-
-                            database.ref(`${tripRef}`).get().then(snapshot => {
-                                if(snapshot.exists()) {
-                                    //if trip contains location
-                                    inTrip = true;
-                                }
-                            }).then(() => {
-                                //create trip object
-                                let tripContent = {
-                                    thumbnail: thumbnail, 
-                                    title: title, 
-                                    locationsCount: locationsCount, 
-                                    isPublic: isPublic, 
-                                    isShared: isShared, 
-                                    inTrip: inTrip
-                                }
-                                //add trip to existing trips list
-                                 existingTrips.push(tripContent)
-                                
-                            }).then(() => { 
-                                this.setState({existingTrips: existingTrips})
-                            })
-                        }
-
-                        
-                    }
-                
-                
-                )
-               
-
-                
-
-
-
+                this._isMounted && this.checkExistingTrips(userId);
 
                 this.setState({ isAuthenticated: true, userId: userId })
 
@@ -158,11 +164,10 @@ class ManageTripsModal extends React.Component {
                     this.setState(
                         {
                             modalTitle: 'Save to a New Trip',
-                            modalDescription: ''
+                            modalDescription: '',
+                            updatingTrips: false
                         }
                     )
-                } else {
-                    this.setState({ isAuthenticated: true })
                 }
 
             } else {
@@ -175,6 +180,8 @@ class ManageTripsModal extends React.Component {
             }
         }
 
+
+
     }
 
     componentDidMount() {
@@ -182,6 +189,15 @@ class ManageTripsModal extends React.Component {
 
         this.checkAuth();
         //set a listner or trips https://firebase.google.com/docs/database/web/read-and-write#web_value_events
+    }
+
+
+    componentDidUpdate(prevProps) {
+        this._isMounted = true;
+        // Typical usage (don't forget to compare props):
+        if (this.props.locationId !== prevProps.locationId) {
+            this.checkAuth();
+        }
     }
 
     renderModalContent() {
@@ -202,15 +218,26 @@ class ManageTripsModal extends React.Component {
                 </div>
             )
         } else {
-            //if user has trips 
-            if (this.state.existingTrips.length > 0 && !this.state.needNewTrip && !this.state.newTripCreated) {
-                return this.selectExistingTrip();
-            }
-            else {
-                if (!this.state.newTripCreated) {
-                    return this.getNewTripInfo();
-                } else {
-                    return this.newTripCreated()
+
+            if (this.state.updatingTrips) {
+                return (
+                    <div className="modal-content-padding center-text">
+                        <p>Updating trips...</p>
+                    </div>)
+
+            } else {
+                if (this.state.existingTrips.length > 0 && !this.state.needNewTrip && !this.state.newTripCreated) {
+                    return this.selectExistingTrip();
+                }
+                else {
+                    if (!this.state.newTripCreated && !this.state.updatingTrips) {
+                        return this.getNewTripInfo();
+                    } else {
+
+                        return this.newTripCreated()
+
+
+                    }
                 }
             }
         }
@@ -222,6 +249,7 @@ class ManageTripsModal extends React.Component {
         //a button that triggets getNewTripInfo
         return (
             <>
+
                 {this.renderExistingTrips()}
                 <div className="modal-content-padding center-text">
                     <button onClick={() => this.switchForm()} className="button-link"> + Create a New Trip</button>
@@ -229,6 +257,7 @@ class ManageTripsModal extends React.Component {
 
             </>
         )
+
     }
 
     switchForm() {
@@ -238,12 +267,21 @@ class ManageTripsModal extends React.Component {
     renderExistingTrips() {
         let { existingTrips } = this.state;
 
+
+
         return (<ul className="existing-trips">
-            {existingTrips.map((trip, id) => {
-                let { thumbnail, title, locationsCount, isPublic, isShared, inTrip } = trip;
+            {existingTrips.map((trip, index) => {
+                let {
+                    thumbnail,
+                    title,
+                    locationsCount,
+                    isPublic,
+                    isShared,
+                    tripId,
+                    inTrip } = trip;
 
                 return (
-                    <li key={id} className="trip-card-small">
+                    <li key={index} className="trip-card-small">
                         <div className={`trip-card-image`}>
                             <img src={thumbnail} alt="" />
                         </div>
@@ -253,7 +291,7 @@ class ManageTripsModal extends React.Component {
                                 {isPublic ? 'Public' : isShared ? 'Shared' : 'Private'}</p>
                             <p className={`meta-data marker`}>
                                 {locationsCount} {locationsCount > 1 ? 'Locations' : 'Location'}</p>
-                            <button className="add-or-remove" onClick={() => { this.addOrRemoveFromTrip(inTrip) }}>
+                            <button className="add-or-remove" onClick={(e) => { this.addOrRemoveFromTrip(tripId, isPublic) }}>
                                 {inTrip ? '- Remove' : '+ Add'}
                                 <span>{inTrip ? `from ${title}` : `to ${title}`}</span>
                             </button>
@@ -262,6 +300,9 @@ class ManageTripsModal extends React.Component {
                 )
             })}
         </ul>)
+
+
+
 
     }
 
@@ -380,6 +421,83 @@ class ManageTripsModal extends React.Component {
 
     }
 
+    createNewFlickrSourcedLocation(locationRef) {
+        let database = firebase.database();
+        let locationId = this.props.locationId;
+        let locationPhotosArray = this.props.photos;
+        let locationName = locationPhotosArray[0].title;
+        let locationCoordinates = this.props.coordinates;
+        let locationSubjectsArray = this.props.subjects;
+        let date = generateDate();
+
+        // arrays are handled like objects on Firebase Realtime Database
+        //https://firebase.googleblog.com/2014/04/best-practices-arrays-in-firebase.html
+        //convert props arrays into objects for better database handling
+        let locationSubjects = {};
+        let locationPhotos = {};
+
+        locationPhotosArray.forEach(photo => {
+            let flickrId = photo.flickrId;
+            let photoId;
+            if (flickrId) {
+                photoId = `flickrPhoto-${flickrId}`
+            }
+
+            locationPhotos[photoId] = {
+                title: photo.title,
+                author: photo.author,
+                src: photo.src,
+                creditUrl: photo.creditUrl ? photo.creditUrl : null
+            }
+        }
+        )
+
+
+        locationSubjectsArray.forEach(subject => {
+
+            locationSubjects[subject] = true
+
+        });
+
+        database.ref(`${locationRef}`).set({
+            locationName: locationName,
+            photos: locationPhotos,
+            coordinates: locationCoordinates,
+            savedCount: 1,
+            subjects: locationSubjects,
+            addedDate: date,
+            curated: false, //indicates that app has not been curated by a PhotoAtlas user
+            userLastEditedDate: null
+        }).then(() => {
+
+            // add subjects record
+            locationSubjectsArray.forEach(
+
+                subject => {
+
+                    let subjectRef = subject;
+
+                    let update = {};
+
+                    update[locationId] = true;
+
+                    database.ref(`subjects/${subjectRef}`).update(
+                        update
+                    ).catch(
+                        (error) => {
+                            this.setState({ errorAddingFilter: `Could not add all filters to database: ${error.message}` })
+                        });
+
+                })
+
+        }).catch(
+            (error) => {
+                this.setState({ errorCreatingLocation: `Could not add location to database: ${error.message}` })
+            }
+        )
+
+    }
+
     createNewTrip(e) {
         e.preventDefault();
 
@@ -401,38 +519,6 @@ class ManageTripsModal extends React.Component {
 
             let locationId = this.props.locationId;
             let locationPhotosArray = this.props.photos;
-            let locationName = locationPhotosArray[0].title;
-            let locationCoordinates = this.props.coordinates;
-            let locationSubjectsArray = this.props.subjects;
-
-            // arrays are handled like objects on Firebase Realtime Database
-            //https://firebase.googleblog.com/2014/04/best-practices-arrays-in-firebase.html
-            //convert props arrays into objects for better database handling
-            let locationSubjects = {};
-            let locationPhotos = {};
-
-            locationPhotosArray.forEach(photo => {
-                let flickrId = photo.flickrId;
-                let photoId;
-                if (flickrId) {
-                    photoId = `flickrPhoto-${flickrId}`
-                }
-
-                locationPhotos[photoId] = {
-                    title: photo.title,
-                    author: photo.author,
-                    src: photo.src,
-                    creditUrl: photo.creditUrl ? photo.creditUrl : null
-                }
-            }
-            )
-
-
-            locationSubjectsArray.forEach(subject => {
-
-                locationSubjects[subject] = true
-
-            });
 
             let tripPrivacy = this.state.newTripPrivacy;
             let tripName = this.state.newTripName;
@@ -452,15 +538,12 @@ class ManageTripsModal extends React.Component {
 
             let database = firebase.database();
 
-
-
-
             // create new trip
             database.ref(`${tripPrivacy}Trips/` + tripId).set({
                 tripName: tripName,
                 featuredImg: tripFeaturedImgSrc,
                 author: tripAuthor,
-                loacationsCount: 1,
+                locationsCount: 1,
                 locations: locations,
                 tags: tripTags,
                 createdOn: date,
@@ -470,12 +553,8 @@ class ManageTripsModal extends React.Component {
             }).then(() => {
                 //add trip to user trips
                 database.ref(`userTrips/${tripAuthor}/${tripId}`).set({
-                    tripName: tripName,
-                    featuredImg: tripFeaturedImgSrc,
                     tripPrivacy: tripPrivacy,
-                    isShared: false,
-                    locationsCount: 1,
-                    tags: tripTags
+                    isShared: false
                 }).catch((error) => {
                     this.setState({ errorUpdatingUserTrips: `Could to your list of trips: ${error.message}` })
                 });
@@ -484,89 +563,33 @@ class ManageTripsModal extends React.Component {
 
                     let locationRef = `appLocations/flickrSourced/${locationId}`;
 
-
-
                     //check if location exists in lists of locations if not, then add location
                     //use transactions to make sure that count stays accurate
                     //https://firebase.google.com/docs/database/web/read-and-write#save_data_as_transactions
 
-                    database.ref(locationRef).get().then((snapshot) => {
+                    database.ref(`${locationRef}`).get().then((snapshot) => {
                         //if location exists
                         if (snapshot.exists()) {
                             //get how many people have saved it, and who has saved it
-                            let timesSavedBy = snapshot.val().timesSavedBy;
                             let savedCount = snapshot.val().savedCount;
 
-                            //check if it's been saved by the athor
-                            if (timesSavedBy[tripAuthor]) {
-                                //add the count on timesSavedBy[tripAuthor]
-                                database.ref(`${locationRef}/timesSavedBy`).transaction(
-                                    (authorSaves) => {
-                                        if (authorSaves) {
-                                            authorSaves[`${tripAuthor}`]++
+                            //add to the saved count 
+                            //and add the author
+                            if (savedCount) {
+                                database.ref(`${locationRef}`).transaction(
+                                    (location) => {
+                                        if (location) {
+                                            location.savedCount++;
                                         }
-                                        return authorSaves;
+                                        return location;
                                     }
                                 )
-                            } else {
-                                //add to the saved count 
-                                //and add the author
-                                if (savedCount) {
-                                    database.ref(`${locationRef}`).transaction(
-                                        (location) => {
-                                            if (location) {
-                                                location.savedCount++;
-                                                location.timesSavedBy[`${tripAuthor}`] = 1;
-                                            }
-                                            return location;
-                                        }
-                                    )
-                                }
                             }
 
                         }
                         else {
                             //create the location
-                            let timesSavedBy = {};
-                            timesSavedBy[tripAuthor] = 1;
-
-                            database.ref(locationRef).set({
-                                locationName: locationName,
-                                photos: locationPhotos,
-                                coordinates: locationCoordinates,
-                                savedCount: 1,
-                                timesSavedBy: timesSavedBy,
-                                subjects: locationSubjects,
-                                addedDate: date,
-                                curated: false, //indicates that app has not been curated by a PhotoAtlas user
-                                userLastEditedDate: null
-                            }).then(() => {
-
-                                // add subjects record
-                                locationSubjectsArray.forEach(
-
-                                    subject => {
-
-                                        let subjectRef = subject;
-
-                                        let update = {};
-
-                                        update[locationId] = true;
-
-                                        database.ref(`subjects/${subjectRef}`).update(
-                                            update
-                                        ).catch(
-                                            (error) => {
-                                                this.setState({ errorAddingFilter: `Could not add all filters to database: ${error.message}` })
-                                            });
-
-                                    })
-
-                            }).catch(
-                                (error) => {
-                                    this.setState({ errorCreatingLocation: `Could not add location to database: ${error.message}` })
-                                }
-                            )
+                            this.createNewFlickrSourcedLocation(locationRef);
                         }
                     })
                 }
@@ -585,21 +608,138 @@ class ManageTripsModal extends React.Component {
                         creatingTrip: false
                     })
                 }
-            })
+            }).then(
+                () => this.checkExistingTrips(this.state.userId)
+            )
 
         }
 
     }
 
-    addOrRemoveFromTrip(inTrip) {
-        if (inTrip) {
-            console.log('removed')
-            //update existingTrips
-        }
-        else {
-            console.log('added')
-            //update existingTrips
-        }
+    addOrRemoveFromTrip(tripId, isPublic) {
+
+        this.setState({ updatingTrips: true })
+
+        let database = firebase.database();
+        let privacy = isPublic ? 'public' : 'private';
+        let currentLocation = this.props.locationId;
+        let user = this.state.userId;
+        let date = generateDate();
+
+        let tripRef = `${privacy}Trips/${tripId}/`
+        //need to change
+        //last edited
+        //locationsCount
+        //locations
+
+        let locationRef = `appLocations/flickrSourced/${currentLocation}`
+        //need to change savedCount
+
+
+        database.ref(`${tripRef}/locations/${currentLocation}`).get().then(
+            snapshot => {
+
+                if (snapshot.exists()) {
+                    //remove
+
+                    database.ref(`${tripRef}`).transaction(
+                        trip => {
+                            if (trip) {
+                                //decrease locationsCount
+                                if (trip.locationsCount > 0) {
+                                    trip.locationsCount--;
+                                }
+                                //change the last edited
+                                trip.lastEdited = date;
+
+                            }
+                            return trip
+                        }).catch((error) => console.log(error)).then(() => {
+                            //remove location from trip
+                            database.ref(`${tripRef}/locations/${currentLocation}`).transaction(
+                                location => {
+                                    if (location) {
+                                        location = null
+                                    }
+                                    return location
+                                }
+                            )
+                        }).then(() => this.checkExistingTrips(user))
+
+                    database.ref(`${locationRef}`).transaction(
+                        location => {
+                            if (location) {
+                                //decrease savedCount
+
+                                location.savedCount--
+
+
+                            }
+                            return location
+                        }).catch((error) => console.log(error))
+
+
+                }
+                else {
+                    //add
+
+                    if (currentLocation.startsWith("flickr-")) {
+                        let locationRef = `appLocations/flickrSourced/${currentLocation}`
+
+                        database.ref(`${locationRef}`).get().then(
+                            (snapshot) => {
+                                if (!snapshot.exists()) {
+                                    this.createNewFlickrSourcedLocation(locationRef)
+                                }
+                            }
+                        )
+                    }
+
+                    database.ref(`${tripRef}`).transaction(
+                        trip => {
+                            if (trip) {
+                                //increase locationsCount
+                                trip.locationsCount++;
+                                //change the last edited
+                                trip.lastEdited = date;
+                            }
+                            return trip
+                        }).catch((error) => console.log(error)).then(() => {
+                            //add location to trip
+                            //check if trip has locations
+                            database.ref(`${tripRef}/locations`).get().then((snapshot) => {
+                                if (snapshot.exists()) {
+                                    let update = {}
+                                    update[currentLocation] = true
+
+                                    database.ref(`${tripRef}/locations`).update(
+                                        update
+                                    ).catch((error) => console.log(error))
+                                } else {
+                                    let update = { locations: {} }
+                                    update.locations[currentLocation] = true
+
+                                    database.ref(`${tripRef}`).update(
+                                        update
+                                    ).catch((error) => console.log(error))
+                                }
+
+                            }).then(() => this.checkExistingTrips(user))
+
+                        })
+
+
+                    database.ref(`${locationRef}`).transaction(
+                        location => {
+                            if (location) {
+                                //increase savedCount
+                                location.savedCount++
+                            }
+                            return location
+                        }).catch((error) => console.log(error))
+
+                }
+            }).then(() => this.setState({ updatingTrips: false }))
     }
 
     handleNewTripPrivacy(e) {
