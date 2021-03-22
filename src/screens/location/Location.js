@@ -10,6 +10,7 @@ import filterTags from '../../utils/filterTags'
 import { DirectionsLarge } from '../../components/buttons/DirectionsButtons'
 import { AddToTripsLarge, AddToTripsSmall } from '../../components/buttons/AddToTripsButtons'
 import ManageTripsModal from '../../components/modals/ManageTripsModal'
+import firebase from '../../utils/firebase/firebaseConfig'
 
 
 class Location extends React.Component {
@@ -25,7 +26,8 @@ class Location extends React.Component {
         imageList: [],
         subjects: [],
         firstPhoto: {},
-        showTripsModal: false
+        showTripsModal: false,
+        inTrips: false
     };
 
     _isMounted = false;
@@ -43,7 +45,7 @@ class Location extends React.Component {
         //get the location id from the path
         let path = this.props.location.pathname;
         let locationId = path.replace("/location/", "");
-        this.setState({locationId: locationId});
+        this.setState({ locationId: locationId });
 
         //get the woeId from the search query
         let pathQuery = this.props.location.search;
@@ -54,8 +56,76 @@ class Location extends React.Component {
         //if the path starts with flickr
         if (locationId.startsWith("flickr-")) {
 
+           /* THIS ISN'T WORKIN, DEBUG TO INDICATE THAT TRIP IS SAVED BY USER 
+            let auth = firebase.auth();
+            let user = auth.currentUser;
+            let userId;
+            let database = firebase.database()
+
+            if (user) {
+                userId = user.uid;
+            }
+
+            console.log("user", user)
+
+            if (userId) {
+                this._isMounted && database.ref(`userTrips/${userId}`).get().then((snapshot) => {
+                    
+                    if (snapshot.exists) {
+                        let trips = snapshot.val();
+                        for (const tripId in trips) {
+                            let privacy = tripId.tripPrivacy
+                            console.log("tripId", tripId)
+                            console.log("privacy", privacy)
+    
+                            // let tripRef = `${privacy}Trips/${tripId}`
+                            let tripRef = `publicTrips/${tripId}`
+    
+    
+                            database.ref(`${tripRef}`).on('value',
+                                snapshot => {
+    
+                                    let tripData = snapshot.val()
+    
+                                    //see if location is in trip
+                                    if (tripData) {
+    
+    
+                                        let locations = tripData.locations;
+    
+                                        if (locations) {
+                                            let location = locations[this.props.locationId]
+                                            if (location) {
+    
+                                                this.setState({ inTrips: true })
+                                            } else {
+                                                this.setState({ inTrips: false })
+                                            }
+                                        } else {
+                                            this.setState({ inTrips: false })
+                                        }
+    
+                                    }
+                                }
+    
+                            )
+    
+                        }
+
+                    }
+
+
+
+
+
+                })
+            }*/
+
+
+
             //get the photo id
             let photoId = locationId.replace("flickr-", "");
+
 
             //get the photo information
             this._isMounted && getFlickrPhotoInfo(
@@ -67,7 +137,7 @@ class Location extends React.Component {
                     let photoData = data.photo;
                     let src, title, alt, lat, lon, author, creditUrl, tags;
 
-                    if(photoData) {
+                    if (photoData) {
                         src = createFlickrImageUrl(photoData);
                         title = photoData.title._content;
                         alt = photoData.description._content;
@@ -78,7 +148,7 @@ class Location extends React.Component {
                             author = photoData.owner.username
                         }
                         creditUrl = photoData.urls.url[0]._content;
-                        tags = photoData.tags 
+                        tags = photoData.tags
                     }
 
                     let firstPhoto = {
@@ -108,7 +178,7 @@ class Location extends React.Component {
     }
 
 
-    getLocationDetailsFromFlickr(photoId,woeId) {
+    getLocationDetailsFromFlickr(photoId, woeId) {
 
         //get the photo data
         let photo = this.state.firstPhoto;
@@ -242,7 +312,7 @@ class Location extends React.Component {
             "alt": alt,
             "author": author,
             "creditUrl": creditUrl,
-            "flickrId" : photoId
+            "flickrId": photoId
         }
 
         let place = async (options) => {
@@ -344,9 +414,8 @@ class Location extends React.Component {
             saves,
             destination,
             imageList,
-            subjects } = this.state;
-
-        let inTrips = false;
+            subjects,
+            inTrips } = this.state;
 
         if (!title) {
             title = "Untitled Location"
@@ -398,15 +467,15 @@ class Location extends React.Component {
 
 
                 </div>
-                <ManageTripsModal 
-                    isOpen={this.state.showTripsModal} 
-                    handleClose={() => this.manageTripsModal()} 
-                    locationId={this.state.locationId} 
-                    photos={this.state.imageList}  
+                <ManageTripsModal
+                    isOpen={this.state.showTripsModal}
+                    handleClose={() => this.manageTripsModal()}
+                    locationId={this.state.locationId}
+                    photos={this.state.imageList}
                     coordinates={this.state.destination}
                     subjects={this.state.subjects}
-                    
-                    />
+
+                />
             </>
 
         )
