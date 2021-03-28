@@ -4,7 +4,10 @@
     overflow-x: scroll;
     overflow-y: hidden;
     position: relative;
-    padding-bottom: 25px;
+    padding-bottom: .5rem;
+    background-color: $light_accent_gray;
+    margin-top: .5rem;
+    border: 1px solid $light_border_color;
 
     /* width */
     &::-webkit-scrollbar {

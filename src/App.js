@@ -22,16 +22,21 @@ class App extends React.Component {
   state = {
     signedIn: false,
     userVerified: false,
+    userId: null
+
   }
 
 
 
   componentDidMount() {
     firebase.auth().onAuthStateChanged(user => {
+
+    
       if (user) {
         this.setState({
           signedIn: true,
           userVerified: user.emailVerified,
+          userId: user.uid
         });
       } else {
         this.setState({ signedIn: false });
@@ -55,7 +60,14 @@ class App extends React.Component {
 
             <Route path="/explore" component={SearchResults} />
 
-            <Route path="/location" component={Location} />
+            {/* <Route path="/location" component={Location} /> */}
+
+            <Route path="/location"
+
+              render={
+                (props) => <Location {...props} userId={this.state.userId} />
+
+              } />
 
             <Route path="/trips"
 

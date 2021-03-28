@@ -81,17 +81,24 @@ class ManageTripsModal extends React.Component {
 
 
 
-    checkAuth(user) {
+    checkAuth() {
+
+        let userId = this.props.userId;
+
+        if(!userId) {
+            let user = firebase.auth().currentUser;
+            if(user) {
+                userId = user.uid;
+            } 
+        }
+
 
         if (this._isMounted) {
 
-            if (!user) {
-                user = firebase.auth().currentUser;
-            }
 
-            if (user) {
+            if (userId) {
 
-                let userId = user.uid;
+           
                 //get user trips
                 this._isMounted && this.checkExistingTrips(userId);
 

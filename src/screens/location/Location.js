@@ -10,7 +10,7 @@ import filterTags from '../../utils/filterTags'
 import { DirectionsLarge } from '../../components/buttons/DirectionsButtons'
 import { AddToTripsLarge, AddToTripsSmall } from '../../components/buttons/AddToTripsButtons'
 import ManageTripsModal from '../../components/modals/ManageTripsModal'
-//import firebase from '../../utils/firebase/firebaseConfig'
+import firebase from '../../utils/firebase/firebaseConfig'
 
 
 class Location extends React.Component {
@@ -27,7 +27,8 @@ class Location extends React.Component {
         subjects: [],
         firstPhoto: {},
         showTripsModal: false,
-        inTrips: false
+        inTrips: false,
+        userId: null
     };
 
     _isMounted = false;
@@ -35,6 +36,67 @@ class Location extends React.Component {
 
     manageTripsModal() {
         this.setState({ showTripsModal: !this.state.showTripsModal })
+        let userId = this.props.userId;
+        this.checkIfInTrips(userId)
+    }
+
+    checkIfInTrips(userId) {
+        
+        
+        
+        if (userId) {
+            let database = firebase.database()
+            
+            
+            this._isMounted && database.ref(`userTrips/${userId}`).get().then((snapshot) => {
+                let locationTrips = [];
+                if (snapshot.exists) {
+                    let trips = snapshot.val();
+
+
+                    for (const tripId in trips) {
+
+                        let privacy = trips[tripId]['tripPrivacy']
+
+                        let location = this.state.locationId
+
+                        let locationRef = `${privacy}Trips/${tripId}/locations/${location}`
+
+                        this._isMounted && database.ref(`${locationRef}`).get().then(
+                            snapshot => {
+
+                                if (snapshot.exists()) {
+                                    locationTrips.push(tripId)
+                                }
+              
+                                if(locationTrips.length > 0 ) {
+                               
+                                    this.setState({ inTrips: true })
+                                } else {
+                                    this.setState({ inTrips: false })
+                                }
+
+                            })
+
+                            
+                    }
+                    
+                }
+                return locationTrips
+            })
+        }
+
+
+
+    }
+
+    componentDidUpdate(prevProps) {
+        if (prevProps.userId !== this.props.userId) {
+            let userId = this.props.userId;
+
+            this.checkIfInTrips(userId)
+
+        }
     }
 
 
@@ -55,72 +117,6 @@ class Location extends React.Component {
 
         //if the path starts with flickr
         if (locationId.startsWith("flickr-")) {
-
-           /* THIS ISN'T WORKIN, DEBUG TO INDICATE THAT TRIP IS SAVED BY USER 
-            let auth = firebase.auth();
-            let user = auth.currentUser;
-            let userId;
-            let database = firebase.database()
-
-            if (user) {
-                userId = user.uid;
-            }
-
-            console.log("user", user)
-
-            if (userId) {
-                this._isMounted && database.ref(`userTrips/${userId}`).get().then((snapshot) => {
-                    
-                    if (snapshot.exists) {
-                        let trips = snapshot.val();
-                        for (const tripId in trips) {
-                            let privacy = tripId.tripPrivacy
-                            console.log("tripId", tripId)
-                            console.log("privacy", privacy)
-    
-                            // let tripRef = `${privacy}Trips/${tripId}`
-                            let tripRef = `publicTrips/${tripId}`
-    
-    
-                            database.ref(`${tripRef}`).on('value',
-                                snapshot => {
-    
-                                    let tripData = snapshot.val()
-    
-                                    //see if location is in trip
-                                    if (tripData) {
-    
-    
-                                        let locations = tripData.locations;
-    
-                                        if (locations) {
-                                            let location = locations[this.props.locationId]
-                                            if (location) {
-    
-                                                this.setState({ inTrips: true })
-                                            } else {
-                                                this.setState({ inTrips: false })
-                                            }
-                                        } else {
-                                            this.setState({ inTrips: false })
-                                        }
-    
-                                    }
-                                }
-    
-                            )
-    
-                        }
-
-                    }
-
-
-
-
-
-                })
-            }*/
-
 
 
             //get the photo id
@@ -425,9 +421,9 @@ class Location extends React.Component {
             saves = 0;
         }
 
-        if (saves > 0) {
-            inTrips = true;
-        }
+        // if (saves > 0) {
+        //     inTrips = true;
+        // }
 
         return (
             <>
@@ -474,6 +470,7 @@ class Location extends React.Component {
                     photos={this.state.imageList}
                     coordinates={this.state.destination}
                     subjects={this.state.subjects}
+                    userId={this.state.userId}
 
                 />
             </>
