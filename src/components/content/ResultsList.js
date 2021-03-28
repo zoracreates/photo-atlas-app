@@ -1,7 +1,9 @@
 
 import PropTypes from 'prop-types';
 
-import LocationCard from '../cards/LocationCard';
+
+import TitleCard from '../cards/TtitleCard'
+import TwoCols from '../../components/layout/TwoCols';
 
 function ResultsList(props) {
 
@@ -19,26 +21,25 @@ function ResultsList(props) {
             <div aria-live="polite" className="sr-only">
                 <p>Showing search results</p>
             </div>
+            <TwoCols>
             {list.map((location, id) => {
-                const { thumbnail, title, saves, origin, destination, src, locationId, woeId } = location;
+                const { thumbnail, title, src, locationId, woeId } = location;
 
                 return (
-
-                    //make these into links where the search param should be the photo id
-                    <LocationCard
+                    
+                    <TitleCard
                         key={id}
                         thumbnail={thumbnail}
                         title={title}
-                        origin={origin}
-                        destination={destination}
-                        saves={saves}
                         src={src}
                         locationId={locationId}
                         woeId={woeId}
                         />
+                    
                 )
 
             })}
+            </TwoCols>
             </>
         )
 

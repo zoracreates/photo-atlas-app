@@ -11,7 +11,7 @@ import { DirectionsLarge } from '../../components/buttons/DirectionsButtons'
 import { AddToTripsLarge, AddToTripsSmall } from '../../components/buttons/AddToTripsButtons'
 import ManageTripsModal from '../../components/modals/ManageTripsModal'
 import firebase from '../../utils/firebase/firebaseConfig'
-
+import getSavesCount from '../../utils/getSavesCount'
 
 class Location extends React.Component {
     state = {
@@ -38,19 +38,28 @@ class Location extends React.Component {
         this.setState({ showTripsModal: !this.state.showTripsModal })
         let userId = this.props.userId;
         this.checkIfInTrips(userId)
+
+        getSavesCount(
+            this.state.locationId,
+            (count) => {
+
+                this.setState({ saves: count })
+            }
+        );
+
     }
 
     checkIfInTrips(userId) {
-        
-        
-        
+
+
+
         if (userId) {
             let database = firebase.database()
-            
-            
+
+
             this._isMounted && database.ref(`userTrips/${userId}`).get().then((snapshot) => {
                 let locationTrips = [];
-                if (snapshot.exists) {
+                if (snapshot.exists()) {
                     let trips = snapshot.val();
 
 
@@ -68,19 +77,20 @@ class Location extends React.Component {
                                 if (snapshot.exists()) {
                                     locationTrips.push(tripId)
                                 }
-              
-                                if(locationTrips.length > 0 ) {
-                               
+
+                                if (locationTrips.length > 0) {
+
                                     this.setState({ inTrips: true })
+                                    
                                 } else {
                                     this.setState({ inTrips: false })
                                 }
 
                             })
 
-                            
+
                     }
-                    
+
                 }
                 return locationTrips
             })
@@ -103,11 +113,25 @@ class Location extends React.Component {
 
     componentDidMount() {
         this._isMounted = true;
+        let userId = this.props.userId;
+        this.checkIfInTrips(userId)
 
         //get the location id from the path
         let path = this.props.location.pathname;
         let locationId = path.replace("/location/", "");
         this.setState({ locationId: locationId });
+
+
+
+        getSavesCount(
+            locationId,
+            (count) => {
+
+                this.setState({ saves: count })
+            }
+        );
+
+
 
         //get the woeId from the search query
         let pathQuery = this.props.location.search;
@@ -442,7 +466,7 @@ class Location extends React.Component {
                         <h2 className={`title`}>{title}</h2>
                         <div className={`gird-70-30`}>
                             <div className={`col-70`}>
-                                <p className={`meta-data saved`}>Saved by: {saves} {(saves > 1 || saves < 1) ? 'photographers' : 'photographer'}</p>
+                                <p className={`meta-data saved`}>Saved in: {saves} {(saves > 1 || saves < 1) ? 'trips' : 'trip'}</p>
                                 <p className={`meta-data marker`}>Coordinates: <a href={`https://maps.google.com/?q=${destination.latitude},${destination.longitude}`}>{destination.latitude}, {destination.longitude}</a></p>
                             </div>
                             <div className={`col-30`}>
