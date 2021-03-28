@@ -7,14 +7,23 @@ import getPublicTrips from '../../utils/getPublicTrips'
 
 
 class PublicTrips extends React.Component {
-    state={
+    state = {
         existingTrips: []
+    }
+
+    _isMounted = false;
+
+    componentDidMount() {
+        this._isMounted = true;
     }
 
     renderPublicTrips() {
         let { existingTrips } = this.state;
 
-        getPublicTrips((tripsList) => this.setState({existingTrips: tripsList}))
+        getPublicTrips((tripsList) => {
+            this._isMounted && this.setState({ existingTrips: tripsList })
+        })
+
         return (<>
             {existingTrips.map((trip, index) => {
                 let {
@@ -25,7 +34,7 @@ class PublicTrips extends React.Component {
                     tripId } = trip;
 
                 return (
-                    <TripCard 
+                    <TripCard
                         key={index}
                         thumbnail={thumbnail}
                         title={title}
@@ -36,8 +45,12 @@ class PublicTrips extends React.Component {
                 )
             })}
         </>)
-
     }
+
+    componentWillUnmount() {
+        this._isMounted = false;
+    }
+
     render() {
         return (
             <>

@@ -7,17 +7,16 @@ import VerifyEmail from '../../screens/authentication/VerifyEmail'
 
 
 function PrivateTab (props) {
-  
         if (props.isAuthenticated) {
             if (!props.isVerified) {
                 return <VerifyEmail logInLocation={props.logInLocation} tabContent={true}/>
             } else {
-                return props.componentContent();
+               return props.componentContent();
+
             }
         }
         else {
             return (
-
                 <Authenticate logInLocation={props.logInLocation} tabContent={true}/>
             )
         }

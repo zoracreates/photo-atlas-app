@@ -9,7 +9,7 @@ class MyTrips extends React.Component {
     tripsContent() {
         return (
             <>
-                <h3>My Trips</h3>
+                <h3>TEST</h3>
             </>
         )
     }
@@ -17,7 +17,14 @@ class MyTrips extends React.Component {
     render() {
         return (
             <>
-                <PrivateTab componentContent={this.tripsContent()}  logInLocation={"trips"} />
+                <PrivateTab 
+                    componentContent={()=>this.tripsContent()}  
+                    logInLocation={"trips"} 
+                    isVerified={this.props.isVerified}
+                    isAuthenticated={this.props.isAuthenticated}
+                    />
+                
+
             </>
         )
     }
