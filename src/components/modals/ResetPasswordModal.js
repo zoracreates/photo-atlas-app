@@ -20,6 +20,10 @@ class ResetPasswordModal extends React.Component {
         }, () => this.props.handleClose());
     }
 
+    componentWillUnmount() {
+        this._isMounted = false;
+    }
+
 
     resetPassword(e) {
         e.preventDefault();
@@ -37,9 +41,8 @@ class ResetPasswordModal extends React.Component {
         let actionCodeSettings = { url: `http://localhost:3000/${logInLocation}` }
 
 
-        auth.sendPasswordResetEmail(emailAddress, actionCodeSettings).
-
-            then(() => {
+       this._isMounted && auth.sendPasswordResetEmail(emailAddress, actionCodeSettings)
+       .then(() => {
                 form.setState({ successReset: true })
             }
             ).catch(function (error) {

@@ -10,7 +10,7 @@ import filterTags from '../../utils/filterTags'
 import { DirectionsLarge } from '../../components/buttons/DirectionsButtons'
 import { AddToTripsLarge, AddToTripsSmall } from '../../components/buttons/AddToTripsButtons'
 import ManageTripsModal from '../../components/modals/ManageTripsModal'
-import firebase from '../../utils/firebase/firebaseConfig'
+//import firebase from '../../utils/firebase/firebaseConfig'
 
 
 class Location extends React.Component {
