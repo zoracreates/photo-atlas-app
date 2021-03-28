@@ -1,6 +1,6 @@
 import firebase from './firebase/firebaseConfig'
 
-let getUserTrips = (userId, locationId, callback) => {
+let getUserTrips = (userId, callback, locationId = null) => {
    
     let database = firebase.database();
     let existingTrips = [];
@@ -48,8 +48,7 @@ let getUserTrips = (userId, locationId, callback) => {
                             }
                         } else {
                             inTrip = false
-                        }
-                        
+                        } 
                     }
 
                     let existingTripUpdate = {

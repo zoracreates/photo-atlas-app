@@ -76,7 +76,7 @@ class ManageTripsModal extends React.Component {
         this.setState({ updatingTrips: true })
 
         this._isMounted && 
-        getUserTrips(userId, this.props.locationId, (existingTrips) => this.setState({ existingTrips: existingTrips, updatingTrips: false }))
+        getUserTrips(userId,  (existingTrips) => this.setState({ existingTrips: existingTrips, updatingTrips: false }), this.props.locationId)
     }
 
 

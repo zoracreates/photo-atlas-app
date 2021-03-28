@@ -72,7 +72,7 @@ class App extends React.Component {
             <Route path="/trips"
 
               render={
-                () => <Trips isAuthenticated={signedIn} isVerified={userVerified} />
+                (props) => <Trips {...props} userId={this.state.userId} isAuthenticated={signedIn} isVerified={userVerified} />
 
               } />
 

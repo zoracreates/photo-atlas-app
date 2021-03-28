@@ -1,7 +1,9 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import PrivateTab from '../../components/navigation/PrivateTab'
 import OneToTwoCols from '../../components/layout/OneToTwoCols'
 import TripCard from '../../components/cards/TripCard'
+import getUserTrips from '../../utils/getUserTrips'
 
 
 
@@ -10,15 +12,20 @@ class MyTrips extends React.Component {
     state = {
         existingTrips: []
     }
+    _isMounted = false;
 
+    componentDidMount() {
+       this._isMounted = true;
+       let userId = this.props.userId;
+       this._isMounted && getUserTrips(userId, (tripsList) => this.setState({existingTrips: tripsList}))
+    }
 
+    componentWillUnmount() {
+        this._isMounted = false;
+    }
     renderUserTrips() {
 
         let { existingTrips } = this.state;
-
-        // getPublicTrips((tripsList) => {
-        //     this._isMounted && this.setState({ existingTrips: tripsList })
-        // })
 
         return (
         <OneToTwoCols>
@@ -59,6 +66,12 @@ class MyTrips extends React.Component {
         )
     }
 
+}
+
+MyTrips.propTypes = {
+    userId: PropTypes.string,
+    isAuthenticated: PropTypes.bool,
+    isVerified: PropTypes.bool
 }
 
 

@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types';
 
 import PhotoSlider from '../../components/slider/PhotoSlider'
 import SubjectIndicators from '../../components/content/SubjectIndicators'
@@ -445,10 +446,6 @@ class Location extends React.Component {
             saves = 0;
         }
 
-        // if (saves > 0) {
-        //     inTrips = true;
-        // }
-
         return (
             <>
                 <div className="location">
@@ -502,6 +499,11 @@ class Location extends React.Component {
         )
 
     }
+}
+
+
+Location.propTypes = {
+    userId: PropTypes.string
 }
 
 
