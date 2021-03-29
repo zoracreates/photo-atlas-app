@@ -15,12 +15,13 @@ class EditTripModal extends React.Component {
         tripName: '',
         tripTags: '',
         tripTagsError: '',
-        tripPrivacy: null,
+        tripPrivacy:  this.props.originalTripPrivacy,
         updatingTrip: false,
         tripUpdate: false
     }
 
     _isMounted = false;
+
 
 
 
@@ -46,21 +47,18 @@ class EditTripModal extends React.Component {
             let tripRef = `${originalPrivacy}Trips/${tripId}`
             let userTripRef = `userTrips/${userId}/${tripId}`
 
-            //trip name keeps getting deleted when privacy is changed. why?
-
             let newPrivacy = this.state.tripPrivacy
             let tripUpdate = {}
 
 
-            if (this.state.tripName !== this.props.originalTripName) {
+            if (this.state.tripName && (this.state.tripName !== this.props.originalTripName)) {
                 tripUpdate["tripName"] = this.state.tripName
             }
 
             //this gets buggy when I update tags plus it's not refreshing the update...
-            if (this.state.tripTags !== this.props.originalTripTags) {
+            if (this.state.tripTags && (this.state.tripTags !== this.props.originalTripTags)) {
                 tripUpdate["tags"] = this.state.tripTags
             }
-
 
             //update trip name and tags
             if (tripUpdate || newPrivacy) {
@@ -141,10 +139,22 @@ class EditTripModal extends React.Component {
         }
     }
 
-    renderUpdateForm() {
-        let privateTrip = this.props.originalTripPrivacy === 'private'
-        let publicTrip = this.props.originalTripPrivacy === 'public'
 
+    componentDidUpdate(prevProps) {
+        if(this.props.originalTripPrivacy !== prevProps.originalTripPrivacy) {
+            this.state.tripPrivacy =  this.props.originalTripPrivacy
+        }
+ 
+    }
+
+    renderUpdateForm() {
+        let pathQuery = this.props.searchQuery;
+        let searchParams = new URLSearchParams(pathQuery);
+        let searchPrivacy = searchParams.get("privacy")
+        let privacy = this.state.tripPrivacy ?  this.state.tripPrivacy : searchPrivacy;
+
+        let defaultPrivate = privacy === 'private'
+        let defaultPublic = privacy === 'public'
 
         return (
             <>
@@ -153,14 +163,21 @@ class EditTripModal extends React.Component {
                 <form className="modal-content-padding">
                     <div className="form-component-wrapper">
                         <label htmlFor="trip-name">Trip Name (Max 50 Characters)</label>
-                        <TexInput id="trip-name" value={this.state.tripName ? this.state.tripName : this.props.originalTripName} onChange={(e) => this.handleTripNamelInput(e)} required />
+                        <TexInput id="trip-name"
+                            placeholder={this.props.originalTripName}
+                            value={this.state.tripName}
+                            onChange={(e) => this.handleTripNamelInput(e)}
+                            required />
                         {this.state.tripNameLength !== 0 && <p className="character-count" aria-live="polite">Characters left: {50 - this.state.tripNameLength}</p>}
                         {this.state.tripNameError && <p className="error-font" aria-live="polite">{this.state.tripNameError}</p>}
                     </div>
 
                     <div className="form-component-wrapper">
                         <label htmlFor="trip-tags">Tags (Comma separated keywords)</label>
-                        <TexInput id="trip-tags" value={this.state.tripTags ? this.state.tripTags : this.props.originalTripTags} onChange={(e) => this.handleTripTagsInput(e)} />
+                        <TexInput id="trip-tags"
+                            placeholder={this.props.originalTripTags}
+                            value={this.state.tripTags}
+                            onChange={(e) => this.handleTripTagsInput(e)} />
                         {this.state.tripTagsError && <p className="error-font" aria-live="polite">{this.state.tripTagsError}</p>}
                     </div>
 
@@ -168,7 +185,7 @@ class EditTripModal extends React.Component {
                         <legend>Visibility Settings</legend>
 
                         <RadioButton
-                            defaultChecked={publicTrip}
+                            defaultChecked={defaultPublic}
                             onChange={(e) => this.handleTripPrivacy(e)}
                             labelText="Public"
                             name="trip-privacy"
@@ -177,7 +194,7 @@ class EditTripModal extends React.Component {
                         <label className="caption-font" htmlFor="public">Anyone on Photo Atlas can see</label>
 
                         <RadioButton
-                            defaultChecked={privateTrip}
+                            defaultChecked={defaultPrivate}
                             onChange={(e) => this.handleTripPrivacy(e)}
                             labelText="Private"
                             name="trip-privacy"
@@ -262,7 +279,7 @@ class EditTripModal extends React.Component {
 
             let originalPrivacy = this.props.originalTripPrivacy
             let newPrivacy = this.state.tripPrivacy
-            
+
 
             if (newPrivacy && (newPrivacy !== originalPrivacy)) {
                 update = {
@@ -276,7 +293,7 @@ class EditTripModal extends React.Component {
             }
 
         } else {
-            update = {updated: false}
+            update = { updated: false }
         }
 
         this.setState({ tripUpdate: false },

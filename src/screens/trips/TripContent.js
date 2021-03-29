@@ -14,11 +14,10 @@ class TripContent extends React.Component {
         mapLat: null,
         mapLon: null,
         mapZoom: 10,
-        showModal: false
+        showModal: false,
+        tripPrivacy: null
     }
     _isMounted = false;
-
-    privacy = this.getPrivacy()
 
     tripId = this.getTripId()
 
@@ -39,7 +38,14 @@ class TripContent extends React.Component {
     componentDidMount() {
         this._isMounted = true;
 
-        this._isMounted && this.getTripDetails(this.privacy, this.tripId);
+        let privacy = this.getPrivacy()
+
+        this.setState({tripPrivacy: privacy}, () =>  {
+            this._isMounted && this.getTripDetails(this.state.tripPrivacy, this.tripId);
+        }   
+        )
+
+        
     }
 
     getTripDetails(privacy, tripId) {
@@ -133,7 +139,9 @@ class TripContent extends React.Component {
     }
 
     openModal(){
-        this.setState({ showModal: true}) 
+        let privacy = this.getPrivacy()
+        this.setState({ tripPrivacy: privacy},
+            () => this.setState({showModal: true})) 
     }
 
     closeModal(update) {
@@ -142,16 +150,17 @@ class TripContent extends React.Component {
         if(updated) {
             let newPrivacy = update['newPrivacy']
 
-            if(newPrivacy && (this.privacy !== newPrivacy)) {
-                this.privacy = newPrivacy
+            if(newPrivacy && (this.state.tripPrivacy !== newPrivacy)) {
                 this.props.history.push({
                     search: `?privacy=${newPrivacy}`
                   })
-            } 
-            this._isMounted && this.getTripDetails(this.privacy, this.tripId);
 
+                this.setState({tripPrivacy: newPrivacy})
+                this._isMounted && this.getTripDetails(newPrivacy, this.tripId);
+            } else {
+                this._isMounted && this.getTripDetails(this.state.tripPrivacy, this.tripId);
+            } 
         } 
-        
         this.setState({ showModal: !this.state.showModal })
         
     }
@@ -166,7 +175,8 @@ class TripContent extends React.Component {
             mapZoom,
             locationsCount,
             tripName,
-            tripTags } = this.state;
+            tripTags,
+            tripPrivacy } = this.state;
 
 
         return (
@@ -213,9 +223,10 @@ class TripContent extends React.Component {
                         handleClose={(update) => this.closeModal(update)}
                         originalTripName={tripName}
                         originalTripTags={tripTags}
-                        originalTripPrivacy={this.privacy}
+                        originalTripPrivacy={tripPrivacy}
                         userId={this.props.userId}
                         tripId={this.tripId}
+                        searchQuery={this.props.location.search}
                     />
                 </div>
             </>
