@@ -182,10 +182,16 @@ p.meta-data:not(:first-child) {
         font-size: 0px;
     }
 
+    &.public,
+    &.private {
+        text-transform: capitalize;
+    }
+
     &.saved::before,
     &.marker::before,
     &.public::before,
-    &.private::before {
+    &.private::before,
+    &.tags::before {
         content:'';
         display: inline-block;
         width: 0.6rem;
@@ -194,6 +200,9 @@ p.meta-data:not(:first-child) {
         background-size: 0.6rem;
         background-position: center bottom;
         margin-right: 0.25rem;
+    }
+    &.tags::before {
+        background-image:  url(../images/icons/48px/hashtag-gray.png);
     }
 
     &.saved::before {
@@ -216,6 +225,10 @@ p.meta-data:not(:first-child) {
 @media (min-width: 769px) {
     :root {
         font-size: 18px;
+    }
+
+    .location .meta-data {
+        font-size: 0.8125rem;
     }
 
 }

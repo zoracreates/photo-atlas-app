@@ -91,14 +91,21 @@ input[type='submit'] {
     min-width: 5rem;
 }
 
-.location .action-button {
+.actions {
+    margin: 0px;
+    padding: 0px;
+    text-align: right;
+    list-style: none;
+}
+
+.action-button {
     @extend %button_font;
     background: transparent;
     border: none;
     color: $link_color;
     text-decoration: none;
     display: block;
-    margin: auto;
+    margin: 0px 0px 0px auto;
     text-align: center;
 
     &.action-button::before {
@@ -124,6 +131,11 @@ input[type='submit'] {
     &.add::before {
         background-image: url(../images/icons/96px/heart-outline-blue.png);   
     }
+
+    &.edit::before{
+        background-image: url(../images/icons/48px/pencil-blue.png);  
+    }
+
 }
 
 .action-button-small {
@@ -135,7 +147,7 @@ input[type='submit'] {
     color: $white_text_color;
     text-decoration: none;
     display: block;
-    margin: auto 0px;
+    margin: 0px 0px 0px auto;
     text-align: center;
 
     &::before {
@@ -156,6 +168,10 @@ input[type='submit'] {
 
     &.add::before {
         background-image: url(../images/icons/96px/heart-outline-white.png);   
+    }
+
+    &.edit::before{
+        background-image: url(../images/icons/48px/pencil-white.png);  
     }
 
 }

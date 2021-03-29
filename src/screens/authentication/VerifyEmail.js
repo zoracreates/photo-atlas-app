@@ -14,10 +14,10 @@ class VerifyEmail extends React.Component {
         let user = firebase.auth().currentUser;
         let component = this;
         let location = this.props.logInLocation;
-        let locationUrl = "http://localhost:3000/"
+        let locationUrl = "https://photoatlas.app/"
 
         if (location) {
-            locationUrl = `http://localhost:3000/${this.props.logInLocation}`;
+            locationUrl = `https://photoatlas.app/${this.props.logInLocation}`;
         }
 
         let actionCodeSettings = {

@@ -11,10 +11,10 @@ function TripCard(props) {
         tripId,
         isPublic,
         isShared,
-        locationCount } = props;
+        locationsCount } = props;
 
     return (
-        <Link className={`trip-card`} to={ `/trip/${tripId}`}>
+        <Link className={`trip-card`} to={ `/trip/${tripId}?privacy=${isPublic ? 'public' : 'private'}`}>
 
             <div className={`trip-card-image`}>
                 <img src={thumbnail} alt="" />
@@ -24,7 +24,7 @@ function TripCard(props) {
                 <p className={`meta-data ${isPublic ? 'public' : 'private'}`}>
                     {isPublic ? 'Public' : isShared ? 'Shared' : 'Private'}</p>
                 <p className={`meta-data marker`}>
-                   {locationCount} {locationCount > 1 ? 'Locations' : 'Location'}</p>
+                   {locationsCount} {(locationsCount > 1 || locationsCount < 1) ? 'Locations' : 'Location'}</p>
             </div>
 
         </Link>

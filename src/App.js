@@ -3,7 +3,6 @@ import React from 'react';
 import firebase from './utils/firebase/firebaseConfig'
 
 import Navbar from './components/navigation/Navbar';
-import AddLocation from './screens/AddLocation';
 import Home from './screens/explore/Home';
 import SearchResults from './screens/explore/SearchResults';
 import Account from './screens/Account';
@@ -22,16 +21,21 @@ class App extends React.Component {
   state = {
     signedIn: false,
     userVerified: false,
+    userId: null
+
   }
 
 
 
   componentDidMount() {
     firebase.auth().onAuthStateChanged(user => {
+
+
       if (user) {
         this.setState({
           signedIn: true,
           userVerified: user.emailVerified,
+          userId: user.uid
         });
       } else {
         this.setState({ signedIn: false });
@@ -55,18 +59,26 @@ class App extends React.Component {
 
             <Route path="/explore" component={SearchResults} />
 
-            <Route path="/location" component={Location} />
+            <Route path="/location"
+
+              render={
+                (props) => <Location {...props} userId={this.state.userId} />
+
+              } />
 
             <Route path="/trips"
 
               render={
-                () => <Trips isAuthenticated={signedIn} isVerified={userVerified} />
+                (props) => <Trips {...props} userId={this.state.userId} isAuthenticated={signedIn} isVerified={userVerified} />
 
               } />
 
-            <Route path="/trip" component={TripContent} />
+            <Route path="/trip"
 
-            <PrivateRoute path="/add" component={AddLocation} isAuthenticated={signedIn} isVerified={userVerified} logInLocation={"add"} />
+              render={
+                (props) => <TripContent {...props} userId={this.state.userId} />
+
+              } />
 
             <PrivateRoute path="/account" component={Account} isAuthenticated={signedIn} isVerified={userVerified} logInLocation={"account"} />
 

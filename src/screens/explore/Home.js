@@ -204,9 +204,9 @@ class Home extends React.Component {
 
         this._isMounted = true;
 
-        this._isMounted && getCurrentLocation(
-            position => this.setState({ currentLocation: position.coords }, () => { this.getNearbyLocations() }),
-            err => this.setState({ errorMessage: err.message })
+         getCurrentLocation(
+            position => this._isMounted && this.setState({ currentLocation: position.coords }, () => { this.getNearbyLocations() }),
+            err => this._isMounted && this.setState({ errorMessage: err.message })
         )
     }
 

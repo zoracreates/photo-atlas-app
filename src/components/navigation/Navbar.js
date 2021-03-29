@@ -8,15 +8,16 @@ function Navbar() {
     let location = useLocation().pathname;
 
     let tripsPath = new RegExp('/trips/?');
-    let addPath = new RegExp('/add/?');
-    let profilePath = new RegExp('/account/?');
-    let logInPath = new RegExp('/login/?');
+    let accountPath = new RegExp('/account/?');
+    let tripPagePath = new RegExp('/trip/?');
+    let locationPagePath = new RegExp('/location/?');
 
     let tripsActive = tripsPath.test(location);
-    let addActive = addPath.test(location);
-    let profileActive = profilePath.test(location);
-    let logInActive = logInPath.test(location);
-    let exploreActive = (!tripsActive && !addActive && !profileActive && !logInActive);
+    let accountActive = accountPath.test(location);
+    let tripPageActive = tripPagePath.test(location)
+    let locationPageActive = locationPagePath.test(location)
+
+    let exploreActive = (!tripsActive && !accountActive && !tripPageActive && !locationPageActive );
     
 
     return (
@@ -43,13 +44,7 @@ function Navbar() {
                         </li>
 
                         <li>
-                            <Link to="/add" className={`add ${addActive ? 'active' : 'normal'}`}>
-                                <span>Add</span>
-                            </Link>
-                        </li>
-
-                        <li>
-                            <Link to="/account" className={`profile ${profileActive ? 'active' : 'normal'}`}>
+                            <Link to="/account" className={`profile ${accountActive ? 'active' : 'normal'}`}>
                                 <span>Account</span>
                             </Link>
                         </li>

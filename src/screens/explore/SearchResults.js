@@ -2,13 +2,14 @@ import React from 'react';
 
 import SearchBar from '../../components/forms/SearchBar';
 import MapWithCards from '../../components/layout/MapWithCards';
+
 import getFlickrPhotos from '../../utils/flickr/getFlickrPhotos';
 import createFlickrImageUrl from '../../utils/flickr/createFlickrImageUrl';
 import getFlickrPlace from '../../utils/flickr/getFlickrPlace';
 import getCurrentLocation from '../../utils/getCurrentLocation';
 import ResultsList from '../../components/content/ResultsList';
 import getGeoSuggestions from '../../utils/getGeoSuggestions'
-import SubjectFilters from '../../components/forms/SubjectFilters'
+import SubjectFilters from '../../components/forms/SubjectFilters';
 
 class SearchResults extends React.Component {
     state = {
@@ -91,14 +92,6 @@ class SearchResults extends React.Component {
                         // prevent duplicate locations, and locations with no tags
                         if (woeId && !existingLocations.includes(woeId) && tags ) {
 
-                            let currentLat = 0;
-                            let currentLon = 0;
-
-                            if (this.state.currentLocation) {
-                                currentLat = this.state.currentLocation.latitude;
-                                currentLon = this.state.currentLocation.longitude
-                            }
-
                             
                             //add photo locations to existing list
                             existingLocations.push(woeId);
@@ -109,11 +102,6 @@ class SearchResults extends React.Component {
                                 "woeId" : woeId,
                                 "thumbnail": url,
                                 "title": title,
-                                "saves": 0,
-                                "origin": {
-                                    "latitude": parseFloat(currentLat),
-                                    "longitude": parseFloat(currentLon)
-                                },
                                 "destination": {
                                     "latitude": parseFloat(lat),
                                     "longitude": parseFloat(lon)

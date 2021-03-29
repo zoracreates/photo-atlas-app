@@ -26,8 +26,13 @@ footer .container,
 .dark-background .container,
 .light-background .container {
     width: 98%;
-    max-width: 1200px;
+    max-width: 1800px;
     margin: auto;
+}
+
+main {
+    width: 100%;
+    max-width: 1800px;
 }
 
 footer .container {
@@ -105,8 +110,20 @@ header {
 .grid-1_3 > *,
 .grid-2_3  > *,
 .grid-1_2 > *,
-.form-grid > * {
+.grid-2 > *,
+.form-grid > *{
     margin-top: 2%;
+}
+
+.grid-2 {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    
+}
+
+.grid-2 > * {
+    flex-basis: 48%;
 }
 
 .grid-map {

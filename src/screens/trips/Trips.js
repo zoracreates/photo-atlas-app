@@ -1,6 +1,8 @@
 import React from 'react'
+import PropTypes from 'prop-types';
 import PublicTrips from './PublicTrips'
 import MyTrips from './MyTrips'
+
 
 
 
@@ -17,7 +19,11 @@ class Trips extends React.Component {
         }
         else {
             return (
-                <MyTrips isVerified={this.props.isVerified} isAuthenticated={this.props.isAuthenticated}/>
+                <MyTrips 
+                    isVerified={this.props.isVerified} 
+                    isAuthenticated={this.props.isAuthenticated}
+                    userId={this.props.userId}
+                    />
             )
         }
 
@@ -53,6 +59,12 @@ class Trips extends React.Component {
         )
     }
 
+}
+
+Trips.propTypes = {
+    userId: PropTypes.string,
+    isAuthenticated: PropTypes.bool,
+    isVerified: PropTypes.bool
 }
 
 

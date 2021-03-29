@@ -8,6 +8,7 @@ import SubmitButton from '../forms/SubmitButton'
 import RadioButton from '../forms/RadioButton'
 import { generateDate, generateTimeNumber } from '../../utils/generateDateAndTime'
 import generateID from '../../utils/generateId'
+import getUserTrips from '../../utils/getUserTrips'
 
 class ManageTripsModal extends React.Component {
     state = {
@@ -71,90 +72,33 @@ class ManageTripsModal extends React.Component {
     }
 
     checkExistingTrips(userId) {
-        let database = firebase.database();
-        let existingTrips = [];
-
+        
         this.setState({ updatingTrips: true })
 
-        database.ref(`userTrips/${userId}`).get().then((snapshot) => {
-
-            let trips = snapshot.val();
-
-
-            for (const tripId in trips) {
-                let trip = trips[tripId]
-
-                //get privacy setting 
-                let privacy = trip['tripPrivacy']
-                let isPublic = privacy === 'public';
-                let isShared = trip['isShared']
-
-                let tripRef = `${privacy}Trips/${tripId}`
-
-                database.ref(`${tripRef}`).get().then(
-                    (snapshot) => {
-                        let tripData = snapshot.val()
-                        //get title
-                        let title = tripData['tripName']
-
-                        //get locationsCount
-                        let locationsCount = tripData['locationsCount']
-
-                        //get thumnail
-                        let thumbnail = tripData['featuredImg']
-
-                        //see if location is in trip
-                        let inTrip;
-
-                        let locations = tripData.locations;
-
-
-                        if (locations) {
-                            let location = locations[this.props.locationId]
-                            if (location) {
-                                inTrip = true
-                            } else {
-                                inTrip = false
-                            }
-                        } else {
-                            inTrip = false
-                        }
-
-                        let existingTripUpdate = {
-                            tripId: tripId,
-                            thumbnail: thumbnail,
-                            title: title,
-                            locationsCount: locationsCount,
-                            isPublic: isPublic,
-                            isShared: isShared,
-                            inTrip: inTrip
-                        }
-
-                        existingTrips.push(existingTripUpdate)
-
-
-                    }
-                ).then(() => this.setState({ existingTrips: existingTrips, updatingTrips: false }))
-
-            }
-
-        })
-
+        this._isMounted && 
+        getUserTrips(userId,  (existingTrips) => this.setState({ existingTrips: existingTrips, updatingTrips: false }), this.props.locationId)
     }
 
 
 
-    checkAuth(user) {
+    checkAuth() {
+
+        let userId = this.props.userId;
+
+        if(!userId) {
+            let user = firebase.auth().currentUser;
+            if(user) {
+                userId = user.uid;
+            } 
+        }
+
 
         if (this._isMounted) {
 
-            if (!user) {
-                user = firebase.auth().currentUser;
-            }
 
-            if (user) {
+            if (userId) {
 
-                let userId = user.uid;
+           
                 //get user trips
                 this._isMounted && this.checkExistingTrips(userId);
 
@@ -290,7 +234,7 @@ class ManageTripsModal extends React.Component {
                             <p className={`meta-data ${isPublic ? 'public' : 'private'}`}>
                                 {isPublic ? 'Public' : isShared ? 'Shared' : 'Private'}</p>
                             <p className={`meta-data marker`}>
-                                {locationsCount} {locationsCount > 1 ? 'Locations' : 'Location'}</p>
+                                {locationsCount} {(locationsCount > 1 || locationsCount < 1) ? 'Locations' : 'Location'}</p>
                             <button className="add-or-remove" onClick={(e) => { this.addOrRemoveFromTrip(tripId, isPublic) }}>
                                 {inTrip ? '- Remove' : '+ Add'}
                                 <span>{inTrip ? `from ${title}` : `to ${title}`}</span>
@@ -300,9 +244,6 @@ class ManageTripsModal extends React.Component {
                 )
             })}
         </ul>)
-
-
-
 
     }
 
@@ -388,9 +329,9 @@ class ManageTripsModal extends React.Component {
                     <fieldset className="form-component-wrapper">
                         <legend>Visibility Settings</legend>
                         <RadioButton onChange={(e) => this.handleNewTripPrivacy(e)} labelText="Public" defaultChecked name="trip-privacy" value="public" />
-                        <label className="caption-font" htmlFor="public">Anyone on Photo Atlas</label>
+                        <label className="caption-font" htmlFor="public">Anyone on Photo Atlas can see</label>
                         <RadioButton onChange={(e) => this.handleNewTripPrivacy(e)} labelText="Private" name="trip-privacy" value="private" />
-                        <label className="caption-font" htmlFor="private">Only you and those you share this trip with</label>
+                        <label className="caption-font" htmlFor="private">Only you can see</label>
                     </fieldset>
 
                     <div className="form-component-wrapper">
@@ -467,7 +408,8 @@ class ManageTripsModal extends React.Component {
             subjects: locationSubjects,
             addedDate: date,
             curated: false, //indicates that app has not been curated by a PhotoAtlas user
-            userLastEditedDate: null
+            userLastEditedDate: null,
+            woeId: this.props.woeId
         }).then(() => {
 
             // add subjects record
