@@ -3,7 +3,6 @@ import React from 'react';
 import firebase from './utils/firebase/firebaseConfig'
 
 import Navbar from './components/navigation/Navbar';
-import AddLocation from './screens/AddLocation';
 import Home from './screens/explore/Home';
 import SearchResults from './screens/explore/SearchResults';
 import Account from './screens/Account';
@@ -60,8 +59,6 @@ class App extends React.Component {
 
             <Route path="/explore" component={SearchResults} />
 
-            {/* <Route path="/location" component={Location} /> */}
-
             <Route path="/location"
 
               render={
@@ -82,8 +79,6 @@ class App extends React.Component {
                 (props) => <TripContent {...props} userId={this.state.userId} />
 
               } />
-
-            <PrivateRoute path="/add" component={AddLocation} isAuthenticated={signedIn} isVerified={userVerified} logInLocation={"add"} />
 
             <PrivateRoute path="/account" component={Account} isAuthenticated={signedIn} isVerified={userVerified} logInLocation={"account"} />
 

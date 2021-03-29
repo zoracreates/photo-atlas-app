@@ -200,8 +200,9 @@ class TripContent extends React.Component {
                             <div className={`col-70`}>
                                 <div className={`container mobile-padding`}>
                                     <h2 className="h6-font">{tripName}</h2>
-                                    <p className={`meta-data`}>Locations: {locationsCount}</p>
-                                    <p className={`meta-data`}>Tags: {tripTags}</p>
+                                    <p className={`meta-data ${tripPrivacy ==='public' ? 'public' : 'private'}`}>{tripPrivacy}</p>
+                                    <p className={`meta-data marker`}>{locationsCount} {locationsCount === 1 ? 'Location' : 'Locations'}</p>
+                                    <p className={`meta-data tags`}>Tags: {tripTags}</p>
                                 </div>
                             </div>
                             <div className={`col-30`}>
