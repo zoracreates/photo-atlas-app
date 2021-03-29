@@ -28,7 +28,7 @@ class EditTripModal extends React.Component {
         //update userTrips
         //update trip
         e.preventDefault();
-        this.setState({ updatingTrip: true })
+
 
         if (!this.state.errorUpdatingTrip &&
             !this.state.errorUpdatingUserTrips &&
@@ -36,6 +36,7 @@ class EditTripModal extends React.Component {
             !this.state.tripTagsError
         ) {
 
+            this.setState({ updatingTrip: true })
             let database = firebase.database()
             let userId = this.props.userId;
             let tripId = this.props.tripId;
@@ -51,12 +52,12 @@ class EditTripModal extends React.Component {
             let tripUpdate = {}
 
 
-            if (this.state.tripName) {
+            if (this.state.tripName !== this.props.originalTripName) {
                 tripUpdate["tripName"] = this.state.tripName
             }
 
             //this gets buggy when I update tags plus it's not refreshing the update...
-            if (this.state.tripTags) {
+            if (this.state.tripTags !== this.props.originalTripTags) {
                 tripUpdate["tags"] = this.state.tripTags
             }
 
@@ -249,19 +250,37 @@ class EditTripModal extends React.Component {
     }
 
     closeModal() {
-        let updates;
-        this.setState({
-            tripUpdate: false
-        })
+
+        //if the trip was updated
+        //reset the state of the modal
+        //and tell the parent of the update
+        //else close the modal and indate that the update did not happen
+
+        let update = {}
+
         if (this.state.tripUpdate) {
-            updates = {
-                tripName: this.state.tripName,
-                tripTags: this.state.tripTags,
-                tripPrivacy: this.state.tripPrivacy
+
+            let originalPrivacy = this.props.originalTripPrivacy
+            let newPrivacy = this.state.tripPrivacy
+            
+
+            if (newPrivacy && (newPrivacy !== originalPrivacy)) {
+                update = {
+                    updated: true,
+                    newPrivacy: newPrivacy
+                }
+            } else {
+                update = {
+                    updated: true
+                }
             }
+
+        } else {
+            update = {updated: false}
         }
 
-        this.props.handleClose(updates)
+        this.setState({ tripUpdate: false },
+            () => this.props.handleClose(update))
 
     }
 

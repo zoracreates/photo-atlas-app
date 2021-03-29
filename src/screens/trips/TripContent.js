@@ -39,19 +39,7 @@ class TripContent extends React.Component {
     componentDidMount() {
         this._isMounted = true;
 
-        // let path = this.props.location.pathname;
-        // let tripId = path.replace("/trip/", "");
-        // let privacy = this.getPrivacy();
-
         this._isMounted && this.getTripDetails(this.privacy, this.tripId);
-
-        // this._isMounted && this.setState({ tripPrivacy: this.privacy, tripId: tripId },
-        //     () => {
-
-                //this._isMounted && this.getTripDetails(this.privacy, this.tripId);
-
-        //     }
-        // )
     }
 
     getTripDetails(privacy, tripId) {
@@ -148,20 +136,24 @@ class TripContent extends React.Component {
         this.setState({ showModal: true}) 
     }
 
-    handleModal(updates) {
-        let currentPrivacy = this.privacy;
-        this.setState({ showModal: !this.state.showModal, updates })
+    closeModal(update) {
+        let updated = update['updated']
 
-        if(updates) {
-            this.setState({ updates })
-            let newPrivacy = updates['tripPrivacy'];
-            if(newPrivacy && currentPrivacy !== newPrivacy) {
+        if(updated) {
+            let newPrivacy = update['newPrivacy']
+
+            if(newPrivacy && (this.privacy !== newPrivacy)) {
+                this.privacy = newPrivacy
                 this.props.history.push({
                     search: `?privacy=${newPrivacy}`
                   })
-            }
-        }
+            } 
+            this._isMounted && this.getTripDetails(this.privacy, this.tripId);
 
+        } 
+        
+        this.setState({ showModal: !this.state.showModal })
+        
     }
 
 
@@ -218,7 +210,7 @@ class TripContent extends React.Component {
                     </MapWithCards>
                     <EditTripModal
                         isOpen={this.state.showModal}
-                        handleClose={(updates) => this.handleModal(updates)}
+                        handleClose={(update) => this.closeModal(update)}
                         originalTripName={tripName}
                         originalTripTags={tripTags}
                         originalTripPrivacy={this.privacy}
