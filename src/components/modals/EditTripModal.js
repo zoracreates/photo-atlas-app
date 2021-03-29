@@ -28,79 +28,89 @@ class EditTripModal extends React.Component {
         //update userTrips
         //update trip
         e.preventDefault();
-        this.setState({updatingTrip: true})
+        this.setState({ updatingTrip: true })
 
-        let database = firebase.database()
-        let userId = this.props.userId;
-        let tripId = this.props.tripId;
-        let originalPrivacy = this.props.originalTripPrivacy;
+        if (!this.state.errorUpdatingTrip &&
+            !this.state.errorUpdatingUserTrips &&
+            !this.state.tripNameError &&
+            !this.state.tripTagsError
+        ) {
+
+            let database = firebase.database()
+            let userId = this.props.userId;
+            let tripId = this.props.tripId;
+            let originalPrivacy = this.props.originalTripPrivacy;
 
 
-        let tripRef = `${originalPrivacy}Trips/${tripId}`
-        let userTripRef = `userTrips/${userId}/${tripId}`
-        console.log( userTripRef)
+            let tripRef = `${originalPrivacy}Trips/${tripId}`
+            let userTripRef = `userTrips/${userId}/${tripId}`
 
-        //trip name keeps getting deleted when privacy is changed. why?
+            //trip name keeps getting deleted when privacy is changed. why?
 
-        let newPrivacy = this.state.tripPrivacy
-        let tripUpdate = {}
+            let newPrivacy = this.state.tripPrivacy
+            let tripUpdate = {}
 
-        if(this.state.tripName) {
-            tripUpdate["tripName"] = this.state.tripName
-        }
 
-        //this gets buggy when I update tags plus it's not refreshing the update...
-        if(this.state.tags) {
-            tripUpdate["tags"] = this.state.tripTags
-        }
+            if (this.state.tripName) {
+                tripUpdate["tripName"] = this.state.tripName
+            }
 
-        //update trip name and tags
-        if(tripUpdate || newPrivacy) {
-            database.ref(`${tripRef}`).update(tripUpdate).catch(error => {
-                this.setState({errorUpdatingTrip: error})
-            }).then(() => {
-                if(this.state.tripPrivacy) {
-                    let userTripsUpdate = {
-                        tripPrivacy: newPrivacy 
-                    }
-                    //update userTrips
-                    database.ref(`${userTripRef}`).update(userTripsUpdate).catch(error => {
-                        this.setState({errorUpdatingUserTrips: error})
-                    })
-            
-                    //get trip from current spot and store it
-                    let tripData;
-                    database.ref(`${tripRef}`).get().then(
-                        (snapshot) => {
-                            tripData = snapshot.val()
-                            
+            //this gets buggy when I update tags plus it's not refreshing the update...
+            if (this.state.tripTags) {
+                tripUpdate["tags"] = this.state.tripTags
+            }
+
+
+            //update trip name and tags
+            if (tripUpdate || newPrivacy) {
+                database.ref(`${tripRef}`).update(tripUpdate).catch(error => {
+                    this.setState({ errorUpdatingTrip: error })
+                }).then(() => {
+                    if (this.state.tripPrivacy) {
+                        let userTripsUpdate = {
+                            tripPrivacy: newPrivacy
                         }
-                    ).catch(error => {
-                        this.setState({errorUpdatingUserTrips: `When getting original privacy setting ${error}`})
-                    }).then(() =>{
-        
-                        database.ref(`${tripRef}`).remove().catch(error => {
-                            this.setState({errorUpdatingUserTrips: `When deleting original privacy setting ${error}`})
+                        //update userTrips
+                        database.ref(`${userTripRef}`).update(userTripsUpdate).catch(error => {
+                            this.setState({ errorUpdatingUserTrips: error })
                         })
-                    }).then(() => {
-                        let tripRef = `${newPrivacy}Trips/${tripId}`
-                        database.ref(`${tripRef}`).set(
-                            tripData
+
+                        //get trip from current spot and store it
+                        let tripData;
+                        database.ref(`${tripRef}`).get().then(
+                            (snapshot) => {
+                                tripData = snapshot.val()
+
+                            }
                         ).catch(error => {
-                            this.setState({errorUpdatingUserTrips: `When setting new privacy setting ${error}`})
-                        })
-                    }).then(() =>  this.setState({updatingTrip: false, tripUpdate: true}))
-                    
-                    
-                    
-                    //delete trip from current spot
-                    //add trip under new privacy
-                } else {
-                    this.setState({updatingTrip: false, tripUpdate: true})
-                }
-            })
-            
+                            this.setState({ errorUpdatingUserTrips: `When getting original privacy setting ${error}` })
+                        }).then(() => {
+                            //delete trip from current spot
+                            database.ref(`${tripRef}`).remove().catch(error => {
+                                this.setState({ errorUpdatingUserTrips: `When deleting original privacy setting ${error}` })
+                            })
+                        }).then(() => {
+                            //add trip under new privacy
+                            let tripRef = `${newPrivacy}Trips/${tripId}`
+                            database.ref(`${tripRef}`).set(
+                                tripData
+                            ).catch(error => {
+                                this.setState({ errorUpdatingUserTrips: `When setting new privacy setting ${error}` })
+                            })
+                        }).then(() =>
+                            //inidicate update finished
+                            this.setState({ updatingTrip: false, tripUpdate: true }))
+                    } else {
+                        //if privacy was not changed, simply indicate update done
+                        this.setState({ updatingTrip: false, tripUpdate: true })
+                    }
+                })
+
+            }
+
         }
+
+
     }
 
     tripUpdated() {
@@ -138,9 +148,6 @@ class EditTripModal extends React.Component {
         return (
             <>
                 {this.renderDatabaseErrors()}
-            
-                
-               
 
                 <form className="modal-content-padding">
                     <div className="form-component-wrapper">
@@ -152,30 +159,30 @@ class EditTripModal extends React.Component {
 
                     <div className="form-component-wrapper">
                         <label htmlFor="trip-tags">Tags (Comma separated keywords)</label>
-                        <TexInput  id="trip-tags" value={this.state.tripTags ? this.state.tripTags : this.props.originalTripTags} onChange={(e) => this.handleTripTagsInput(e)} />
+                        <TexInput id="trip-tags" value={this.state.tripTags ? this.state.tripTags : this.props.originalTripTags} onChange={(e) => this.handleTripTagsInput(e)} />
                         {this.state.tripTagsError && <p className="error-font" aria-live="polite">{this.state.tripTagsError}</p>}
                     </div>
 
                     <fieldset className="form-component-wrapper">
                         <legend>Visibility Settings</legend>
-                       
-                        <RadioButton 
-                             defaultChecked={publicTrip}
-                            onChange={(e) => this.handleTripPrivacy(e)} 
-                            labelText="Public" 
-                            name="trip-privacy" 
+
+                        <RadioButton
+                            defaultChecked={publicTrip}
+                            onChange={(e) => this.handleTripPrivacy(e)}
+                            labelText="Public"
+                            name="trip-privacy"
                             value="public" />
-                            
+
                         <label className="caption-font" htmlFor="public">Anyone on Photo Atlas can see</label>
 
-                        <RadioButton 
+                        <RadioButton
                             defaultChecked={privateTrip}
-                            onChange={(e) => this.handleTripPrivacy(e)} 
-                            labelText="Private" 
-                            name="trip-privacy" 
+                            onChange={(e) => this.handleTripPrivacy(e)}
+                            labelText="Private"
+                            name="trip-privacy"
                             value="private" />
                         <label className="caption-font" htmlFor="private">Only you can see</label>
-                       
+
                     </fieldset>
 
                     <div className="form-component-wrapper">
@@ -230,7 +237,11 @@ class EditTripModal extends React.Component {
 
 
     renderModalContent() {
-        if (!this.state.tripUpdate) {
+        if (!this.state.tripUpdate ||
+            this.state.errorUpdatingTrip ||
+            this.state.errorUpdatingUserTrips ||
+            this.state.tripNameError ||
+            this.state.tripTagsError) {
             return this.renderUpdateForm()
         } else {
             return this.tripUpdated()
@@ -242,7 +253,7 @@ class EditTripModal extends React.Component {
         this.setState({
             tripUpdate: false
         })
-        if(this.state.tripUpdate) {
+        if (this.state.tripUpdate) {
             updates = {
                 tripName: this.state.tripName,
                 tripTags: this.state.tripTags,

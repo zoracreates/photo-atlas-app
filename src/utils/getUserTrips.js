@@ -22,50 +22,54 @@ let getUserTrips = (userId, callback, locationId = null) => {
 
             database.ref(`${tripRef}`).get().then(
                 (snapshot) => {
-                    let tripData = snapshot.val()
-                    //get title
-                    let title = tripData['tripName']
-
-                    //get locationsCount
-                    let locationsCount = tripData['locationsCount']
-
-                    //get thumnail
-                    let thumbnail = tripData['featuredImg']
-
-                    //see if location is in trip
-                    let inTrip;
- 
-                    if(locationId) {
-                        let locations = tripData.locations;
-
-
-                        if (locations) {
-                            let location = locations[locationId]
-                            if (location) {
-                                inTrip = true
+                    if(snapshot.exists()){
+                        let tripData = snapshot.val()
+                        //get title
+                        let title = tripData['tripName']
+    
+                        //get locationsCount
+                        let locationsCount = tripData['locationsCount']
+    
+                        //get thumnail
+                        let thumbnail = tripData['featuredImg']
+    
+                        //see if location is in trip
+                        let inTrip;
+     
+                        if(locationId) {
+                            let locations = tripData.locations;
+    
+    
+                            if (locations) {
+                                let location = locations[locationId]
+                                if (location) {
+                                    inTrip = true
+                                } else {
+                                    inTrip = false
+                                }
                             } else {
                                 inTrip = false
-                            }
-                        } else {
-                            inTrip = false
-                        } 
+                            } 
+                        }
+    
+                        let existingTripUpdate = {
+                            tripId: tripId,
+                            thumbnail: thumbnail,
+                            title: title,
+                            locationsCount: locationsCount,
+                            isPublic: isPublic,
+                            isShared: isShared,
+                            inTrip: inTrip
+                        }
+    
+                        existingTrips.push(existingTripUpdate)
+    
+                        return existingTrips
+                    } else {
+                        console.log(`issue fetching: ${tripRef}`)
                     }
-
-                    let existingTripUpdate = {
-                        tripId: tripId,
-                        thumbnail: thumbnail,
-                        title: title,
-                        locationsCount: locationsCount,
-                        isPublic: isPublic,
-                        isShared: isShared,
-                        inTrip: inTrip
-                    }
-
-                    existingTrips.push(existingTripUpdate)
-
-                    return existingTrips
                 }
-            ).then((existingTrips) => callback(existingTrips))
+            ).catch((error)=> console.log(`could not fetch trips: ${error}`)).then((existingTrips) => callback(existingTrips))
 
         }
 
