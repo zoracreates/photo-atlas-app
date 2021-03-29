@@ -3,49 +3,61 @@ import MapWithCards from '../../components/layout/MapWithCards'
 import ResultsList from '../../components/content/ResultsList'
 import firebase from '../../utils/firebase/firebaseConfig'
 import { EditTripLarge, EditTripSmall } from '../../components/buttons/EditTripButtons'
-
+import EditTripModal from '../../components/modals/EditTripModal'
 class TripContent extends React.Component {
     state = {
         loaded: false,
-        tripId: '',
-        userId: null,
         tripList: [],
-        tripPrivacy: null,
         tripName: '',
+        tripTags: '',
         locationsCount: 0,
         mapLat: null,
         mapLon: null,
         mapZoom: 10,
+        showModal: false
     }
     _isMounted = false;
+
+    privacy = this.getPrivacy()
+
+    tripId = this.getTripId()
+
+    getPrivacy () {
+        let pathQuery = this.props.location.search;
+        let searchParams = new URLSearchParams(pathQuery);
+        let privacy = searchParams.get("privacy");
+        return privacy;
+    }
+
+    getTripId() {
+        let pathname = this.props.location.pathname;
+        let tripId = pathname.replace("/trip/", "");
+        return tripId;
+    }
 
 
     componentDidMount() {
         this._isMounted = true;
 
-        let path = this.props.location.pathname;
-        let tripId = path.replace("/trip/", "");
-        let pathQuery = this.props.location.search;
-        let searchParams = new URLSearchParams(pathQuery);
-        let privacy = searchParams.get("privacy");
+        // let path = this.props.location.pathname;
+        // let tripId = path.replace("/trip/", "");
+        // let privacy = this.getPrivacy();
 
-        this._isMounted && this.setState({ tripPrivacy: privacy, tripId: tripId },
-            () => {
+        this._isMounted && this.getTripDetails(this.privacy, this.tripId);
 
-                this._isMounted && this.getTripDetails(this.state.tripPrivacy, this.state.tripId);
+        // this._isMounted && this.setState({ tripPrivacy: this.privacy, tripId: tripId },
+        //     () => {
 
-            }
-        )
+                //this._isMounted && this.getTripDetails(this.privacy, this.tripId);
+
+        //     }
+        // )
     }
-
-
-
-
 
     getTripDetails(privacy, tripId) {
         let database = firebase.database();
 
-        let tripName, locationsCount, tripRef;
+        let tripName, locationsCount, tripRef, tripTags;
         let list = []
 
         if (privacy === 'public') {
@@ -58,10 +70,12 @@ class TripContent extends React.Component {
             snapshot => {
                 let tripData = snapshot.val()
                 tripName = tripData['tripName']
+                tripTags = tripData['tags']
                 locationsCount = tripData['locationsCount']
                 this.setState({
                     tripName: tripName,
-                    locationsCount: locationsCount
+                    locationsCount: locationsCount,
+                    tripTags: tripTags
                 })
                 let locations = tripData['locations']
 
@@ -130,6 +144,26 @@ class TripContent extends React.Component {
 
     }
 
+    openModal(){
+        this.setState({ showModal: true}) 
+    }
+
+    handleModal(updates) {
+        let currentPrivacy = this.privacy;
+        this.setState({ showModal: !this.state.showModal, updates })
+
+        if(updates) {
+            this.setState({ updates })
+            let newPrivacy = updates['tripPrivacy'];
+            if(newPrivacy && currentPrivacy !== newPrivacy) {
+                this.props.history.push({
+                    search: `?privacy=${newPrivacy}`
+                  })
+            }
+        }
+
+    }
+
 
     render() {
         let {
@@ -139,12 +173,14 @@ class TripContent extends React.Component {
             mapLon,
             mapZoom,
             locationsCount,
-            tripName } = this.state;
+            tripName,
+            tripTags } = this.state;
+
 
         return (
             <>
                 <div className={`trip`}>
-
+            
                     <MapWithCards
                         mapLoctaions={tripList}
                         mapLat={mapLat}
@@ -154,31 +190,40 @@ class TripContent extends React.Component {
                         <div className='dark-background mobile-header'>
                             <div className={`container mobile-padding`}>
                                 <button onClick={() => { window.history.back() }} className={`secondary-button back-button`}>Back</button>
-                                <EditTripSmall  />
+                                <EditTripSmall onClick={()=>this.openModal()} />
                             </div>
                         </div>
 
                         <div className={`gird-70-30`}>
                             <div className={`col-70`}>
                                 <div className={`container mobile-padding`}>
-                                <h2 className="h6-font">{tripName}</h2>
-                                <p>Locations: {locationsCount}</p>
+                                    <h2 className="h6-font">{tripName}</h2>
+                                    <p>Locations: {locationsCount}</p>
                                 </div>
                             </div>
                             <div className={`col-30`}>
                                 <ul className="actions">
                                     <li>
-                                        <EditTripLarge />
+                                        <EditTripLarge onClick={()=>this.openModal()} />
                                     </li>
 
                                 </ul>
                             </div>
                         </div>
                         <div className={`container`}>
-                        <ResultsList loaded={loaded} list={tripList} />
+                            <ResultsList loaded={loaded} list={tripList} />
                         </div>
 
                     </MapWithCards>
+                    <EditTripModal
+                        isOpen={this.state.showModal}
+                        handleClose={(updates) => this.handleModal(updates)}
+                        originalTripName={tripName}
+                        originalTripTags={tripTags}
+                        originalTripPrivacy={this.privacy}
+                        userId={this.props.userId}
+                        tripId={this.tripId}
+                    />
                 </div>
             </>
         )

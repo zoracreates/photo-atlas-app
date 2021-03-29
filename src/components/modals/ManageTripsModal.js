@@ -329,9 +329,9 @@ class ManageTripsModal extends React.Component {
                     <fieldset className="form-component-wrapper">
                         <legend>Visibility Settings</legend>
                         <RadioButton onChange={(e) => this.handleNewTripPrivacy(e)} labelText="Public" defaultChecked name="trip-privacy" value="public" />
-                        <label className="caption-font" htmlFor="public">Anyone on Photo Atlas</label>
+                        <label className="caption-font" htmlFor="public">Anyone on Photo Atlas can see</label>
                         <RadioButton onChange={(e) => this.handleNewTripPrivacy(e)} labelText="Private" name="trip-privacy" value="private" />
-                        <label className="caption-font" htmlFor="private">Only you and those you share this trip with</label>
+                        <label className="caption-font" htmlFor="private">Only you can see</label>
                     </fieldset>
 
                     <div className="form-component-wrapper">
