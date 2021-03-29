@@ -15,9 +15,11 @@ class EditTripModal extends React.Component {
         tripName: '',
         tripTags: '',
         tripTagsError: '',
-        tripPrivacy:  this.props.originalTripPrivacy,
+        tripPrivacy: this.props.originalTripPrivacy,
         updatingTrip: false,
-        tripUpdate: false
+        tripUpdate: false,
+        confirmDelete: false,
+        tripDeleted: false
     }
 
     _isMounted = false;
@@ -112,6 +114,18 @@ class EditTripModal extends React.Component {
 
     }
 
+
+    tripDeleted() {
+        return (
+            <div className="modal-content-padding center-text">
+                <h3 className="h5-font center-text">
+                    This trip has been deleted.
+                </h3>
+            </div>
+        )
+
+    }
+
     tripUpdated() {
         return (
             <div className="modal-content-padding center-text">
@@ -139,19 +153,47 @@ class EditTripModal extends React.Component {
         }
     }
 
+    deleteTrip() {
+        let database = firebase.database();
+        let userId = this.props.userId;
+        let tripId = this.props.tripId;
+        let originalPrivacy = this.props.originalTripPrivacy;
+        let tripRef = `${originalPrivacy}Trips/${tripId}`
+        let userTripRef = `userTrips/${userId}/${tripId}`
+
+        database.ref(`${tripRef}`).remove().catch(error => {
+            this.setState({ errorUpdatingTrips: `When deleting trip ${error}` })
+        }).then(
+            () => {
+                database.ref(`${userTripRef}`).remove().catch(error => {
+                    this.setState({ errorUpdatingUserTrips: `When deleting trip from user trips list: ${error}` })
+                })
+            }
+        ).then(
+            () => {
+                this.setState({ tripDeleted: true })
+            }
+        )
+
+    }
+
+    toggleDeleteFrom() {
+        this.setState({ confirmDelete: !this.state.confirmDelete })
+    }
+
 
     componentDidUpdate(prevProps) {
-        if(this.props.originalTripPrivacy !== prevProps.originalTripPrivacy) {
-            this.state.tripPrivacy =  this.props.originalTripPrivacy
+        if (this.props.originalTripPrivacy !== prevProps.originalTripPrivacy) {
+            this.setState({tripPrivacy:this.props.originalTripPrivacy })
         }
- 
+
     }
 
     renderUpdateForm() {
         let pathQuery = this.props.searchQuery;
         let searchParams = new URLSearchParams(pathQuery);
         let searchPrivacy = searchParams.get("privacy")
-        let privacy = this.state.tripPrivacy ?  this.state.tripPrivacy : searchPrivacy;
+        let privacy = this.state.tripPrivacy ? this.state.tripPrivacy : searchPrivacy;
 
         let defaultPrivate = privacy === 'private'
         let defaultPublic = privacy === 'public'
@@ -208,6 +250,18 @@ class EditTripModal extends React.Component {
                     </div>
 
                 </form>
+
+                {
+                    <div className="modal-content-padding">
+                        <button onClick={() => this.toggleDeleteFrom()} className="secondary-button delete-button">Delete Trip</button>
+                        {this.state.confirmDelete && <div>
+                            <ul className="button-group">
+                                <li><button onClick={() => this.deleteTrip()} className="default-button">Delete</button></li>
+                                <li><button onClick={() => this.toggleDeleteFrom()} className="button-link">Cancel</button></li>
+                            </ul>
+                        </div>}
+                    </div>
+                }
             </>
         )
 
@@ -255,15 +309,20 @@ class EditTripModal extends React.Component {
 
 
     renderModalContent() {
-        if (!this.state.tripUpdate ||
-            this.state.errorUpdatingTrip ||
-            this.state.errorUpdatingUserTrips ||
-            this.state.tripNameError ||
-            this.state.tripTagsError) {
-            return this.renderUpdateForm()
+        if(this.state.tripDeleted) {
+            return this.tripDeleted()
         } else {
-            return this.tripUpdated()
+            if (!this.state.tripUpdate ||
+                this.state.errorUpdatingTrip ||
+                this.state.errorUpdatingUserTrips ||
+                this.state.tripNameError ||
+                this.state.tripTagsError) {
+                return this.renderUpdateForm()
+            } else {
+                return this.tripUpdated()
+            }
         }
+
     }
 
     closeModal() {
@@ -275,29 +334,36 @@ class EditTripModal extends React.Component {
 
         let update = {}
 
-        if (this.state.tripUpdate) {
+        if (!this.state.tripDeleted) {
 
-            let originalPrivacy = this.props.originalTripPrivacy
-            let newPrivacy = this.state.tripPrivacy
+            if (this.state.tripUpdate) {
+
+                let originalPrivacy = this.props.originalTripPrivacy
+                let newPrivacy = this.state.tripPrivacy
 
 
-            if (newPrivacy && (newPrivacy !== originalPrivacy)) {
-                update = {
-                    updated: true,
-                    newPrivacy: newPrivacy
+                if (newPrivacy && (newPrivacy !== originalPrivacy)) {
+                    update = {
+                        updated: true,
+                        newPrivacy: newPrivacy
+                    }
+                } else {
+                    update = {
+                        updated: true
+                    }
                 }
+
             } else {
-                update = {
-                    updated: true
-                }
+                update = { updated: false }
             }
 
-        } else {
-            update = { updated: false }
-        }
+            this.setState({ tripUpdate: false },
+                () => this.props.handleClose(update))
 
-        this.setState({ tripUpdate: false },
-            () => this.props.handleClose(update))
+        } else {
+            update = { updated: true, deleted: true }
+            this.props.handleClose(update)
+        } 
 
     }
 

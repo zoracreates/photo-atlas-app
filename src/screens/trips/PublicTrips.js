@@ -32,32 +32,40 @@ class PublicTrips extends React.Component {
                 </div>
             )
         } else {
-            return (<>
-                <div aria-live="polite" className="sr-only">
-                    <p>Showing all trips</p>
-                </div>
-                <OneToTwoCols>
-                {existingTrips.map((trip, index) => {
-                    let {
-                        thumbnail,
-                        title,
-                        locationsCount,
-                        isPublic,
-                        tripId } = trip;
+            if (existingTrips.length > 0) {
+                return (<>
+                    <div aria-live="polite" className="sr-only">
+                        <p>Showing all trips</p>
+                    </div>
+                    <OneToTwoCols>
+                        {existingTrips.map((trip, index) => {
+                            let {
+                                thumbnail,
+                                title,
+                                locationsCount,
+                                isPublic,
+                                tripId } = trip;
 
-                    return (
-                        <TripCard
-                            key={index}
-                            thumbnail={thumbnail}
-                            title={title}
-                            tripId={tripId}
-                            isPublic={isPublic}
-                            locationsCount={locationsCount}
-                        />
-                    )
-                })}
-                </OneToTwoCols>
-            </>)
+                            return (
+                                <TripCard
+                                    key={index}
+                                    thumbnail={thumbnail}
+                                    title={title}
+                                    tripId={tripId}
+                                    isPublic={isPublic}
+                                    locationsCount={locationsCount}
+                                />
+                            )
+                        })}
+                    </OneToTwoCols>
+                </>)
+            } else {
+                return (
+                    <div aria-live="polite">
+                        <p>No trips here yet.</p>
+                    </div>
+                )
+            }
 
         }
     }
@@ -69,9 +77,9 @@ class PublicTrips extends React.Component {
     render() {
         return (
             <>
-               
-                    {this.renderPublicTrips()}
-                
+
+                {this.renderPublicTrips()}
+
             </>
         )
     }

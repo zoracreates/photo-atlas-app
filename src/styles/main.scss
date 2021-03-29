@@ -234,6 +234,7 @@ p.results-status {
   overflow: scroll;
 }
 
+.edit-trip-modal form:not(:last-child),
 .manage-trips-modal form:not(:last-child){
   border-bottom: 1px solid $light_border_color;
 }

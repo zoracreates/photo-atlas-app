@@ -146,20 +146,30 @@ class TripContent extends React.Component {
 
     closeModal(update) {
         let updated = update['updated']
+        let deleted = update['deleted']
 
         if(updated) {
-            let newPrivacy = update['newPrivacy']
+            if(deleted) {
+                this.setState({ showModal: !this.state.showModal },
+                    ()=> {
+                        this.props.history.push('/trips')
+                    })
 
-            if(newPrivacy && (this.state.tripPrivacy !== newPrivacy)) {
-                this.props.history.push({
-                    search: `?privacy=${newPrivacy}`
-                  })
-
-                this.setState({tripPrivacy: newPrivacy})
-                this._isMounted && this.getTripDetails(newPrivacy, this.tripId);
             } else {
-                this._isMounted && this.getTripDetails(this.state.tripPrivacy, this.tripId);
-            } 
+                let newPrivacy = update['newPrivacy']
+
+                if(newPrivacy && (this.state.tripPrivacy !== newPrivacy)) {
+                    this.props.history.push({
+                        search: `?privacy=${newPrivacy}`
+                      })
+    
+                    this.setState({tripPrivacy: newPrivacy})
+                    this._isMounted && this.getTripDetails(newPrivacy, this.tripId);
+                } else {
+                    this._isMounted && this.getTripDetails(this.state.tripPrivacy, this.tripId);
+                } 
+            }
+
         } 
         this.setState({ showModal: !this.state.showModal })
         

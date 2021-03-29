@@ -85,8 +85,21 @@ body {
         padding: 4%;
     }
 
-    .secondary-button.back-button {
+    .secondary-button.back-button,
+    .secondary-button.delete-button{
         margin: 0px
+    }
+
+    .secondary-button.delete-button::before {
+        content:'';
+        display: inline-block;
+        width: 0.65rem;
+        height: 0.7rem;
+        background-repeat: no-repeat;
+        background-size: 0.65rem;
+        background-position: center bottom;
+        margin-right: 0.3rem;
+        background-image:  url(../images/icons/48px/trash-blue.png);
     }
     
     

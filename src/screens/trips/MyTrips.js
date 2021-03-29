@@ -18,12 +18,22 @@ class MyTrips extends React.Component {
     componentDidMount() {
         this._isMounted = true;
         let userId = this.props.userId;
-        this._isMounted && getUserTrips(userId, (tripsList) => this.setState({ existingTrips: tripsList, loading: false }))
+        this._isMounted && getUserTrips(userId, (tripsList) => 
+            {
+                if(tripsList) {
+                    this.setState({ existingTrips: tripsList, loading: false })
+                } else {
+                    this.setState({ loading: false })
+                }
+                
+            }
+            )
     }
 
     componentWillUnmount() {
         this._isMounted = false;
     }
+
     renderUserTrips() {
 
         let { existingTrips, loading } = this.state;
@@ -35,35 +45,45 @@ class MyTrips extends React.Component {
                 </div>
             )
         } else {
-            return (
-                <>
-                    <div aria-live="polite" className="sr-only">
-                        <p>Showing all trips</p>
+            if(existingTrips.length > 0) {
+                return (
+                    <>
+                        <div aria-live="polite" className="sr-only">
+                            <p>Showing all trips</p>
+                        </div>
+                        <OneToTwoCols>
+                            {existingTrips.map((trip, index) => {
+                                let {
+                                    thumbnail,
+                                    title,
+                                    locationsCount,
+                                    isPublic,
+                                    isShared,
+                                    tripId } = trip;
+    
+                                return (
+                                    <TripCard
+                                        key={index}
+                                        thumbnail={thumbnail}
+                                        title={title}
+                                        tripId={tripId}
+                                        isPublic={isPublic}
+                                        isShared={isShared}
+                                        locationsCount={locationsCount}
+                                    />
+                                )
+                            })}
+                        </OneToTwoCols>
+                    </>)
+                
+            } else {
+                return (
+                    <div aria-live="polite">
+                        <p>No trips here yet.</p>
                     </div>
-                    <OneToTwoCols>
-                        {existingTrips.map((trip, index) => {
-                            let {
-                                thumbnail,
-                                title,
-                                locationsCount,
-                                isPublic,
-                                isShared,
-                                tripId } = trip;
-
-                            return (
-                                <TripCard
-                                    key={index}
-                                    thumbnail={thumbnail}
-                                    title={title}
-                                    tripId={tripId}
-                                    isPublic={isPublic}
-                                    isShared={isShared}
-                                    locationsCount={locationsCount}
-                                />
-                            )
-                        })}
-                    </OneToTwoCols>
-                </>)
+                )
+            }
+  
 
         }
 
