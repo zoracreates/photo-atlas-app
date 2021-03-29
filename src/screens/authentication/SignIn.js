@@ -41,8 +41,7 @@ class SignIn extends React.Component {
     let actionCodeSettings = { url: `http://localhost:3000/${logInLocation}` }
 
 
-    auth.sendPasswordResetEmail(emailAddress, actionCodeSettings).
-    then(() => {
+    auth.sendPasswordResetEmail(emailAddress, actionCodeSettings).then(() => {
         form.setState({successReset: true, forgotPassword: false, email: ''})
     } 
     ).catch(function (error) {
