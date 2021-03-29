@@ -10,14 +10,15 @@ import getUserTrips from '../../utils/getUserTrips'
 class MyTrips extends React.Component {
 
     state = {
-        existingTrips: []
+        existingTrips: [],
+        loading: true
     }
     _isMounted = false;
 
     componentDidMount() {
-       this._isMounted = true;
-       let userId = this.props.userId;
-       this._isMounted && getUserTrips(userId, (tripsList) => this.setState({existingTrips: tripsList}))
+        this._isMounted = true;
+        let userId = this.props.userId;
+        this._isMounted && getUserTrips(userId, (tripsList) => this.setState({ existingTrips: tripsList, loading: false }))
     }
 
     componentWillUnmount() {
@@ -25,43 +26,59 @@ class MyTrips extends React.Component {
     }
     renderUserTrips() {
 
-        let { existingTrips } = this.state;
+        let { existingTrips, loading } = this.state;
 
-        return (
-        <OneToTwoCols>
-            {existingTrips.map((trip, index) => {
-                let {
-                    thumbnail,
-                    title,
-                    locationsCount,
-                    isPublic,
-                    isShared,
-                    tripId } = trip;
+        if (loading) {
+            return (
+                <div aria-live="polite">
+                    <p>Getting Trips...</p>
+                </div>
+            )
+        } else {
+            return (
+                <>
+                    <div aria-live="polite" className="sr-only">
+                        <p>Showing all trips</p>
+                    </div>
+                    <OneToTwoCols>
+                        {existingTrips.map((trip, index) => {
+                            let {
+                                thumbnail,
+                                title,
+                                locationsCount,
+                                isPublic,
+                                isShared,
+                                tripId } = trip;
 
-                return (
-                    <TripCard
-                        key={index}
-                        thumbnail={thumbnail}
-                        title={title}
-                        tripId={tripId}
-                        isPublic={isPublic}
-                        isShared={isShared}
-                        locationsCount={locationsCount}
-                    />
-                )
-            })}
-        </OneToTwoCols>)
+                            return (
+                                <TripCard
+                                    key={index}
+                                    thumbnail={thumbnail}
+                                    title={title}
+                                    tripId={tripId}
+                                    isPublic={isPublic}
+                                    isShared={isShared}
+                                    locationsCount={locationsCount}
+                                />
+                            )
+                        })}
+                    </OneToTwoCols>
+                </>)
+
+        }
+
+
     }
 
     render() {
         return (
             <>
-                <PrivateTab 
-                    componentContent={()=>this.renderUserTrips()}  
-                    logInLocation={"trips"} 
+                <PrivateTab
+                    componentContent={() => this.renderUserTrips()}
+                    logInLocation={"trips"}
                     isVerified={this.props.isVerified}
                     isAuthenticated={this.props.isAuthenticated}
-                    />
+                />
             </>
         )
     }

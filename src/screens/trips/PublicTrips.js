@@ -8,7 +8,8 @@ import getPublicTrips from '../../utils/getPublicTrips'
 
 class PublicTrips extends React.Component {
     state = {
-        existingTrips: []
+        existingTrips: [],
+        loading: true
     }
 
     _isMounted = false;
@@ -18,33 +19,47 @@ class PublicTrips extends React.Component {
     }
 
     renderPublicTrips() {
-        let { existingTrips } = this.state;
+        let { existingTrips, loading } = this.state;
 
         getPublicTrips((tripsList) => {
-            this._isMounted && this.setState({ existingTrips: tripsList })
+            this._isMounted && this.setState({ existingTrips: tripsList, loading: false })
         })
 
-        return (<>
-            {existingTrips.map((trip, index) => {
-                let {
-                    thumbnail,
-                    title,
-                    locationsCount,
-                    isPublic,
-                    tripId } = trip;
+        if (loading) {
+            return (
+                <div aria-live="polite">
+                    <p>Getting Trips...</p>
+                </div>
+            )
+        } else {
+            return (<>
+                <div aria-live="polite" className="sr-only">
+                    <p>Showing all trips</p>
+                </div>
+                <OneToTwoCols>
+                {existingTrips.map((trip, index) => {
+                    let {
+                        thumbnail,
+                        title,
+                        locationsCount,
+                        isPublic,
+                        tripId } = trip;
 
-                return (
-                    <TripCard
-                        key={index}
-                        thumbnail={thumbnail}
-                        title={title}
-                        tripId={tripId}
-                        isPublic={isPublic}
-                        locationsCount={locationsCount}
-                    />
-                )
-            })}
-        </>)
+                    return (
+                        <TripCard
+                            key={index}
+                            thumbnail={thumbnail}
+                            title={title}
+                            tripId={tripId}
+                            isPublic={isPublic}
+                            locationsCount={locationsCount}
+                        />
+                    )
+                })}
+                </OneToTwoCols>
+            </>)
+
+        }
     }
 
     componentWillUnmount() {
@@ -54,9 +69,9 @@ class PublicTrips extends React.Component {
     render() {
         return (
             <>
-                <OneToTwoCols>
+               
                     {this.renderPublicTrips()}
-                </OneToTwoCols>
+                
             </>
         )
     }
