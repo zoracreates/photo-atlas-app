@@ -26,8 +26,13 @@ footer .container,
 .dark-background .container,
 .light-background .container {
     width: 98%;
-    max-width: 1200px;
+    max-width: 1800px;
     margin: auto;
+}
+
+main {
+    width: 100%;
+    max-width: 1800px;
 }
 
 footer .container {

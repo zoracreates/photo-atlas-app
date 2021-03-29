@@ -92,14 +92,6 @@ class SearchResults extends React.Component {
                         // prevent duplicate locations, and locations with no tags
                         if (woeId && !existingLocations.includes(woeId) && tags ) {
 
-                            let currentLat = 0;
-                            let currentLon = 0;
-
-                            if (this.state.currentLocation) {
-                                currentLat = this.state.currentLocation.latitude;
-                                currentLon = this.state.currentLocation.longitude
-                            }
-
                             
                             //add photo locations to existing list
                             existingLocations.push(woeId);

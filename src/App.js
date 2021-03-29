@@ -31,7 +31,7 @@ class App extends React.Component {
   componentDidMount() {
     firebase.auth().onAuthStateChanged(user => {
 
-    
+
       if (user) {
         this.setState({
           signedIn: true,
@@ -76,7 +76,12 @@ class App extends React.Component {
 
               } />
 
-            <Route path="/trip" component={TripContent} />
+            <Route path="/trip"
+
+              render={
+                (props) => <TripContent {...props} userId={this.state.userId} />
+
+              } />
 
             <PrivateRoute path="/add" component={AddLocation} isAuthenticated={signedIn} isVerified={userVerified} logInLocation={"add"} />
 

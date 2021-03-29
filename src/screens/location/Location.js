@@ -29,7 +29,8 @@ class Location extends React.Component {
         firstPhoto: {},
         showTripsModal: false,
         inTrips: false,
-        userId: null
+        userId: null,
+        woeId: null
     };
 
     _isMounted = false;
@@ -137,7 +138,8 @@ class Location extends React.Component {
         //get the woeId from the search query
         let pathQuery = this.props.location.search;
         let searchParams = new URLSearchParams(pathQuery);
-        let woeId = searchParams.get("woe")
+        let woeId = searchParams.get("woe");
+        this.setState({woeId: woeId})
 
 
         //if the path starts with flickr
@@ -492,6 +494,7 @@ class Location extends React.Component {
                     coordinates={this.state.destination}
                     subjects={this.state.subjects}
                     userId={this.state.userId}
+                    woeId={this.state.woeId}
 
                 />
             </>

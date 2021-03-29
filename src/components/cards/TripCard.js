@@ -14,7 +14,7 @@ function TripCard(props) {
         locationsCount } = props;
 
     return (
-        <Link className={`trip-card`} to={ `/trip/${tripId}`}>
+        <Link className={`trip-card`} to={ `/trip/${tripId}?privacy=${isPublic ? 'public' : 'private'}`}>
 
             <div className={`trip-card-image`}>
                 <img src={thumbnail} alt="" />

@@ -408,7 +408,8 @@ class ManageTripsModal extends React.Component {
             subjects: locationSubjects,
             addedDate: date,
             curated: false, //indicates that app has not been curated by a PhotoAtlas user
-            userLastEditedDate: null
+            userLastEditedDate: null,
+            woeId: this.props.woeId
         }).then(() => {
 
             // add subjects record
