@@ -38,7 +38,7 @@ class ResetPasswordModal extends React.Component {
 
         form.setState({ error: '' })
 
-        let actionCodeSettings = { url: `http://localhost:3000/${logInLocation}` }
+        let actionCodeSettings = { url: `https://photoatlas.app/${logInLocation}` }
 
 
        this._isMounted && auth.sendPasswordResetEmail(emailAddress, actionCodeSettings)
