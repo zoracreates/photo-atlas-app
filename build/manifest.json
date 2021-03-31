@@ -1,7 +1,11 @@
 {
   "short_name": "Photo Atlas",
   "name": "Photo Atlas App",
-  "logos": [
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#4A5968",
+  "background_color": "#4A5968",
+  "icons": [
     {
       "src": "/logos/favicon.ico",
       "sizes": "64x64 32x32 24x24 16x16",
@@ -47,9 +51,5 @@
       "type": "image/png",
       "sizes": "512x512"
     }
-  ],
-  "start_url": ".",
-  "display": "standalone",
-  "theme_color": "#4A5968",
-  "background_color": "#4A5968"
+  ]
 }
