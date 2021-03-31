@@ -11,8 +11,6 @@ import PrivateRoute from './components/navigation/PrivateRoute';
 import Footer from './components/content/Footer';
 import Location from './screens/location/Location';
 import TripContent from './screens/trips/TripContent';
-
-
 import './styles/main.scss';
 
 
