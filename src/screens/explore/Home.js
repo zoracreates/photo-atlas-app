@@ -109,7 +109,7 @@ class Home extends React.Component {
             let options = {
                 "lat": currentLat,
                 "lon": currentLon,
-                "accuracy": 6,
+                "accuracy": 16,
                 "extras": "geo, tags"
             }
 
