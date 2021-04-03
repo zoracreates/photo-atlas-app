@@ -9,12 +9,13 @@
     -webkit-appearance: none;
     box-shadow: none;
     border: 1px solid $gray;
+    height: 2rem;
 }
 
 form.search-form {
     background-color: $light_gray;
     width: 75%;
-    height: 2.2rem;
+    height: 2.3rem;
 
     @media(min-width: 769px) {
         width: 335px;

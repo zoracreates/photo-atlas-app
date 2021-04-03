@@ -20,6 +20,10 @@ class ResetPasswordModal extends React.Component {
         }, () => this.props.handleClose());
     }
 
+    componentDidMount() {
+        this._isMounted = true;
+    }
+
     componentWillUnmount() {
         this._isMounted = false;
     }
@@ -27,23 +31,23 @@ class ResetPasswordModal extends React.Component {
 
     resetPassword(e) {
         e.preventDefault();
-
+        console.log('clicked')
         let auth = firebase.auth();
 
         let emailAddress = this.props.email;
-
-        let logInLocation = this.props.logInLocation;
 
         let form = this;
 
         form.setState({ error: '' })
 
-        let actionCodeSettings = { url: `https://photoatlasapp.com/${logInLocation}` }
+
+        let actionCodeSettings = { url: `https://photoatlasapp.com/` }
 
 
-       this._isMounted && auth.sendPasswordResetEmail(emailAddress, actionCodeSettings)
+       this._isMounted && auth.sendPasswordResetEmail(emailAddress,actionCodeSettings)
        .then(() => {
                 form.setState({ successReset: true })
+                
             }
             ).catch(function (error) {
                 form.setState({
