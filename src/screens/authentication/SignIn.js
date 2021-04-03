@@ -32,13 +32,11 @@ class SignIn extends React.Component {
 
     let emailAddress = this.state.email;
 
-    let logInLocation = this.props.logInLocation;
-
     let form = this;
 
     form.setState({emailError:''})
 
-    let actionCodeSettings = { url: `http://localhost:3000/${logInLocation}` }
+    let actionCodeSettings = { url: `https://photoatlasapp.com/` }
 
 
     auth.sendPasswordResetEmail(emailAddress, actionCodeSettings).then(() => {
