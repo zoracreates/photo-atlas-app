@@ -32,9 +32,9 @@ function SearchBar(props) {
         <>
             {labelText && <label className={`search-label ${searchStyle}-label`} htmlFor={id ? id : 'gsearch'}>{labelText}</label>}
             <div className={`search-bar-container ${searchStyle} ${className ? className : ''}`}>
-                <button onClick={() => { window.history.back() }} className={`search-back-buttton`}>Back</button>
+                <button onClick={() => { window.history.back() }} className={`search-back-button`}>Back</button>
 
-                <form action={action} method={method}>
+                <form className="search-form" action={action} method={method}>
 
                     <input
 

@@ -6,6 +6,17 @@
     background-color: $light_gray;
     color: $black_text_color;
     min-width: 300px;
+    -webkit-appearance: none;
+    box-shadow: none;
+}
+
+form.search-form {
+    background-color: $light_gray;
+    width: 75%;
+
+    @media(min-width: 769px) {
+        width: 330px;
+    }
 }
 
 /*character count*/
@@ -61,12 +72,12 @@ fieldset {
 
 
 input[type="search"].text-bar {
-    min-width: 230px;
+    min-width: 90%;
 }
 
-.back-search input[type="search"].text-bar {
-    min-width: 180px;
-}
+// .back-search input[type="search"].text-bar {
+//     min-width: 180px;
+// }
 
 @media (min-width: 769px) {
     .back-search-label {
@@ -76,24 +87,19 @@ input[type="search"].text-bar {
 
 .search-bar-container {
     display: flex;
-    max-width: 90%;
+    max-width: 98%;
     margin: 0;
     position: relative;
 
     &.standard-search {
-        .search-back-buttton {
+        .search-back-button {
             display: none;
         }
-    }
-
-    .text-bar {
-        border-right: none;
     }
 
     input[type="search"] {
         width: 180px;
         max-width: 55vw;
-        min-width: none;
     }
 
     @media (min-width: 769px) {
@@ -102,7 +108,7 @@ input[type="search"].text-bar {
             width: 300px;
         }
     
-        .search-back-buttton {
+        .search-back-button {
             display: none;
         }
 
@@ -113,22 +119,26 @@ input[type="search"].text-bar {
     }
 }
 
-.search-back-buttton,
-.search-button,
-.text-bar {
-   padding: (0.8125rem / 1.5);
+.search-back-button {
+    width: 25%;
 }
 
-.search-back-buttton,
+.search-back-button,
+.search-button,
+.text-bar {
+    height: 2.2rem;
+   padding: 0 (0.8125rem / 1.5);
+   border: none;
+}
+
+.search-back-button,
 .search-button {
-    border: none;
     transition-duration: $default-transition-duration;
 }
 
 .search-button {
     border-radius: 0px;
     background-color: $light_gray;
-    border: 1px solid $gray;
     overflow: hidden;
     border-left: none;
     background-image: url(../images/icons/96px/search-gray.png);
@@ -140,10 +150,8 @@ input[type="search"].text-bar {
     padding-right: 1rem;
 }
 
-.search-back-buttton {
+.search-back-button {
     border-radius: 0px;
-    border: 1px solid $gray;
-    border-right: none;
     @extend %body2_font;
     background-color: $light_accent_gray;
     color: $gray_text_color;
@@ -151,17 +159,17 @@ input[type="search"].text-bar {
     &::before {
         content: '';
         display: inline-block;
-        width: 0.8125rem;
-        height: 90%;
+        width: 0.75rem;     
+        height: 0.75rem;
         background-image:  url(../images/icons/48px/chevron-gray.png);
         background-repeat: no-repeat;
-        background-size: 0.65rem;
+        background-size: 0.5rem;
         background-position: center bottom;
         transform: rotateY(180deg);
     }
 }
 
-.search-back-buttton {
+.search-back-button {
     @extend %caption_font;
     background-color: $light_accent_gray;
     color: $gray_text_color;
@@ -185,6 +193,7 @@ input[type="search"].text-bar {
     right: 0;
     list-style: none;
     border: 1px solid $light_border_color;
+    max-width: 290px;
     li button {
         padding: .5rem;
         border: none;
