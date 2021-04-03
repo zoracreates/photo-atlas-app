@@ -127,10 +127,12 @@ header {
 }
 
 .grid-map {
-
-    .cards-container.open {
+    
+    .cards-container {
         margin-top: .425rem;
-        margin-bottom: 20vh;
+        &.open {
+            margin-bottom: 20vh;
+        }
     }
 
     .map-container {
