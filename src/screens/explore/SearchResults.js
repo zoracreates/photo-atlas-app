@@ -200,11 +200,7 @@ class SearchResults extends React.Component {
             let search = `address=${address}&lat=${lat}&lon=${lon}`
 
             this.props.history.push(`/explore/?q=&${search}`)
-
-            getCurrentLocation(
-                (position) => this.setState({ currentLocation: position.coords },
-                    () => this.getSearchResults(lat, lon))
-            )
+            this.getSearchResults(lat, lon)
         }
 
 
@@ -312,13 +308,7 @@ class SearchResults extends React.Component {
 
             this._isMounted && this.setState({ query: address });
 
-            getCurrentLocation(
-                (position) => this._isMounted && this.setState({ currentLocation: position.coords },
-
-                    this.getSearchResults(lat, lon)),
-
-                () => this.getSearchResults(lat, lon)
-            )
+            this.getSearchResults(lat, lon)
         }
     }
 
