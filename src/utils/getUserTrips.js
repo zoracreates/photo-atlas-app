@@ -11,13 +11,11 @@ let getUserTrips = (userId, callback, locationId = null) => {
             let trips = snapshot.val();
 
 
-            for (const tripId in trips) {
+            for (const tripId in trips) { 
                 let trip = trips[tripId]
 
                 //get privacy setting 
                 let privacy = trip['tripPrivacy']
-                let isPublic = privacy === 'public';
-                let isShared = trip['isShared']
 
                 let tripRef = `${privacy}Trips/${tripId}`
 
@@ -58,8 +56,7 @@ let getUserTrips = (userId, callback, locationId = null) => {
                                 thumbnail: thumbnail,
                                 title: title,
                                 locationsCount: locationsCount,
-                                isPublic: isPublic,
-                                isShared: isShared,
+                                privacy: privacy,
                                 inTrip: inTrip
                             }
 

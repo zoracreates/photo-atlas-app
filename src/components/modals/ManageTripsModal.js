@@ -219,8 +219,7 @@ class ManageTripsModal extends React.Component {
                     thumbnail,
                     title,
                     locationsCount,
-                    isPublic,
-                    isShared,
+                    privacy,
                     tripId,
                     inTrip } = trip;
 
@@ -231,11 +230,11 @@ class ManageTripsModal extends React.Component {
                         </div>
                         <div className={`trip-card-content`}>
                             <p className={`title`}>{title}</p>
-                            <p className={`meta-data ${isPublic ? 'public' : 'private'}`}>
-                                {isPublic ? 'Public' : isShared ? 'Shared' : 'Private'}</p>
+                            <p className={`meta-data ${privacy}`}>
+                                {privacy}</p>
                             <p className={`meta-data marker`}>
                                 {locationsCount} {(locationsCount > 1 || locationsCount < 1) ? 'Locations' : 'Location'}</p>
-                            <button className="add-or-remove" onClick={(e) => { this.addOrRemoveFromTrip(tripId, isPublic) }}>
+                            <button className="add-or-remove" onClick={() => { this.addOrRemoveFromTrip(tripId, privacy) }}>
                                 {inTrip ? '- Remove' : '+ Add'}
                                 <span>{inTrip ? `from ${title}` : `to ${title}`}</span>
                             </button>
@@ -329,9 +328,11 @@ class ManageTripsModal extends React.Component {
                     <fieldset className="form-component-wrapper">
                         <legend>Visibility Settings</legend>
                         <RadioButton onChange={(e) => this.handleNewTripPrivacy(e)} labelText="Public" defaultChecked name="trip-privacy" value="public" />
-                        <label className="caption-font" htmlFor="public">Anyone on Photo Atlas can see</label>
+                        <label className="caption-font" htmlFor="public">Anyone can see</label>
                         <RadioButton onChange={(e) => this.handleNewTripPrivacy(e)} labelText="Private" name="trip-privacy" value="private" />
                         <label className="caption-font" htmlFor="private">Only you can see</label>
+                        <RadioButton onChange={(e) => this.handleNewTripPrivacy(e)} labelText="Shareable" name="trip-privacy" value="shareable" />
+                        <label className="caption-font" htmlFor="shareable">Anyone with a link can see</label>
                     </fieldset>
 
                     <div className="form-component-wrapper">
@@ -495,8 +496,7 @@ class ManageTripsModal extends React.Component {
             }).then(() => {
                 //add trip to user trips
                 database.ref(`userTrips/${tripAuthor}/${tripId}`).set({
-                    tripPrivacy: tripPrivacy,
-                    isShared: false
+                    tripPrivacy: tripPrivacy
                 }).catch((error) => {
                     this.setState({ errorUpdatingUserTrips: `Could to your list of trips: ${error.message}` })
                 });
@@ -558,12 +558,11 @@ class ManageTripsModal extends React.Component {
 
     }
 
-    addOrRemoveFromTrip(tripId, isPublic) {
+    addOrRemoveFromTrip(tripId, privacy) {
 
         this.setState({ updatingTrips: true })
 
         let database = firebase.database();
-        let privacy = isPublic ? 'public' : 'private';
         let currentLocation = this.props.locationId;
         let user = this.state.userId;
         let date = generateDate();

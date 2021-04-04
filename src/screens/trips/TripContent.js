@@ -51,15 +51,10 @@ class TripContent extends React.Component {
     getTripDetails(privacy, tripId) {
         let database = firebase.database();
 
-        let tripName, locationsCount, tripRef, tripTags;
+        let tripName, locationsCount, tripTags;
         let list = []
-
-        if (privacy === 'public') {
-            tripRef = `publicTrips/${tripId}`
-        } else {
-            tripRef = `privateTrips/${tripId}`
-        }
-
+        let tripRef = `${privacy}Trips/${tripId}`
+        
         database.ref(`${tripRef}`).get().then(
             snapshot => {
                 let tripData = snapshot.val()

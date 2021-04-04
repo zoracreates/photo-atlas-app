@@ -183,7 +183,8 @@ p.meta-data:not(:first-child) {
     }
 
     &.public,
-    &.private {
+    &.private,
+    &.shareable {
         text-transform: capitalize;
     }
 
@@ -191,6 +192,7 @@ p.meta-data:not(:first-child) {
     &.marker::before,
     &.public::before,
     &.private::before,
+    &.shareable::before,
     &.tags::before {
         content:'';
         display: inline-block;
@@ -211,6 +213,11 @@ p.meta-data:not(:first-child) {
 
     &.marker::before {
         background-image:  url(../images/icons/48px/marker-gray.png);
+    }
+
+    &.shareable::before {
+        background-image:  url(../images/icons/48px/nodes-gray.png);
+        background-size: 0.57rem;
     }
 
     &.public::before {
