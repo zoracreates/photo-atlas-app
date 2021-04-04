@@ -57,8 +57,7 @@ class MyTrips extends React.Component {
                                     thumbnail,
                                     title,
                                     locationsCount,
-                                    isPublic,
-                                    isShared,
+                                    privacy,
                                     tripId } = trip;
     
                                 return (
@@ -67,8 +66,7 @@ class MyTrips extends React.Component {
                                         thumbnail={thumbnail}
                                         title={title}
                                         tripId={tripId}
-                                        isPublic={isPublic}
-                                        isShared={isShared}
+                                        privacy={privacy}
                                         locationsCount={locationsCount}
                                     />
                                 )

@@ -184,7 +184,7 @@ class EditTripModal extends React.Component {
 
     componentDidUpdate(prevProps) {
         if (this.props.originalTripPrivacy !== prevProps.originalTripPrivacy) {
-            this.setState({tripPrivacy:this.props.originalTripPrivacy })
+            this.setState({ tripPrivacy: this.props.originalTripPrivacy })
         }
 
     }
@@ -197,6 +197,7 @@ class EditTripModal extends React.Component {
 
         let defaultPrivate = privacy === 'private'
         let defaultPublic = privacy === 'public'
+        let defaultShareable = privacy === 'shareable'
 
         return (
             <>
@@ -233,7 +234,7 @@ class EditTripModal extends React.Component {
                             name="trip-privacy"
                             value="public" />
 
-                        <label className="caption-font" htmlFor="public">Anyone on Photo Atlas can see</label>
+                        <label className="caption-font" htmlFor="public">Anyone can see</label>
 
                         <RadioButton
                             defaultChecked={defaultPrivate}
@@ -242,6 +243,14 @@ class EditTripModal extends React.Component {
                             name="trip-privacy"
                             value="private" />
                         <label className="caption-font" htmlFor="private">Only you can see</label>
+
+                        <RadioButton
+                            defaultChecked={defaultShareable}
+                            onChange={(e) => this.handleTripPrivacy(e)}
+                            labelText="Shareable"
+                            name="trip-privacy"
+                            value="shareable" />
+                        <label className="caption-font" htmlFor="shareable">Anyone with a link can see</label>
 
                     </fieldset>
 
@@ -309,7 +318,7 @@ class EditTripModal extends React.Component {
 
 
     renderModalContent() {
-        if(this.state.tripDeleted) {
+        if (this.state.tripDeleted) {
             return this.tripDeleted()
         } else {
             if (!this.state.tripUpdate ||
@@ -363,7 +372,7 @@ class EditTripModal extends React.Component {
         } else {
             update = { updated: true, deleted: true }
             this.props.handleClose(update)
-        } 
+        }
 
     }
 

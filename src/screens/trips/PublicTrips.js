@@ -43,7 +43,7 @@ class PublicTrips extends React.Component {
                                 thumbnail,
                                 title,
                                 locationsCount,
-                                isPublic,
+                                privacy, 
                                 tripId } = trip;
 
                             return (
@@ -52,7 +52,7 @@ class PublicTrips extends React.Component {
                                     thumbnail={thumbnail}
                                     title={title}
                                     tripId={tripId}
-                                    isPublic={isPublic}
+                                    privacy={privacy}
                                     locationsCount={locationsCount}
                                 />
                             )

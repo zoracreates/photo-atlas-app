@@ -5,7 +5,7 @@ let getPublicTrips = (callback) => {
     let database = firebase.database();
     let existingTrips = [];
 
-    database.ref(`publicTrips`).get().then((snapshot) => {
+    database.ref(`publicTrips`).get().then((snapshot) => { 
 
         let trips = snapshot.val();
 
@@ -27,7 +27,7 @@ let getPublicTrips = (callback) => {
                         thumbnail: thumbnail,
                         title: title,
                         locationsCount: locationsCount,
-                        isPublic: true
+                        privacy: 'public'
                     }
 
                     existingTrips.push(existingTripUpdate)
