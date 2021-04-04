@@ -47,7 +47,11 @@ fieldset {
     margin: 1rem 0px;
 }
 
-.form-component-wrapper label{
+.form-component-wrapper label,
+h3.label {
+    @extend %body2_font;
+    display: block;
+    color: $gray_text_color;
     display: block;
     margin-bottom: .25rem;
 }

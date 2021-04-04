@@ -320,7 +320,7 @@ class ManageTripsModal extends React.Component {
                     </div>
 
                     <div className="form-component-wrapper">
-                        <label htmlFor="trip-tags">Tags (Comma separated keywords)</label>
+                        <label htmlFor="trip-tags">Tags (Comma separated)</label>
                         <TexInput placeholder="city, urban architecture" id="trip-tags" value={this.state.newTripTags} onChange={(e) => this.handleTripTagsInput(e)} />
                         {this.state.tripTagsError && <p className="error-font" aria-live="polite">{this.state.tripTagsError}</p>}
                     </div>
