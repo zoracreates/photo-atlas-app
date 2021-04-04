@@ -13,13 +13,16 @@ class EditTripModal extends React.Component {
         tripNameError: '',
         tripNameLength: 0,
         tripName: '',
+        nameUpdated: false,
         tripTags: '',
+        tagsUpdated: false,
         tripTagsError: '',
         tripPrivacy: this.props.originalTripPrivacy,
         updatingTrip: false,
         tripUpdate: false,
         confirmDelete: false,
-        tripDeleted: false
+        tripDeleted: false,
+        tagButtons: ''
     }
 
     _isMounted = false;
@@ -58,7 +61,7 @@ class EditTripModal extends React.Component {
             }
 
             //this gets buggy when I update tags plus it's not refreshing the update...
-            if (this.state.tripTags && (this.state.tripTags !== this.props.originalTripTags)) {
+            if (this.state.tripTags !== this.props.originalTripTags) {
                 tripUpdate["tags"] = this.state.tripTags
             }
 
@@ -113,7 +116,6 @@ class EditTripModal extends React.Component {
 
 
     }
-
 
     tripDeleted() {
         return (
@@ -207,8 +209,7 @@ class EditTripModal extends React.Component {
                     <div className="form-component-wrapper">
                         <label htmlFor="trip-name">Trip Name (Max 50 Characters)</label>
                         <TexInput id="trip-name"
-                            placeholder={this.props.originalTripName}
-                            value={this.state.tripName}
+                            value={this.state.nameUpdated ? this.state.tripName : this.props.originalTripName}
                             onChange={(e) => this.handleTripNamelInput(e)}
                             required />
                         {this.state.tripNameLength !== 0 && <p className="character-count" aria-live="polite">Characters left: {50 - this.state.tripNameLength}</p>}
@@ -216,10 +217,9 @@ class EditTripModal extends React.Component {
                     </div>
 
                     <div className="form-component-wrapper">
-                        <label htmlFor="trip-tags">Tags (Comma separated keywords)</label>
+                        <label htmlFor="trip-tags">Tags (Comma separated)</label>
                         <TexInput id="trip-tags"
-                            placeholder={this.props.originalTripTags}
-                            value={this.state.tripTags}
+                            value={this.state.tagsUpdated ? this.state.tripTags : this.props.originalTripTags}
                             onChange={(e) => this.handleTripTagsInput(e)} />
                         {this.state.tripTagsError && <p className="error-font" aria-live="polite">{this.state.tripTagsError}</p>}
                     </div>
@@ -282,10 +282,16 @@ class EditTripModal extends React.Component {
         let valueLength = value.length;
 
         this.setState({
+            nameUpdated: true,
             tripName: e.target.value,
             tripNameLength: valueLength,
             tripNameError: ""
         })
+        if(valueLength === 0) {
+            this.setState({
+                tripNameError: "Your trip must have a name."
+            })
+        }
         if (valueLength > 50) {
             this.setState({
                 tripNameError: "Your trip name is too long."
@@ -297,6 +303,7 @@ class EditTripModal extends React.Component {
         e.preventDefault();
 
         this.setState({
+            tagsUpdated: true,
             tripTags: e.target.value,
             tripTagsError: ""
         }, () => {
@@ -366,7 +373,7 @@ class EditTripModal extends React.Component {
                 update = { updated: false }
             }
 
-            this.setState({ tripUpdate: false },
+            this.setState({ tripUpdate: false, nameUpdated: false, tagsUpdated: false },
                 () => this.props.handleClose(update))
 
         } else {

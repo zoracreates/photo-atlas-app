@@ -10,23 +10,23 @@ class ChangeDisplayNameModal extends React.Component {
     state = {
         error: '',
         newName: '',
-        currentName: '',
+        nameUpdated: false,
         loading: false
     }
 
     closeModal() {
         this.setState({
-            confirmReset: false
+            confirmReset: false,
+            nameUpdated: false
         }, () => this.props.handleClose());
     }
 
     handleInput(e) {
-        this.setState({ newName: e.target.value })
+        this.setState({ newName: e.target.value, nameUpdated: true })
     }
 
     componentDidMount() {
         this._isMounted = true;
-        // this.updateUser();
     }
 
     componentWillUnmount() {
@@ -34,18 +34,18 @@ class ChangeDisplayNameModal extends React.Component {
     }
 
 
-    updateUser() {
-        if (this._isMounted) {
+    // updateUser() {
+    //     if (this._isMounted) {
 
-            let user = firebase.auth().currentUser;
+    //         let user = firebase.auth().currentUser;
 
-            if (user) {
-                this.setState({
-                    currentName: user.displayName
-                })
-            }
-        }
-    }
+    //         if (user) {
+    //             this.setState({
+    //                 currentName: user.displayName
+    //             })
+    //         }
+    //     }
+    // }
 
 
 
@@ -59,9 +59,6 @@ class ChangeDisplayNameModal extends React.Component {
 
         let newName = this.state.newName;
 
-        
-
-        
 
         //check that name and lastname does not include special characters, except for hypens
         let testString = /^[a-zA-Z][ a-zA-Z \-' -]+$/;
@@ -116,7 +113,7 @@ class ChangeDisplayNameModal extends React.Component {
                         </p>
                     }
                     <label htmlFor="new-name">New Name</label>
-                    <TextInput id="new-name" value={this.state.newName ? this.state.newName : this.state.currentName} onChange={(e) => this.handleInput(e)} />
+                    <TextInput id="new-name" value={this.state.nameUpdated ? this.state.newName : this.props.currentName} onChange={(e) => this.handleInput(e)} />
 
 
                     <div aria-live="polite">
@@ -134,7 +131,8 @@ class ChangeDisplayNameModal extends React.Component {
 ChangeDisplayNameModal.propTypes = {
     handleClose: PropTypes.func.isRequired,
     triggerUpdate: PropTypes.func.isRequired,
-    isOpen: PropTypes.bool.isRequired
+    isOpen: PropTypes.bool.isRequired,
+    currentName: PropTypes.string
 }
 
 export default ChangeDisplayNameModal;

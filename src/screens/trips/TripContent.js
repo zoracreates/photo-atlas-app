@@ -15,7 +15,8 @@ class TripContent extends React.Component {
         mapLon: null,
         mapZoom: 10,
         showModal: false,
-        tripPrivacy: null
+        tripPrivacy: null,
+        author: ''
     }
     _isMounted = false;
 
@@ -51,7 +52,7 @@ class TripContent extends React.Component {
     getTripDetails(privacy, tripId) {
         let database = firebase.database();
 
-        let tripName, locationsCount, tripTags;
+        let tripName, locationsCount, tripTags, author;
         let list = []
         let tripRef = `${privacy}Trips/${tripId}`
         
@@ -60,11 +61,13 @@ class TripContent extends React.Component {
                 let tripData = snapshot.val()
                 tripName = tripData['tripName']
                 tripTags = tripData['tags']
+                author = tripData['author']
                 locationsCount = tripData['locationsCount']
                 this.setState({
                     tripName: tripName,
                     locationsCount: locationsCount,
-                    tripTags: tripTags
+                    tripTags: tripTags,
+                    author: author
                 })
                 let locations = tripData['locations']
 
@@ -181,7 +184,8 @@ class TripContent extends React.Component {
             locationsCount,
             tripName,
             tripTags,
-            tripPrivacy } = this.state;
+            tripPrivacy,
+            author } = this.state;
 
 
         return (
@@ -197,7 +201,7 @@ class TripContent extends React.Component {
                         <div className='dark-background mobile-header'>
                             <div className={`container mobile-padding`}>
                                 <button onClick={() => { window.history.back() }} className={`secondary-button back-button`}>Back</button>
-                                <EditTripSmall onClick={()=>this.openModal()} />
+                                {this.props.userId === author &&  <EditTripSmall onClick={()=>this.openModal()} />}
                             </div>
                         </div>
 
@@ -212,10 +216,9 @@ class TripContent extends React.Component {
                             </div>
                             <div className={`col-30`}>
                                 <ul className="actions">
-                                    <li>
+                                    {this.props.userId === author && <li>
                                         <EditTripLarge onClick={()=>this.openModal()} />
-                                    </li>
-
+                                    </li>}
                                 </ul>
                             </div>
                         </div>

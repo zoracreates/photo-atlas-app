@@ -119,6 +119,7 @@ class Account extends React.Component {
 
                 <ChangeDisplayNameModal
                     handleClose={() => this.closeDisplayNameModal()}
+                    currentName={this.state.displayName}
                     isOpen={this.state.changeName}
                     triggerUpdate={() => this.updateUser()}
                 />
