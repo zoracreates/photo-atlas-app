@@ -12,7 +12,6 @@ function PrivateTab (props) {
                 return <VerifyEmail logInLocation={props.logInLocation} tabContent={true}/>
             } else {
                return props.componentContent();
-
             }
         }
         else {

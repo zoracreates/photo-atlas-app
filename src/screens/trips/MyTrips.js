@@ -15,19 +15,29 @@ class MyTrips extends React.Component {
     }
     _isMounted = false;
 
-    componentDidMount() {
-        this._isMounted = true;
+    getTripsList() {
         let userId = this.props.userId;
-        this._isMounted && this.props.isAuthenticated && getUserTrips(userId, (tripsList) => 
-            {
-                if(tripsList) {
+        if (this.props.isAuthenticated) {
+            this._isMounted &&  getUserTrips(userId, (tripsList) => {
+                if (tripsList.length > 0) {
                     this.setState({ existingTrips: tripsList, loading: false })
                 } else {
                     this.setState({ loading: false })
                 }
-                
             }
             )
+        }
+    }
+
+    componentDidMount() {
+        this._isMounted = true;
+        this.getTripsList()
+    }
+
+    componentDidUpdate(nextProps) {
+        if(this.props.isAuthenticated !== nextProps.isAuthenticated) {
+            this.getTripsList()
+        }
     }
 
     componentWillUnmount() {
@@ -38,14 +48,15 @@ class MyTrips extends React.Component {
 
         let { existingTrips, loading } = this.state;
 
-        if (loading) {
+        while (loading) {
             return (
                 <div aria-live="polite">
                     <p>Getting Trips...</p>
                 </div>
             )
-        } else {
-            if(existingTrips.length > 0) {
+        } 
+        
+            if (existingTrips.length > 0) {
                 return (
                     <>
                         <div aria-live="polite" className="sr-only">
@@ -59,7 +70,7 @@ class MyTrips extends React.Component {
                                     locationsCount,
                                     privacy,
                                     tripId } = trip;
-    
+
                                 return (
                                     <TripCard
                                         key={index}
@@ -73,18 +84,17 @@ class MyTrips extends React.Component {
                             })}
                         </OneToTwoCols>
                     </>)
-                
+
             } else {
+
                 return (
                     <div aria-live="polite">
                         <p>No trips here yet.</p>
                     </div>
                 )
+
+
             }
-  
-
-        }
-
 
     }
 
