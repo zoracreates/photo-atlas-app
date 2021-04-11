@@ -69,7 +69,24 @@ class EditTripModal extends React.Component {
             //update trip name and tags
             if (tripUpdate || newPrivacy) {
                 tripUpdate.lastEdited = generateDate()
-                
+
+
+                //if the new privacy is private, then delete existing bookmarks
+
+                if (newPrivacy === 'private') {
+                    //get the existing bookmarks, and delete them from path
+                    this.deleteBookmarks(
+                        tripRef,
+                        tripId,
+                        () => {
+                            database.ref(`${tripRef}/bookmarks`).remove().catch(error => {
+                                this.setState({ errorUpdatingTrips: `When deleting bookmarks ${error}` })
+                            })
+                        }
+                    )
+                }
+
+
                 database.ref(`${tripRef}`).update(tripUpdate).catch(error => {
                     this.setState({ errorUpdatingTrip: error })
                 }).then(() => {
@@ -87,7 +104,6 @@ class EditTripModal extends React.Component {
                         database.ref(`${tripRef}`).get().then(
                             (snapshot) => {
                                 tripData = snapshot.val()
-
                             }
                         ).catch(error => {
                             this.setState({ errorUpdatingUserTrips: `When getting original privacy setting ${error}` })
@@ -158,6 +174,30 @@ class EditTripModal extends React.Component {
         }
     }
 
+    deleteBookmarks(tripRef, tripId, callback) {
+        let database = firebase.database();
+
+        //first delete bookmar references, then delete the trip
+        database.ref(`${tripRef}/bookmarks`).get().catch(error => {
+            this.setState({ errorUpdatingTrips: `When deleting trip bookmarks ${error}` })
+        }).then(snapshot => {
+            if (snapshot) {
+                let bookmarks = snapshot.val()
+
+                for (const userId in bookmarks) {
+                    database.ref(`userBookmarks/${userId}/${tripId}`).remove().catch(error => {
+                        this.setState({ errorUpdatingTrips: `When deleting trip ${error}` })
+                    })
+                }
+            }
+        }).then(() => {
+            if (callback) {
+                callback()
+            }
+        })
+
+    }
+
     deleteTrip() {
         let database = firebase.database();
         let userId = this.props.userId;
@@ -166,20 +206,25 @@ class EditTripModal extends React.Component {
         let tripRef = `${originalPrivacy}Trips/${tripId}`
         let userTripRef = `userTrips/${userId}/${tripId}`
 
-        database.ref(`${tripRef}`).remove().catch(error => {
-            this.setState({ errorUpdatingTrips: `When deleting trip ${error}` })
-        }).then(
+        this.deleteBookmarks(
+            tripRef,
+            tripId,
             () => {
-                database.ref(`${userTripRef}`).remove().catch(error => {
-                    this.setState({ errorUpdatingUserTrips: `When deleting trip from user trips list: ${error}` })
-                })
-            }
-        ).then(
-            () => {
-                this.setState({ tripDeleted: true })
+                database.ref(`${tripRef}`).remove().catch(error => {
+                    this.setState({ errorUpdatingTrips: `When deleting trip ${error}` })
+                }).then(
+                    () => {
+                        database.ref(`${userTripRef}`).remove().catch(error => {
+                            this.setState({ errorUpdatingUserTrips: `When deleting trip from user trips list: ${error}` })
+                        })
+                    }
+                ).then(
+                    () => {
+                        this.setState({ tripDeleted: true })
+                    }
+                )
             }
         )
-
     }
 
     toggleDeleteFrom() {
@@ -290,7 +335,7 @@ class EditTripModal extends React.Component {
             tripNameLength: valueLength,
             tripNameError: ""
         })
-        if(valueLength === 0) {
+        if (valueLength === 0) {
             this.setState({
                 tripNameError: "Your trip must have a name."
             })

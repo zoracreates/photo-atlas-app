@@ -2,19 +2,32 @@ import firebase from './firebase/firebaseConfig';
 
 let addToBookmarks = (userId, tripId, tripAuthor, tripPrivacy, callback) => {
     let database = firebase.database();
-
-    database.ref(`userBookmarks/${userId}/${tripId}`).set({
-        tripPrivacy: tripPrivacy,
-        tripAuthor: tripAuthor
-    }).catch((error) => {
-        callback(error.message)
-    }).then(() => {
-
-        callback(false)
+    let bookmarkingError = false
+    let update = {};
+    update[userId] = true;
+    //add reference on 
+    database.ref(`${tripPrivacy}Trips/${tripId}/bookmarks`).update(
+        update
+    ).catch(
+        (error) => {
+            bookmarkingError = error.message
+        }
+    ).then(() => {
+        //add to user bookmarks
+        database.ref(`userBookmarks/${userId}/${tripId}`).set({
+            tripPrivacy: tripPrivacy,
+            tripAuthor: tripAuthor
+        }).catch((error) => {
+            bookmarkingError = error.message
+        }).then(() => {
+            callback(bookmarkingError)
+        })
 
     }
 
     )
+
+
 
 }
 

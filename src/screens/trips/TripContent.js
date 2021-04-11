@@ -195,6 +195,8 @@ class TripContent extends React.Component {
     checkIfInBookmarks(userId) {
         if (userId !== 'notSignedIn') {
            
+
+            this.setState({updatingBookmark: true})
             let database = firebase.database()
         
 
@@ -213,7 +215,7 @@ class TripContent extends React.Component {
 
                 }
 
-                return this.setState({bookmarked: inBookmarks})
+                return this.setState({bookmarked: inBookmarks, updatingBookmark: false})
             })
         }
 
@@ -234,7 +236,7 @@ class TripContent extends React.Component {
                     this.state.tripPrivacy,
                     (errorMessage) => {
                         if(!errorMessage){
-                            this.setState({bookmarked: !this.state.bookmarked, updatingBookmark:false})
+                            this.checkIfInBookmarks(this.props.userId)
                         } else {
                             this.setState({updatingBookmark:false})
                             console.log(errorMessage)
