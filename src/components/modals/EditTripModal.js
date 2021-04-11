@@ -4,6 +4,7 @@ import TexInput from '../forms/TextInput'
 import SubmitButton from '../forms/SubmitButton'
 import RadioButton from '../forms/RadioButton'
 import firebase from '../../utils/firebase/firebaseConfig'
+import { generateDate } from '../../utils/generateDateAndTime'
 
 class EditTripModal extends React.Component {
 
@@ -67,6 +68,8 @@ class EditTripModal extends React.Component {
 
             //update trip name and tags
             if (tripUpdate || newPrivacy) {
+                tripUpdate.lastEdited = generateDate()
+                
                 database.ref(`${tripRef}`).update(tripUpdate).catch(error => {
                     this.setState({ errorUpdatingTrip: error })
                 }).then(() => {

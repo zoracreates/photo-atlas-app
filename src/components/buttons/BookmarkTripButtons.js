@@ -1,22 +1,22 @@
 import PropTypes from 'prop-types'
 
-const BookmarkTripLarge = ({bookmarked, ...rest}) => {
+const BookmarkTripLarge = ({bookmarked, updating, ...rest}) => {
 
     return (
         <button className={`action-button ${bookmarked ? 'bookmarked' : 'bookmark'}`} {...rest}>
             {
-                bookmarked ? 'Unbookmark' : 'Bookmark'
+               updating ? 'Updating'  : (bookmarked ? 'Unbookmark' : 'Bookmark')
             }
         </button>
     )
 }
 
-const BookmarkTripSmall = ({bookmarked, ...rest}) => {
+const BookmarkTripSmall = ({bookmarked, updating, ...rest}) => {
 
     return (
         <button className={`action-button-small ${bookmarked ? 'bookmarked' : 'bookmark'}`} {...rest}>
             {
-                bookmarked ? 'Unbookmark' : 'Bookmark'
+                updating ? 'Updating'  : (bookmarked ? 'Unbookmark' : 'Bookmark')
             }
         </button>
     )
@@ -27,7 +27,8 @@ BookmarkTripLarge.propTypes = {
 }
 
 BookmarkTripSmall.propTypes = {
-    bookmarked: PropTypes.bool
+    bookmarked: PropTypes.bool,
+    updating:  PropTypes.bool
 }
 
 export {BookmarkTripLarge , BookmarkTripSmall};

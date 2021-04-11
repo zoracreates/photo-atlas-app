@@ -15,9 +15,7 @@ class ResetPasswordModal extends React.Component {
     _isMounted = false;
 
     closeModal() {
-        this.setState({
-            confirmReset: false
-        }, () => this.props.handleClose());
+        this.props.handleClose(this.state.successReset)
     }
 
     componentDidMount() {
@@ -44,10 +42,10 @@ class ResetPasswordModal extends React.Component {
         let actionCodeSettings = { url: `https://photoatlasapp.com/` }
 
 
-       this._isMounted && auth.sendPasswordResetEmail(emailAddress,actionCodeSettings)
-       .then(() => {
+        this._isMounted && auth.sendPasswordResetEmail(emailAddress, actionCodeSettings)
+            .then(() => {
                 form.setState({ successReset: true })
-                
+
             }
             ).catch(function (error) {
                 form.setState({
@@ -69,21 +67,25 @@ class ResetPasswordModal extends React.Component {
 
                 <div className="modal-content-padding center-text">
 
-                    {!this.state.error && !this.state.successReset && 
-                    <h3 className="h5-font">Are you sure you want to reset your password?</h3>}
+                    {!this.state.error && !this.state.successReset &&
+                        <>
+                            <h3 className="h5-font">Are you sure you want to reset your password?</h3>
+                            <ul className="button-group">
+                                <li><button onClick={(e) => this.resetPassword(e)} className="default-button">Reset Password</button></li>
+                                <li><button onClick={() => this.closeModal()} className="button-link">Cancel</button></li>
+                            </ul>
+                        </>
+                    }
                     {this.state.error &&
                         <p className="error-font" aria-live="polite">
                             {this.state.error}
                         </p>
                     }
                     {this.state.successReset &&
-                        <p className="success-font" aria-live="polite">
-                            Check your email to reset your password.
-                        </p>}
-                        <ul className="button-group">
-                            <li><button onClick={(e) => this.resetPassword(e)} className="default-button">Reset Password</button></li>
-                            <li><button onClick={() => this.closeModal()} className="button-link">Cancel</button></li>
-                        </ul>
+                        <div aria-live="polite">
+                           <h3 className="h5-font">Check your email to reset your password.</h3> 
+                        </div>}
+
                 </div>
 
             </Modal>

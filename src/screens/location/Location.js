@@ -54,7 +54,6 @@ class Location extends React.Component {
     checkIfInTrips(userId) {
 
         if (userId && this.props.isAuthenticated) {
-            console.log(userId)
             let database = firebase.database()
 
 
@@ -96,8 +95,6 @@ class Location extends React.Component {
                 return locationTrips
             })
         }
-
-
 
     }
 
