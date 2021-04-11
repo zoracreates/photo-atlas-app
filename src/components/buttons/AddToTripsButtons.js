@@ -23,11 +23,11 @@ const AddToTripsSmall = ({added, ...rest}) => {
 }
 
 AddToTripsLarge.propTypes = {
-    add: PropTypes.bool
+    added: PropTypes.bool
 }
 
 AddToTripsSmall.propTypes = {
-    add: PropTypes.bool
+    added: PropTypes.bool
 }
 
 export {AddToTripsLarge, AddToTripsSmall};

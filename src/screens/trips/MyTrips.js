@@ -18,11 +18,11 @@ class MyTrips extends React.Component {
     getTripsList() {
         let userId = this.props.userId;
         if (this.props.isAuthenticated) {
-            this._isMounted &&  getUserTrips(userId, (tripsList) => {
+            getUserTrips(userId, (tripsList) => {
                 if (tripsList.length > 0) {
-                    this.setState({ existingTrips: tripsList, loading: false })
+                    this._isMounted &&  this.setState({ existingTrips: tripsList, loading: false })
                 } else {
-                    this.setState({ loading: false })
+                    this._isMounted && this.setState({ loading: false })
                 }
             }
             )

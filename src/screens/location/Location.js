@@ -53,13 +53,12 @@ class Location extends React.Component {
 
     checkIfInTrips(userId) {
 
-
-
-        if (userId) {
+        if (userId && this.props.isAuthenticated) {
+            console.log(userId)
             let database = firebase.database()
 
 
-            this._isMounted && database.ref(`userTrips/${userId}`).get().then((snapshot) => {
+            this._isMounted && database.ref(`userTrips/${userId}`).get().catch(error=> console.log(error)).then((snapshot) => {
                 let locationTrips = [];
                 if (snapshot.exists()) {
                     let trips = snapshot.val();
@@ -73,7 +72,7 @@ class Location extends React.Component {
 
                         let locationRef = `${privacy}Trips/${tripId}/locations/${location}`
 
-                        this._isMounted && database.ref(`${locationRef}`).get().then(
+                        this._isMounted && database.ref(`${locationRef}`).get().catch(error => console.log(error)).then(
                             snapshot => {
 
                                 if (snapshot.exists()) {
@@ -88,7 +87,7 @@ class Location extends React.Component {
                                     this.setState({ inTrips: false })
                                 }
 
-                            })
+                            }).catch(error => console.log(error))
 
 
                     }

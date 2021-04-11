@@ -3,6 +3,7 @@ import MapWithCards from '../../components/layout/MapWithCards'
 import ResultsList from '../../components/content/ResultsList'
 import firebase from '../../utils/firebase/firebaseConfig'
 import { EditTripLarge, EditTripSmall } from '../../components/buttons/EditTripButtons'
+import { BookmarkTripLarge, BookmarkTripSmall } from '../../components/buttons/BookmarkTripButtons'
 import EditTripModal from '../../components/modals/EditTripModal'
 class TripContent extends React.Component {
     state = {
@@ -14,9 +15,10 @@ class TripContent extends React.Component {
         mapLat: null,
         mapLon: null,
         mapZoom: 10,
-        showModal: false,
+        showEditModal: false,
         tripPrivacy: null,
-        author: ''
+        author: '',
+        bookmarked: false
     }
     _isMounted = false;
 
@@ -136,19 +138,27 @@ class TripContent extends React.Component {
 
     }
 
-    openModal(){
+    openEditModal(){
         let privacy = this.getPrivacy()
         this.setState({ tripPrivacy: privacy},
-            () => this.setState({showModal: true})) 
+            () => this.setState({showEditModal: true})) 
     }
 
-    closeModal(update) {
+    handleBookmark() {
+        if(this.props.userId !== 'notSignedIn') {
+            this.setState({bookmarked: !this.state.bookmarked})
+        } else {
+            //show modal asking to sign in
+        }
+    }
+
+    closeEditModal(update) {
         let updated = update['updated']
         let deleted = update['deleted']
 
         if(updated) {
             if(deleted) {
-                this.setState({ showModal: !this.state.showModal },
+                this.setState({ showEditModal: !this.state.showEditModal },
                     ()=> {
                         this.props.history.push('/trips')
                     })
@@ -169,7 +179,7 @@ class TripContent extends React.Component {
             }
 
         } 
-        this.setState({ showModal: !this.state.showModal })
+        this.setState({ showEditModal: !this.state.showEditModal })
         
     }
 
@@ -185,7 +195,8 @@ class TripContent extends React.Component {
             tripName,
             tripTags,
             tripPrivacy,
-            author } = this.state;
+            author,
+            bookmarked } = this.state;
 
 
         return (
@@ -201,7 +212,8 @@ class TripContent extends React.Component {
                         <div className='dark-background mobile-header'>
                             <div className={`container mobile-padding`}>
                                 <button onClick={() => { window.history.back() }} className={`secondary-button back-button`}>Back</button>
-                                {this.props.userId === author &&  <EditTripSmall onClick={()=>this.openModal()} />}
+                                {loaded && this.props.userId === author &&  <EditTripSmall onClick={()=>this.openEditModal()} />}
+                                {loaded && this.props.userId !== author &&  <BookmarkTripSmall bookmarked={bookmarked} onClick={()=>this.handleBookmark()} />}
                             </div>
                         </div>
 
@@ -216,9 +228,15 @@ class TripContent extends React.Component {
                             </div>
                             <div className={`col-30`}>
                                 <ul className="actions">
-                                    {this.props.userId === author && <li>
-                                        <EditTripLarge onClick={()=>this.openModal()} />
+                                    {loaded && this.props.userId === author && <li>
+                                        <EditTripLarge onClick={()=>this.openEditModal()} />
                                     </li>}
+                                    {loaded && this.props.userId !== author && <li>
+                                        <BookmarkTripLarge bookmarked={bookmarked} onClick={()=>this.handleBookmark()} />
+                                    </li>}
+
+                                    
+
                                 </ul>
                             </div>
                         </div>
@@ -228,8 +246,8 @@ class TripContent extends React.Component {
 
                     </MapWithCards>
                     <EditTripModal
-                        isOpen={this.state.showModal}
-                        handleClose={(update) => this.closeModal(update)}
+                        isOpen={this.state.showEditModal}
+                        handleClose={(update) => this.closeEditModal(update)}
                         originalTripName={tripName}
                         originalTripTags={tripTags}
                         originalTripPrivacy={tripPrivacy}
