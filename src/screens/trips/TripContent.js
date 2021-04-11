@@ -7,6 +7,7 @@ import { BookmarkTripLarge, BookmarkTripSmall } from '../../components/buttons/B
 import EditTripModal from '../../components/modals/EditTripModal'
 import BookmarkModal from '../../components/modals/BookmarkModal'
 import addToBookmarks from '../../utils/addToBookmarks'
+import removeFromBookmarks from '../../utils/removeFromBookmarks'
 
 class TripContent extends React.Component {
     state = {
@@ -245,8 +246,15 @@ class TripContent extends React.Component {
                 )
                
            } else {
-               //remove from book marks
-               this.setState({bookmarked: !this.state.bookmarked, updatingBookmark:false})
+            //delete bookmark
+            removeFromBookmarks(
+                this.props.userId,
+                this.tripId, 
+                this.state.tripPrivacy,
+                () => {
+                    this.checkIfInBookmarks(this.props.userId)
+                }
+            )
            }
             
         } else {
