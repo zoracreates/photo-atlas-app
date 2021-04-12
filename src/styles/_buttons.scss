@@ -31,6 +31,7 @@
     button {
         color: $gray;
         padding-bottom: 1rem;
+        font-size: 0.75rem; // 12px
     }
 
     button.active {
@@ -136,6 +137,15 @@ input[type='submit'] {
         background-image: url(../images/icons/48px/pencil-blue.png);  
     }
 
+    &.bookmark::before {
+        background-image: url(../images/icons/48px/bookmark-blue-outline.png);  
+    }
+
+    &.bookmarked::before {
+        background-image: url(../images/icons/48px/bookmark-blue-fill.png);  
+    }
+    
+
 }
 
 .action-button-small {
@@ -173,6 +183,15 @@ input[type='submit'] {
     &.edit::before{
         background-image: url(../images/icons/48px/pencil-white.png);  
     }
+
+    &.bookmark::before {
+        background-image: url(../images/icons/48px/bookmark-white-outline.png);  
+    }
+
+    &.bookmarked::before {
+        background-image: url(../images/icons/48px/bookmark-white-fill.png);  
+    }
+    
 
 }
 

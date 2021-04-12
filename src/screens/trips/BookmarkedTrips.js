@@ -3,11 +3,11 @@ import PropTypes from 'prop-types'
 import PrivateTab from '../../components/navigation/PrivateTab'
 import OneToTwoCols from '../../components/layout/OneToTwoCols'
 import TripCard from '../../components/cards/TripCard'
-import getUserTrips from '../../utils/getUserTrips'
+import getUserBookmarks from '../../utils/getUserBookmarks'
 
 
 
-class MyTrips extends React.Component {
+class BookmarkedTrips extends React.Component {
 
     state = {
         existingTrips: [],
@@ -18,7 +18,7 @@ class MyTrips extends React.Component {
     getTripsList() {
         let userId = this.props.userId;
         if (this.props.isAuthenticated) {
-            getUserTrips(userId, (tripsList) => {
+            getUserBookmarks(userId, (tripsList) => {
                 if (tripsList.length > 0) {
                     this._isMounted &&  this.setState({ existingTrips: tripsList, loading: false })
                 } else {
@@ -44,7 +44,7 @@ class MyTrips extends React.Component {
         this._isMounted = false;
     }
 
-    renderUserTrips() {
+    renderUserBookmarks() {
 
         let { existingTrips, loading } = this.state;
 
@@ -104,7 +104,7 @@ class MyTrips extends React.Component {
         return (
             <>
                 <PrivateTab
-                    componentContent={() => this.renderUserTrips()}
+                    componentContent={() => this.renderUserBookmarks()}
                     logInLocation={"trips"}
                     isVerified={this.props.isVerified}
                     isAuthenticated={this.props.isAuthenticated}
@@ -115,7 +115,7 @@ class MyTrips extends React.Component {
 
 }
 
-MyTrips.propTypes = {
+BookmarkedTrips.propTypes = {
     userId: PropTypes.string,
     isAuthenticated: PropTypes.bool,
     isVerified: PropTypes.bool
@@ -123,4 +123,4 @@ MyTrips.propTypes = {
 
 
 
-export default MyTrips;
+export default BookmarkedTrips;

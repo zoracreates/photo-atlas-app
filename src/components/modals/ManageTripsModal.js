@@ -623,7 +623,6 @@ class ManageTripsModal extends React.Component {
                 }
                 else {
                     //add
-
                     if (currentLocation.startsWith("flickr-")) {
                         let locationRef = `appLocations/flickrSourced/${currentLocation}`
 

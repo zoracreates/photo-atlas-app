@@ -3,7 +3,12 @@ import MapWithCards from '../../components/layout/MapWithCards'
 import ResultsList from '../../components/content/ResultsList'
 import firebase from '../../utils/firebase/firebaseConfig'
 import { EditTripLarge, EditTripSmall } from '../../components/buttons/EditTripButtons'
+import { BookmarkTripLarge, BookmarkTripSmall } from '../../components/buttons/BookmarkTripButtons'
 import EditTripModal from '../../components/modals/EditTripModal'
+import BookmarkModal from '../../components/modals/BookmarkModal'
+import addToBookmarks from '../../utils/addToBookmarks'
+import removeFromBookmarks from '../../utils/removeFromBookmarks'
+
 class TripContent extends React.Component {
     state = {
         loaded: false,
@@ -14,15 +19,19 @@ class TripContent extends React.Component {
         mapLat: null,
         mapLon: null,
         mapZoom: 10,
-        showModal: false,
+        showEditModal: false,
         tripPrivacy: null,
-        author: ''
+        authorId: '',
+        authorName:'',
+        bookmarked: false,
+        updatingBookmark: false,
+        showBookmarkModal: false
     }
     _isMounted = false;
 
     tripId = this.getTripId()
 
-    getPrivacy () {
+    getPrivacy() {
         let pathQuery = this.props.location.search;
         let searchParams = new URLSearchParams(pathQuery);
         let privacy = searchParams.get("privacy");
@@ -41,34 +50,53 @@ class TripContent extends React.Component {
 
         let privacy = this.getPrivacy()
 
-        this.setState({tripPrivacy: privacy}, () =>  {
+        this.setState({ tripPrivacy: privacy }, () => {
             this._isMounted && this.getTripDetails(this.state.tripPrivacy, this.tripId);
-        }   
+            //check if bookmarked
+            this._isMounted && this.checkIfInBookmarks(this.props.userId);
+        }
         )
 
-        
     }
+
+    componentDidUpdate(nextProps) {
+        if(this.props.userId !== nextProps.userId) {
+            this._isMounted && this.checkIfInBookmarks(this.props.userId);
+        }
+    }
+
+
 
     getTripDetails(privacy, tripId) {
         let database = firebase.database();
 
-        let tripName, locationsCount, tripTags, author;
+        let tripName, locationsCount, tripTags, authorId;
         let list = []
         let tripRef = `${privacy}Trips/${tripId}`
-        
+
         database.ref(`${tripRef}`).get().then(
             snapshot => {
                 let tripData = snapshot.val()
                 tripName = tripData['tripName']
                 tripTags = tripData['tags']
-                author = tripData['author']
+                authorId = tripData['author']
                 locationsCount = tripData['locationsCount']
-                this.setState({
+                this._isMounted && this.setState({
                     tripName: tripName,
                     locationsCount: locationsCount,
                     tripTags: tripTags,
-                    author: author
+                    authorId: authorId
                 })
+
+                database.ref(`users/${authorId}/displayName`).get().catch(error=>console.log(error)).then(
+                    snapshot => {
+                        if(snapshot){
+                            let authorName = snapshot.val()
+                            this._isMounted &&  this.setState({authorName: authorName})
+                        }
+                    }
+                )
+
                 let locations = tripData['locations']
 
 
@@ -136,41 +164,121 @@ class TripContent extends React.Component {
 
     }
 
-    openModal(){
+    openEditModal() {
         let privacy = this.getPrivacy()
-        this.setState({ tripPrivacy: privacy},
-            () => this.setState({showModal: true})) 
+        this.setState({ tripPrivacy: privacy },
+            () => this.setState({ showEditModal: true }))
     }
 
-    closeModal(update) {
+
+
+    closeEditModal(update) {
         let updated = update['updated']
         let deleted = update['deleted']
 
-        if(updated) {
-            if(deleted) {
-                this.setState({ showModal: !this.state.showModal },
-                    ()=> {
+        if (updated) {
+            if (deleted) {
+                this.setState({ showEditModal: !this.state.showEditModal },
+                    () => {
                         this.props.history.push('/trips')
                     })
 
             } else {
                 let newPrivacy = update['newPrivacy']
 
-                if(newPrivacy && (this.state.tripPrivacy !== newPrivacy)) {
+                if (newPrivacy && (this.state.tripPrivacy !== newPrivacy)) {
                     this.props.history.push({
                         search: `?privacy=${newPrivacy}`
-                      })
-    
-                    this.setState({tripPrivacy: newPrivacy})
+                    })
+
+                    this.setState({ tripPrivacy: newPrivacy })
                     this._isMounted && this.getTripDetails(newPrivacy, this.tripId);
                 } else {
                     this._isMounted && this.getTripDetails(this.state.tripPrivacy, this.tripId);
-                } 
+                }
             }
 
-        } 
-        this.setState({ showModal: !this.state.showModal })
+        }
+        this.setState({ showEditModal: !this.state.showEditModal })
+
+    }
+
+
+    checkIfInBookmarks(userId) {
+        if (userId !== 'notSignedIn') {
+           
+
+            this.setState({updatingBookmark: true})
+            let database = firebase.database()
         
+
+            //get the user's bookmakrs
+            this._isMounted && database.ref(`userBookmarks/${userId}`).get().catch(error=> console.log(error)).then((snapshot) => {
+                let inBookmarks = false
+                if (snapshot.exists()) {
+                    let trips = snapshot.val();
+                    //go through each trip and check if they match the current triId
+                    for (const tripId in trips) {
+
+                        if (tripId === this.tripId) {
+                            inBookmarks = true
+                        } 
+                    }
+
+                }
+
+                return this.setState({bookmarked: inBookmarks, updatingBookmark: false})
+            })
+        }
+
+    }
+
+
+
+
+    handleBookmark() {
+        if (this.props.userId !== 'notSignedIn') {
+            this.setState({updatingBookmark: true })
+            if(!this.state.bookmarked) {
+                //add to book marks
+                addToBookmarks(
+                    this.props.userId,
+                    this.tripId,
+                    this.state.authorId,
+                    this.state.tripPrivacy,
+                    (errorMessage) => {
+                        if(!errorMessage){
+                            this.checkIfInBookmarks(this.props.userId)
+                        } else {
+                            this.setState({updatingBookmark:false})
+                            console.log(errorMessage)
+                        }
+                    }
+                )
+               
+           } else {
+            //delete bookmark
+            removeFromBookmarks(
+                this.props.userId,
+                this.tripId, 
+                this.state.tripPrivacy,
+                () => {
+                    this.checkIfInBookmarks(this.props.userId)
+                }
+            )
+           }
+            
+        } else {
+            //bookmark
+            this.setState({showBookmarkModal: true})
+        }
+    }
+
+
+
+    closeBoomarkModal() {
+        this.setState({showBookmarkModal: false})
+        //check if in bookmarks
     }
 
 
@@ -185,13 +293,16 @@ class TripContent extends React.Component {
             tripName,
             tripTags,
             tripPrivacy,
-            author } = this.state;
+            authorId,
+            bookmarked,
+            updatingBookmark,
+            authorName } = this.state;
 
 
         return (
             <>
                 <div className={`trip`}>
-            
+
                     <MapWithCards
                         mapLoctaions={tripList}
                         mapLat={mapLat}
@@ -201,7 +312,8 @@ class TripContent extends React.Component {
                         <div className='dark-background mobile-header'>
                             <div className={`container mobile-padding`}>
                                 <button onClick={() => { window.history.back() }} className={`secondary-button back-button`}>Back</button>
-                                {this.props.userId === author &&  <EditTripSmall onClick={()=>this.openModal()} />}
+                                {loaded && this.props.userId === authorId && <EditTripSmall onClick={() => this.openEditModal()} />}
+                                {loaded && this.props.userId !== authorId && <BookmarkTripSmall updating={updatingBookmark} bookmarked={bookmarked} onClick={() => this.handleBookmark()} />}
                             </div>
                         </div>
 
@@ -209,15 +321,19 @@ class TripContent extends React.Component {
                             <div className={`col-70`}>
                                 <div className={`container mobile-padding`}>
                                     <h2 className="h6-font">{tripName}</h2>
-                                    <p className={`meta-data ${tripPrivacy ==='public' ? 'public' : 'private'}`}>{tripPrivacy}</p>
+                                    <p className={`meta-data`}>by {authorName}</p>
+                                    <p className={`meta-data ${tripPrivacy === 'public' ? 'public' : 'private'}`}>{tripPrivacy}</p>
                                     <p className={`meta-data marker`}>{locationsCount} {locationsCount === 1 ? 'Location' : 'Locations'}</p>
                                     <p className={`meta-data tags`}>Tags: {tripTags}</p>
                                 </div>
                             </div>
                             <div className={`col-30`}>
                                 <ul className="actions">
-                                    {this.props.userId === author && <li>
-                                        <EditTripLarge onClick={()=>this.openModal()} />
+                                    {loaded && this.props.userId === authorId && <li>
+                                        <EditTripLarge onClick={() => this.openEditModal()} />
+                                    </li>}
+                                    {loaded && this.props.userId !== authorId && <li>
+                                        <BookmarkTripLarge bookmarked={bookmarked} updating={updatingBookmark} onClick={() => this.handleBookmark()} />
                                     </li>}
                                 </ul>
                             </div>
@@ -228,14 +344,22 @@ class TripContent extends React.Component {
 
                     </MapWithCards>
                     <EditTripModal
-                        isOpen={this.state.showModal}
-                        handleClose={(update) => this.closeModal(update)}
+                        isOpen={this.state.showEditModal}
+                        handleClose={(update) => this.closeEditModal(update)}
                         originalTripName={tripName}
                         originalTripTags={tripTags}
                         originalTripPrivacy={tripPrivacy}
                         userId={this.props.userId}
                         tripId={this.tripId}
                         searchQuery={this.props.location.search}
+                    />
+
+                    <BookmarkModal
+                        isOpen={this.state.showBookmarkModal}
+                        handleClose={() => this.closeBoomarkModal()}
+                        tripId={this.tripId}
+                        tripPrivacy={tripPrivacy}
+                        tripauthorId={authorId}
                     />
                 </div>
             </>

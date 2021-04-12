@@ -21,16 +21,18 @@ let getPublicTrips = (callback) => {
                     //get thumnail
                     let thumbnail = trips[tripId]['featuredImg']
 
+                    let authorId = trips[tripId]['author']
 
                     let existingTripUpdate = {
                         tripId: tripId,
                         thumbnail: thumbnail,
                         title: title,
                         locationsCount: locationsCount,
-                        privacy: 'public'
+                        privacy: 'public',
+                        authorId: authorId
                     }
 
-                    existingTrips.push(existingTripUpdate)
+                existingTrips.push(existingTripUpdate)
         }
 
         return existingTrips

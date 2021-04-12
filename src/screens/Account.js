@@ -33,8 +33,12 @@ class Account extends React.Component {
         this.setState({ resetPassword: true })
     }
 
-    closePasswordModal() {
+    closePasswordModal(reseted) {
         this.setState({ resetPassword: false })
+
+        if(reseted) {
+            firebase.auth().signOut()
+        }
     }
 
     openDisplayNameModal() {
@@ -112,7 +116,7 @@ class Account extends React.Component {
                 </div>
                 <ResetPasswordModal
                     email={this.state.email}
-                    handleClose={() => this.closePasswordModal()}
+                    handleClose={(reseted) => this.closePasswordModal(reseted)}
                     logInLocation="account"
                     isOpen={this.state.resetPassword}
                 />

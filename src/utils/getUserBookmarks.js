@@ -1,11 +1,12 @@
 import firebase from './firebase/firebaseConfig'
 
-let getUserTrips = (userId, callback, locationId = null) => {
+let getUserTrips = (userId, callback) => {
 
     let database = firebase.database();
     let existingTrips = [];
+
     if(userId) {
-        database.ref(`userTrips/${userId}`).get().then((snapshot) => {
+        database.ref(`userBookmarks/${userId}`).get().then((snapshot) => {
 
             if (snapshot.exists()) { 
                 let trips = snapshot.val();
@@ -28,28 +29,13 @@ let getUserTrips = (userId, callback, locationId = null) => {
     
                                 //get locationsCount
                                 let locationsCount = tripData['locationsCount']
+
+                                //get authorId
+                                let authorId = tripData['author']
     
                                 //get thumnail
                                 let thumbnail = tripData['featuredImg']
     
-                                //see if location is in trip
-                                let inTrip;
-    
-                                if (locationId) {
-                                    let locations = tripData.locations;
-    
-    
-                                    if (locations) {
-                                        let location = locations[locationId]
-                                        if (location) {
-                                            inTrip = true
-                                        } else {
-                                            inTrip = false
-                                        }
-                                    } else {
-                                        inTrip = false
-                                    }
-                                }
     
                                 let existingTripUpdate = {
                                     tripId: tripId,
@@ -57,8 +43,7 @@ let getUserTrips = (userId, callback, locationId = null) => {
                                     title: title,
                                     locationsCount: locationsCount,
                                     privacy: privacy,
-                                    inTrip: inTrip,
-                                    authorId: userId
+                                    authorId: authorId
                                 }
     
                                 existingTrips.push(existingTripUpdate)
