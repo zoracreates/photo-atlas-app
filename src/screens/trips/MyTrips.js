@@ -69,7 +69,8 @@ class MyTrips extends React.Component {
                                     title,
                                     locationsCount,
                                     privacy,
-                                    tripId } = trip;
+                                    tripId,
+                                    authorId } = trip;
 
                                 return (
                                     <TripCard
@@ -79,6 +80,7 @@ class MyTrips extends React.Component {
                                         tripId={tripId}
                                         privacy={privacy}
                                         locationsCount={locationsCount}
+                                        authorId={authorId}
                                     />
                                 )
                             })}

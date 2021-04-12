@@ -21,7 +21,8 @@ class TripContent extends React.Component {
         mapZoom: 10,
         showEditModal: false,
         tripPrivacy: null,
-        author: '',
+        authorId: '',
+        authorName:'',
         bookmarked: false,
         updatingBookmark: false,
         showBookmarkModal: false
@@ -69,7 +70,7 @@ class TripContent extends React.Component {
     getTripDetails(privacy, tripId) {
         let database = firebase.database();
 
-        let tripName, locationsCount, tripTags, author;
+        let tripName, locationsCount, tripTags, authorId;
         let list = []
         let tripRef = `${privacy}Trips/${tripId}`
 
@@ -78,14 +79,24 @@ class TripContent extends React.Component {
                 let tripData = snapshot.val()
                 tripName = tripData['tripName']
                 tripTags = tripData['tags']
-                author = tripData['author']
+                authorId = tripData['author']
                 locationsCount = tripData['locationsCount']
-                this.setState({
+                this._isMounted && this.setState({
                     tripName: tripName,
                     locationsCount: locationsCount,
                     tripTags: tripTags,
-                    author: author
+                    authorId: authorId
                 })
+
+                database.ref(`users/${authorId}/displayName`).get().catch(error=>console.log(error)).then(
+                    snapshot => {
+                        if(snapshot){
+                            let authorName = snapshot.val()
+                            this._isMounted &&  this.setState({authorName: authorName})
+                        }
+                    }
+                )
+
                 let locations = tripData['locations']
 
 
@@ -233,7 +244,7 @@ class TripContent extends React.Component {
                 addToBookmarks(
                     this.props.userId,
                     this.tripId,
-                    this.state.author,
+                    this.state.authorId,
                     this.state.tripPrivacy,
                     (errorMessage) => {
                         if(!errorMessage){
@@ -282,9 +293,10 @@ class TripContent extends React.Component {
             tripName,
             tripTags,
             tripPrivacy,
-            author,
+            authorId,
             bookmarked,
-        updatingBookmark } = this.state;
+            updatingBookmark,
+            authorName } = this.state;
 
 
         return (
@@ -300,8 +312,8 @@ class TripContent extends React.Component {
                         <div className='dark-background mobile-header'>
                             <div className={`container mobile-padding`}>
                                 <button onClick={() => { window.history.back() }} className={`secondary-button back-button`}>Back</button>
-                                {loaded && this.props.userId === author && <EditTripSmall onClick={() => this.openEditModal()} />}
-                                {loaded && this.props.userId !== author && <BookmarkTripSmall updating={updatingBookmark} bookmarked={bookmarked} onClick={() => this.handleBookmark()} />}
+                                {loaded && this.props.userId === authorId && <EditTripSmall onClick={() => this.openEditModal()} />}
+                                {loaded && this.props.userId !== authorId && <BookmarkTripSmall updating={updatingBookmark} bookmarked={bookmarked} onClick={() => this.handleBookmark()} />}
                             </div>
                         </div>
 
@@ -309,6 +321,7 @@ class TripContent extends React.Component {
                             <div className={`col-70`}>
                                 <div className={`container mobile-padding`}>
                                     <h2 className="h6-font">{tripName}</h2>
+                                    <p className={`meta-data`}>by {authorName}</p>
                                     <p className={`meta-data ${tripPrivacy === 'public' ? 'public' : 'private'}`}>{tripPrivacy}</p>
                                     <p className={`meta-data marker`}>{locationsCount} {locationsCount === 1 ? 'Location' : 'Locations'}</p>
                                     <p className={`meta-data tags`}>Tags: {tripTags}</p>
@@ -316,10 +329,10 @@ class TripContent extends React.Component {
                             </div>
                             <div className={`col-30`}>
                                 <ul className="actions">
-                                    {loaded && this.props.userId === author && <li>
+                                    {loaded && this.props.userId === authorId && <li>
                                         <EditTripLarge onClick={() => this.openEditModal()} />
                                     </li>}
-                                    {loaded && this.props.userId !== author && <li>
+                                    {loaded && this.props.userId !== authorId && <li>
                                         <BookmarkTripLarge bookmarked={bookmarked} updating={updatingBookmark} onClick={() => this.handleBookmark()} />
                                     </li>}
                                 </ul>
@@ -346,7 +359,7 @@ class TripContent extends React.Component {
                         handleClose={() => this.closeBoomarkModal()}
                         tripId={this.tripId}
                         tripPrivacy={tripPrivacy}
-                        tripAuthor={author}
+                        tripauthorId={authorId}
                     />
                 </div>
             </>

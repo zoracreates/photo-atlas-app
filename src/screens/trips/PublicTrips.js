@@ -16,14 +16,15 @@ class PublicTrips extends React.Component {
 
     componentDidMount() {
         this._isMounted = true;
+        getPublicTrips((tripsList) => {
+            this._isMounted && this.setState({ existingTrips: tripsList, loading: false })
+        })
     }
 
     renderPublicTrips() {
         let { existingTrips, loading } = this.state;
 
-        getPublicTrips((tripsList) => {
-            this._isMounted && this.setState({ existingTrips: tripsList, loading: false })
-        })
+
 
         if (loading) {
             return (
@@ -44,7 +45,8 @@ class PublicTrips extends React.Component {
                                 title,
                                 locationsCount,
                                 privacy, 
-                                tripId } = trip;
+                                tripId,
+                                authorId } = trip;
 
                             return (
                                 <TripCard
@@ -54,6 +56,7 @@ class PublicTrips extends React.Component {
                                     tripId={tripId}
                                     privacy={privacy}
                                     locationsCount={locationsCount}
+                                    authorId={authorId}
                                 />
                             )
                         })}

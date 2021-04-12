@@ -57,7 +57,8 @@ let getUserTrips = (userId, callback, locationId = null) => {
                                     title: title,
                                     locationsCount: locationsCount,
                                     privacy: privacy,
-                                    inTrip: inTrip
+                                    inTrip: inTrip,
+                                    authorId: userId
                                 }
     
                                 existingTrips.push(existingTripUpdate)

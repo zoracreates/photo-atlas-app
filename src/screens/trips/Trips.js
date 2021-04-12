@@ -9,49 +9,71 @@ import MyTrips from './MyTrips'
 class Trips extends React.Component {
 
     state = {
-        isPublic: true
+        tab: 'public'
     }
 
     renderContent() {
+        let {tab} = this.state
 
-        if (this.state.isPublic) {
+        // console.log(tab)
+        if (tab === 'public') {
             return <PublicTrips />
-        }
-        else {
+        } 
+
+        if(tab === 'private') {
             return (
-                <MyTrips 
-                    isVerified={this.props.isVerified} 
+                <MyTrips
+                    isVerified={this.props.isVerified}
                     isAuthenticated={this.props.isAuthenticated}
                     userId={this.props.userId}
-                    />
+                />
             )
         }
+
+        if(tab === 'bookmarks') {
+            return (
+                <p>bookmarks</p>
+            )
+        }
+
 
     }
 
     switchTabs(value) {
-        this.setState({isPublic: value})
+        this.setState({ tab: value })
+
     }
 
     render() {
+        let {tab} = this.state;
         return (
             <>
                 <div className={`container trips mobile-padding`}>
                     <h2>Trips</h2>
                     <ul className={`tabs`}>
                         <li>
-                            <button 
-                                className={this.state.isPublic ? 'active' : 'inactive'} 
-                                onClick={() => this.switchTabs(true)}>All Public Trips
+                            <button
+                                className={tab === 'public' ? 'active' : 'inactive'}
+                                onClick={() => this.switchTabs('public')}>Public Trips
                             </button>
                         </li>
                         <li>
                             <button
-                            className={this.state.isPublic ? 'inactive' : 'active' } 
-                            onClick={() => this.switchTabs(false)}>
+                                className={tab === 'private' ? 'active' : 'inactive'}
+                                onClick={() => this.switchTabs('private')}>
                                 My Trips
                             </button>
-                            </li>
+                        </li>
+  
+                        <li>
+                            <button
+                                className={tab === 'bookmarks' ? 'active' : 'inactive'}
+                                onClick={() => this.switchTabs('bookmarks')}>
+                                    Bookmarks
+                            </button>
+                        </li>
+
+   
                     </ul>
                     {this.renderContent()}
                 </div>
