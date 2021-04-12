@@ -51,7 +51,7 @@ class TripCard extends React.Component{
                 </div>
                 <div className={`trip-card-content`}>
                     <p className={`title`}>{title}</p>
-                    <p className={`meta-data`}>{this.state.authorName}</p>
+                    <p className={`meta-data`}>by {this.state.authorName}</p>
                     <p className={`meta-data ${privacy}`}>
                         {privacy}</p> 
                     <p className={`meta-data marker`}>

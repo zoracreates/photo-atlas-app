@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types';
 import PublicTrips from './PublicTrips'
 import MyTrips from './MyTrips'
+import BookmarkedTrips from './BookmarkedTrips'
 
 
 
@@ -13,14 +14,14 @@ class Trips extends React.Component {
     }
 
     renderContent() {
-        let {tab} = this.state
+        let { tab } = this.state
 
         // console.log(tab)
         if (tab === 'public') {
             return <PublicTrips />
-        } 
+        }
 
-        if(tab === 'private') {
+        if (tab === 'private') {
             return (
                 <MyTrips
                     isVerified={this.props.isVerified}
@@ -30,9 +31,14 @@ class Trips extends React.Component {
             )
         }
 
-        if(tab === 'bookmarks') {
+        if (tab === 'bookmarks') {
             return (
-                <p>bookmarks</p>
+                <BookmarkedTrips
+                    isVerified={this.props.isVerified}
+                    isAuthenticated={this.props.isAuthenticated}
+                    userId={this.props.userId}
+                />
+
             )
         }
 
@@ -45,7 +51,7 @@ class Trips extends React.Component {
     }
 
     render() {
-        let {tab} = this.state;
+        let { tab } = this.state;
         return (
             <>
                 <div className={`container trips mobile-padding`}>
@@ -64,16 +70,16 @@ class Trips extends React.Component {
                                 My Trips
                             </button>
                         </li>
-  
+
                         <li>
                             <button
                                 className={tab === 'bookmarks' ? 'active' : 'inactive'}
                                 onClick={() => this.switchTabs('bookmarks')}>
-                                    Bookmarks
+                                Bookmarks
                             </button>
                         </li>
 
-   
+
                     </ul>
                     {this.renderContent()}
                 </div>
