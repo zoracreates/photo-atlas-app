@@ -17,7 +17,7 @@ Furthemore, Photo Atlas will allow photographers to create curated lists of phot
 
 - Progressive Web App design
 - React
-- Google Maps API
+- Leaflet JS
 - Firebase Auth
 - Firebase Realtime Database
 - Firebase Cloud Storage
