@@ -62,7 +62,7 @@ class EditTripModal extends React.Component {
             }
 
             //this gets buggy when I update tags plus it's not refreshing the update...
-            if (this.state.tripTags !== this.props.originalTripTags) {
+            if (this.state.tagsUpdated && (this.state.tripTags !== this.props.originalTripTags)) {
                 tripUpdate["tags"] = this.state.tripTags
             }
 
@@ -255,7 +255,7 @@ class EditTripModal extends React.Component {
 
                 <form className="modal-content-padding">
                     <div className="form-component-wrapper">
-                        <label htmlFor="trip-name">Trip Name (Max 50 Characters)</label>
+                        <label htmlFor="trip-name">Title (Max 50 Characters)</label>
                         <TexInput id="trip-name"
                             value={this.state.nameUpdated ? this.state.tripName : this.props.originalTripName}
                             onChange={(e) => this.handleTripNamelInput(e)}

@@ -54,7 +54,7 @@ class SearchResults extends React.Component {
 
         getFlickrPhotos(options).then(data => {
 
-            let photos;
+            let photos; 
 
             if (data) {
                 photos = data.photos
@@ -247,11 +247,7 @@ class SearchResults extends React.Component {
         } else {
             let lat = suggestion.lat;
             let lon = suggestion.lon;
-            getCurrentLocation(
-                (position) => this.setState(
-                    { currentLocation: position.coords },
-                    () => this.getSearchResults(lat, lon))
-            )
+            this.getSearchResults(lat, lon)
         }
 
     }
@@ -280,11 +276,7 @@ class SearchResults extends React.Component {
             let search = `address=${address}&lat=${lat}&lon=${lon}`
 
             this.props.history.push(`/explore/?q=&${search}`)
-
-            getCurrentLocation(
-                (position) => this.setState({ currentLocation: position.coords },
-                    () => this.getSearchResults(lat, lon, data))
-            )
+            this.getSearchResults(lat, lon, data)
         }
     }
 

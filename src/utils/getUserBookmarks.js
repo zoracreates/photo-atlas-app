@@ -35,6 +35,9 @@ let getUserTrips = (userId, callback) => {
     
                                 //get thumnail
                                 let thumbnail = tripData['featuredImg']
+
+                                //get tags
+                                let tags = tripData['tags']
     
     
                                 let existingTripUpdate = {
@@ -43,7 +46,8 @@ let getUserTrips = (userId, callback) => {
                                     title: title,
                                     locationsCount: locationsCount,
                                     privacy: privacy,
-                                    authorId: authorId
+                                    authorId: authorId,
+                                    tags: tags ? tags : ''
                                 }
     
                                 existingTrips.push(existingTripUpdate)

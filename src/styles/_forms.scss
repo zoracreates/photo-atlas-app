@@ -68,6 +68,10 @@ h3.label {
 
 /* Search Bar */
 
+.border-search form {
+    border: 1px solid $gray;
+}
+
 .search-label {
     @extend %subtitle2_font;
     display: block;
@@ -79,7 +83,7 @@ h3.label {
 
 
 input[type="search"].text-bar {
-    min-width: 88%;
+    min-width: 90%;
 }
 
 @media (min-width: 769px) {
@@ -148,7 +152,7 @@ input[type="search"].text-bar {
     background-size: 1rem;
     background-position: center;
     color: transparent;
-    width: 10%;
+    width: 9%;
     padding-right: 1rem;
 }
 

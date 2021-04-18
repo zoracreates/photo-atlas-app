@@ -1,15 +1,17 @@
 import React from 'react'
-import OneToTwoCols from '../../components/layout/OneToTwoCols'
-import TripCard from '../../components/cards/TripCard'
 import getPublicTrips from '../../utils/getPublicTrips'
-
-
-
+import SearchBar from '../../components/forms/SearchBar'
+import UnfilteredTrips from '../../components/content/UnfilteredTrips'
+import FilteredTrips from '../../components/content/FilteredTrips'
 
 class PublicTrips extends React.Component {
     state = {
         existingTrips: [],
-        loading: true
+        loading: true,
+        searching: false,
+        loadingSearchResults: false,
+        searchResults: [],
+        searchTerms: ''
     }
 
     _isMounted = false;
@@ -21,55 +23,84 @@ class PublicTrips extends React.Component {
         })
     }
 
+    handleSearchInput(e) {
+        this.setState({ searchTerms: e.target.value }, () => {
+            if (!this.state.searchTerms) {
+                this.setState({ searching: false })
+            }
+        })
+    }
+
+    getSearchResults(e) {
+        e.preventDefault();
+
+        //use search terms to create searcResults array
+        let existingTrips = this.state.existingTrips;
+        let results = []
+        let searchTerms = this.state.searchTerms.toLowerCase();
+        
+        this.setState({ searching: true, loadingSearchResults: true })
+
+        existingTrips.forEach(trip => {
+            let title = trip.title.toLowerCase()
+            let tags = trip.tags.toLowerCase()
+
+            let titleMatch = title.includes(searchTerms)
+            let tagsMatch = tags.includes(searchTerms)
+
+            if (titleMatch || tagsMatch) {
+
+                results.push(trip)
+
+            }
+        }
+
+        )
+
+        this.setState({ loadingSearchResults: false, searchResults: results })
+
+    }
+
+    tripsList(existingTrips) {
+        let {searching, loadingSearchResults, searchResults} = this.state;
+        if (!searching) {
+            return <UnfilteredTrips existingTrips={existingTrips}/>
+        } else {
+            return <FilteredTrips loading={loadingSearchResults} searchResults={searchResults}/>
+        }
+    }
+
     renderPublicTrips() {
         let { existingTrips, loading } = this.state;
 
-
-
-        if (loading) {
+        while (loading) {
             return (
                 <div aria-live="polite">
-                    <p>Getting Trips...</p>
+                    <p>Getting trips...</p>
                 </div>
             )
+        }
+        if (existingTrips.length > 0) {
+            return (
+                <>
+                    <SearchBar
+                        className="border-search"
+                        id="trips-search"
+                        placeholder="cityscapes"
+                        labelText="Search trips by tags or title"
+                        value={this.state.searchTerms}
+                        onChange={(e) => this.handleSearchInput(e)}
+                        onClick={(e) => this.getSearchResults(e)}
+                    />
+                    {this.tripsList(existingTrips)}
+                </>
+            )
         } else {
-            if (existingTrips.length > 0) {
-                return (<>
-                    <div aria-live="polite" className="sr-only">
-                        <p>Showing all trips</p>
-                    </div>
-                    <OneToTwoCols>
-                        {existingTrips.map((trip, index) => {
-                            let {
-                                thumbnail,
-                                title,
-                                locationsCount,
-                                privacy, 
-                                tripId,
-                                authorId } = trip;
-
-                            return (
-                                <TripCard
-                                    key={index}
-                                    thumbnail={thumbnail}
-                                    title={title}
-                                    tripId={tripId}
-                                    privacy={privacy}
-                                    locationsCount={locationsCount}
-                                    authorId={authorId}
-                                />
-                            )
-                        })}
-                    </OneToTwoCols>
-                </>)
-            } else {
-                return (
-                    <div aria-live="polite">
-                        <p>No trips here yet.</p>
-                    </div>
-                )
-            }
-
+            return (
+                <div aria-live="polite">
+                    <p>No trips here yet.</p>
+                </div>
+            )
         }
     }
 
@@ -80,9 +111,7 @@ class PublicTrips extends React.Component {
     render() {
         return (
             <>
-
                 {this.renderPublicTrips()}
-
             </>
         )
     }
