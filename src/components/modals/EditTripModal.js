@@ -62,7 +62,7 @@ class EditTripModal extends React.Component {
             }
 
             //this gets buggy when I update tags plus it's not refreshing the update...
-            if (this.state.tripTags !== this.props.originalTripTags) {
+            if (this.state.tagsUpdated && (this.state.tripTags !== this.props.originalTripTags)) {
                 tripUpdate["tags"] = this.state.tripTags
             }
 

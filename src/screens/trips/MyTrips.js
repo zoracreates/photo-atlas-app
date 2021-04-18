@@ -1,11 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import PrivateTab from '../../components/navigation/PrivateTab'
-import OneToTwoCols from '../../components/layout/OneToTwoCols'
-import TripCard from '../../components/cards/TripCard'
 import getUserTrips from '../../utils/getUserTrips'
-
-
+import SearchBar from '../../components/forms/SearchBar'
+import UnfilteredTrips from '../../components/content/UnfilteredTrips'
+import FilteredTrips from '../../components/content/FilteredTrips'
 
 class MyTrips extends React.Component {
 
@@ -30,6 +29,53 @@ class MyTrips extends React.Component {
                 }
             }
             )
+        }
+    }
+
+    handleSearchInput(e) {
+        this.setState({ searchTerms: e.target.value }, () => {
+            if (!this.state.searchTerms) {
+                this.setState({ searching: false })
+            }
+        })
+    }
+
+    getSearchResults(e) {
+        e.preventDefault();
+
+        //use search terms to create searcResults array
+        let existingTrips = this.state.existingTrips;
+        let results = []
+        let searchTerms = this.state.searchTerms.toLowerCase();
+        
+        this.setState({ searching: true, loadingSearchResults: true })
+
+        existingTrips.forEach(trip => {
+            let title = trip.title.toLowerCase()
+            let tags = trip.tags.toLowerCase()
+
+            let titleMatch = title.includes(searchTerms)
+            let tagsMatch = tags.includes(searchTerms)
+
+            if (titleMatch || tagsMatch) {
+
+                results.push(trip)
+
+            }
+        }
+
+        )
+
+        this.setState({ loadingSearchResults: false, searchResults: results })
+
+    }
+
+    tripsList(existingTrips) {
+        let {searching, loadingSearchResults, searchResults} = this.state;
+        if (!searching) {
+            return <UnfilteredTrips existingTrips={existingTrips}/>
+        } else {
+            return <FilteredTrips loading={loadingSearchResults} searchResults={searchResults}/>
         }
     }
 
@@ -63,32 +109,16 @@ class MyTrips extends React.Component {
             if (existingTrips.length > 0) {
                 return (
                     <>
-                        <div aria-live="polite" className="sr-only">
-                            <p>Showing trips</p>
-                        </div>
-                        <OneToTwoCols>
-                            {existingTrips.map((trip, index) => {
-                                let {
-                                    thumbnail,
-                                    title,
-                                    locationsCount,
-                                    privacy,
-                                    tripId,
-                                    authorId } = trip;
-
-                                return (
-                                    <TripCard
-                                        key={index}
-                                        thumbnail={thumbnail}
-                                        title={title}
-                                        tripId={tripId}
-                                        privacy={privacy}
-                                        locationsCount={locationsCount}
-                                        authorId={authorId}
-                                    />
-                                )
-                            })}
-                        </OneToTwoCols>
+                    <SearchBar
+                        className="border-search"
+                        id="trips-search"
+                        placeholder="cityscapes"
+                        labelText="Search trips by tags or title"
+                        value={this.state.searchTerms}
+                        onChange={(e) => this.handleSearchInput(e)}
+                        onClick={(e) => this.getSearchResults(e)}
+                    />
+                    {this.tripsList(existingTrips)}
                     </>)
 
             } else {
