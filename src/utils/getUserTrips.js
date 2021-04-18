@@ -31,6 +31,9 @@ let getUserTrips = (userId, callback, locationId = null) => {
     
                                 //get thumnail
                                 let thumbnail = tripData['featuredImg']
+
+                                //get tags
+                                let tags = tripData['tags']
     
                                 //see if location is in trip
                                 let inTrip;
@@ -58,7 +61,8 @@ let getUserTrips = (userId, callback, locationId = null) => {
                                     locationsCount: locationsCount,
                                     privacy: privacy,
                                     inTrip: inTrip,
-                                    authorId: userId
+                                    authorId: userId,
+                                    tags: tags ? tags : ''
                                 }
     
                                 existingTrips.push(existingTripUpdate)

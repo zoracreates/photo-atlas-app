@@ -313,7 +313,7 @@ class ManageTripsModal extends React.Component {
 
                 <form className="modal-content-padding">
                     <div className="form-component-wrapper">
-                        <label htmlFor="trip-name">Trip Name (Max 50 Characters)</label>
+                        <label htmlFor="trip-name">Title (Max 50 Characters)</label>
                         <TexInput placeholder="Beautiful City" id="trip-name" value={this.state.newTripName} onChange={(e) => this.handleTripNamelInput(e)} required />
                         {this.state.tripNameLength !== 0 && <p className="character-count" aria-live="polite">Characters left: {50 - this.state.tripNameLength}</p>}
                         {this.state.tripNameError && <p className="error-font" aria-live="polite">{this.state.tripNameError}</p>}

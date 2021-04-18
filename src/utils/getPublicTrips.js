@@ -21,7 +21,11 @@ let getPublicTrips = (callback) => {
                     //get thumnail
                     let thumbnail = trips[tripId]['featuredImg']
 
+                    //get authorId
                     let authorId = trips[tripId]['author']
+
+                    //get tags
+                    let tags = trips[tripId]['tags']
 
                     let existingTripUpdate = {
                         tripId: tripId,
@@ -29,7 +33,8 @@ let getPublicTrips = (callback) => {
                         title: title,
                         locationsCount: locationsCount,
                         privacy: 'public',
-                        authorId: authorId
+                        authorId: authorId,
+                        tags: tags ? tags : ''
                     }
 
                 existingTrips.push(existingTripUpdate)

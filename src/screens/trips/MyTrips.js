@@ -11,7 +11,11 @@ class MyTrips extends React.Component {
 
     state = {
         existingTrips: [],
-        loading: true
+        loading: true,
+        searching: false,
+        loadingSearchResults: false,
+        searchResults: [],
+        searchTerms: ''
     }
     _isMounted = false;
 
@@ -60,7 +64,7 @@ class MyTrips extends React.Component {
                 return (
                     <>
                         <div aria-live="polite" className="sr-only">
-                            <p>Showing all trips</p>
+                            <p>Showing trips</p>
                         </div>
                         <OneToTwoCols>
                             {existingTrips.map((trip, index) => {
