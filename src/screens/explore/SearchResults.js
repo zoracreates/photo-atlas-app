@@ -23,6 +23,7 @@ class SearchResults extends React.Component {
     _isMounted = false;
 
     getSearchResults = (lat, lon, tags) => {
+        
 
         let searchLat = lat;
 
@@ -34,6 +35,8 @@ class SearchResults extends React.Component {
             "extras": "geo, tags, url_n",
             "accuracy": 6
         }
+
+        console.log(options)
 
         if (tags) {
             options.tags = tags
