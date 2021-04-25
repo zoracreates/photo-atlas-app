@@ -1,9 +1,8 @@
 import React from 'react';
 import SearchBar from '../../components/forms/SearchBar';
-import TwoToThreeCols from '../../components/layout/TwoToThreeCols'
+import TitleCardCols from '../../components/layout/TitleCardCols'
 import TitleCard from '../../components/cards/TtitleCard'
 import getFlickrPhotos from '../../utils/flickr/getFlickrPhotos';
-import createFlickrImageUrl from '../../utils/flickr/createFlickrImageUrl';
 import getFlickrPlace from '../../utils/flickr/getFlickrPlace';
 import getCurrentLocation from '../../utils/getCurrentLocation';
 import getGeoSuggestions from '../../utils/getGeoSuggestions'
@@ -73,7 +72,7 @@ class Home extends React.Component {
             return (
                 <>
                 <p aria-live="polite" className="sr-only">Showing nearby locations</p>
-                <TwoToThreeCols >
+                <TitleCardCols>
                     {list.map((location, id) => {
                         const { thumbnail, title, src, locationId, woeId } = location;
                         return (
@@ -89,7 +88,7 @@ class Home extends React.Component {
                         )
 
                     })}
-                </TwoToThreeCols>
+                </TitleCardCols>
                 </>
             )
 
@@ -110,7 +109,7 @@ class Home extends React.Component {
                 "lat": currentLat,
                 "lon": currentLon,
                 "accuracy": 16,
-                "extras": "geo, tags"
+                "extras": "geo, tags, url_n"
             }
 
             //create a list of locations
@@ -136,7 +135,8 @@ class Home extends React.Component {
 
                         photo => {
 
-                            let url = createFlickrImageUrl(photo);
+                            let url = photo.url_n
+
 
                             let title = photo.title;
 
@@ -178,6 +178,8 @@ class Home extends React.Component {
                             }
                         }
                     )
+
+                    
 
                     this.setState({
                         locationResults: list,

@@ -107,17 +107,26 @@ a {
 .title-card {
     background-color: $gray;
     color: $white_text_color;
+    width: 320px;
+    overflow: hidden;
+
 
     .title-card-image {
-        height: 200px;
+        height: 100px;
+        width: 320px;
         overflow: hidden;
+
+        @media (min-width: 768px) {
+            height: 215px;
+        }
         
         img {
             width: 100%;
-            height: auto; 
-            @supports (object-fit: cover) {
+            height: auto;
+
+         @supports(  object-fit: cover)   {
                 height: 100%;
-                object-fit: cover;
+                object-fit: cover
             }
         }
     }
@@ -139,15 +148,4 @@ a {
         height: 150px;
     }
 
-}
-
-
-@media (min-width: 769px) {
-    .title-card {
-
-    
-        .title-card-image {
-            height: 300px;           
-        }
-    }
 }
