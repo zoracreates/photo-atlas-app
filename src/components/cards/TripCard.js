@@ -50,7 +50,7 @@ class TripCard extends React.Component{
                     <img src={thumbnail} alt="" />
                 </div>
                 <div className={`trip-card-content`}>
-                    <p className={`title`}>{title}</p>
+                    <h3 className={`title`}>{title}</h3>
                     <p className={`meta-data`}>by {this.state.authorName}</p>
                     <p className={`meta-data ${privacy}`}>
                         {privacy}</p> 

@@ -130,12 +130,15 @@ input[type="search"].text-bar {
 .search-back-button,
 .search-button,
 .search-form .text-bar {
-    height: 2.2rem;
+    height: 2.3rem;
     border: none;
    padding: 0 (0.8125rem / 1.5);
    border: none;
 }
 
+#trips-search {
+    height: 2.1rem;
+}
 
 
 .search-back-button,

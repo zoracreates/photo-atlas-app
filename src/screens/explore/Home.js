@@ -1,9 +1,8 @@
 import React from 'react';
 import SearchBar from '../../components/forms/SearchBar';
-import TwoToThreeCols from '../../components/layout/TwoToThreeCols'
+import TitleCardCols from '../../components/layout/TitleCardCols'
 import TitleCard from '../../components/cards/TtitleCard'
 import getFlickrPhotos from '../../utils/flickr/getFlickrPhotos';
-import createFlickrImageUrl from '../../utils/flickr/createFlickrImageUrl';
 import getFlickrPlace from '../../utils/flickr/getFlickrPlace';
 import getCurrentLocation from '../../utils/getCurrentLocation';
 import getGeoSuggestions from '../../utils/getGeoSuggestions'
@@ -16,7 +15,8 @@ class Home extends React.Component {
         errorMessage: '',
         noLocations: false,
         locationResults: [],
-        searchBarSuggestions: ''
+        searchBarSuggestions: '',
+        default: false
     };
 
     _isMounted = false;
@@ -25,10 +25,10 @@ class Home extends React.Component {
         e.preventDefault();
 
         // use the first suggestion to search
-        if(this.state.searchBarSuggestions) {
+        if (this.state.searchBarSuggestions) {
             let suggestion = this.state.searchBarSuggestions[0]
 
-            this.setState({query:suggestion.label})
+            this.setState({ query: suggestion.label })
 
             //geocoding search means x = lat and y = lon https://smeijer.github.io/leaflet-geosearch/usage
             let search = `address=${suggestion.label}&lat=${suggestion.y}&lon=${suggestion.x}`
@@ -39,31 +39,26 @@ class Home extends React.Component {
         }
     }
 
-    
+
     handleInput(e) {
         this.setState(
-           
-            { query: e.target.value }, 
-            
+
+            { query: e.target.value },
+
             () => {
 
-                if(!this.state.query) {
-                    this.setState({searchBarSuggestions: ''})
+                if (!this.state.query) {
+                    this.setState({ searchBarSuggestions: '' })
                 }
                 else {
-                    getGeoSuggestions(this.state.query).then(results =>this.setState({searchBarSuggestions: results}))
+                    getGeoSuggestions(this.state.query).then(results => this.setState({ searchBarSuggestions: results }))
                 }
-           
-        })
-       
+
+            })
+
     }
 
     renderNearby(list) {
-
-        if (this.state.errorMessage && !this.state.currentLocation) {
-            console.log(`Error: ${this.state.errorMessage}`)
-            return <p aria-live="polite" >Share your location to explore what's nearby.</p>
-        }
 
         if (!this.state.errorMessage && this.state.noLocations) {
             return <p aria-live="polite">Looks like there aren't any photo spots nearby yet. Let's explore a different location</p>
@@ -72,16 +67,55 @@ class Home extends React.Component {
         if (!this.state.errorMessage && this.state.currentLocation) {
             return (
                 <>
-                <p aria-live="polite" className="sr-only">Showing nearby locations</p>
-                <TwoToThreeCols >
+                <h2 className={`h5-font`}>Explore Nearby</h2>
+                    <p aria-live="polite" className="sr-only">Showing nearby locations</p>
+                    <TitleCardCols>
+                        {list.map((location, id) => {
+                            const { thumbnail, title, src, locationId, woeId } = location;
+                            return (
+                                //make these into links where the search param should be the photo id
+                                <TitleCard
+                                    key={id}
+                                    thumbnail={thumbnail}
+                                    title={title}
+                                    src={src}
+                                    locationId={locationId}
+                                    woeId={woeId}
+                                />
+                            )
+
+                        })}
+                    </TitleCardCols>
+                </>
+            )
+
+        }
+
+        return <p>Getting photo spots...</p>
+    }
+
+    renderDefaultLocations(list) {
+
+        while (list.length === 0) {
+            return (
+                <>
+                    <p>Getting photo spots...</p>
+                </>
+            )
+        }
+        return (
+            <>
+                <h2 className={`h5-font`}>Explore Cabo Rojo, Puerto Rico</h2>
+                <p aria-live="polite" className="sr-only">Showing Cabo Rojo Puerto Rico</p>
+                <TitleCardCols>
                     {list.map((location, id) => {
                         const { thumbnail, title, src, locationId, woeId } = location;
                         return (
                             //make these into links where the search param should be the photo id
-                            <TitleCard 
-                                key={id} 
-                                thumbnail={thumbnail} 
-                                title={title} 
+                            <TitleCard
+                                key={id}
+                                thumbnail={thumbnail}
+                                title={title}
                                 src={src}
                                 locationId={locationId}
                                 woeId={woeId}
@@ -89,28 +123,29 @@ class Home extends React.Component {
                         )
 
                     })}
-                </TwoToThreeCols>
-                </>
-            )
-
-        }
-
-        return <p>Getting nearby photo spots...</p>
+                </TitleCardCols>
+            </>
+        )
     }
 
 
     getNearbyLocations = () => {
 
-        if (this.state.currentLocation) {
 
-            let currentLat = this.state.currentLocation.latitude;
+        let location = this.state.currentLocation
 
-            let currentLon = this.state.currentLocation.longitude;
+
+        if (location) {
+
+
+            let currentLat = location.latitude;
+
+            let currentLon = location.longitude;
             let options = {
                 "lat": currentLat,
                 "lon": currentLon,
                 "accuracy": 16,
-                "extras": "geo, tags"
+                "extras": "geo, tags, url_n"
             }
 
             //create a list of locations
@@ -136,16 +171,17 @@ class Home extends React.Component {
 
                         photo => {
 
-                            let url = createFlickrImageUrl(photo);
+                            let url = photo.url_n
+
 
                             let title = photo.title;
 
                             let woeId = photo.woeid;
 
-                            let locationId = photo.id; 
+                            let locationId = photo.id;
 
                             let tags = photo.tags;
-                            
+
                             //prevent duplicate locations and locations with no tags
                             if (woeId && !existingLocations.includes(woeId) && tags) {
 
@@ -153,10 +189,10 @@ class Home extends React.Component {
 
                                 let location = {
                                     "src": "flickr",
-                                    "locationId" : locationId, 
+                                    "locationId": locationId,
                                     "thumbnail": url,
                                     "title": title,
-                                    "woeId" : woeId
+                                    "woeId": woeId
                                 }
 
                                 let place = async (options) => {
@@ -179,6 +215,8 @@ class Home extends React.Component {
                         }
                     )
 
+
+
                     this.setState({
                         locationResults: list,
                         noLocations: false
@@ -194,8 +232,7 @@ class Home extends React.Component {
     }
 
     suggestionClick(suggestion, e) {
-        
-        this.setState({query:suggestion.label})
+        this.setState({ query: suggestion.label })
         let search = `address=${suggestion.label}&lat=${suggestion.lat}&lon=${suggestion.lon}`
         this.props.history.push(`/explore/?q&${search}`);
     }
@@ -204,14 +241,53 @@ class Home extends React.Component {
 
         this._isMounted = true;
 
-         getCurrentLocation(
-            position => this._isMounted && this.setState({ currentLocation: position.coords }, () => { this.getNearbyLocations() }),
+        let defaultLocation = {
+            latitude: 18.087,
+            longitude: -67.1459
+        }
+
+        let setDefault = () => {
+            if (!this.state.currentLocation) {
+                this.setState(
+                    { currentLocation: defaultLocation, default: true },
+                    () => this.getNearbyLocations()
+                )
+            }
+        }
+
+        getCurrentLocation(
+            position =>  {
+                if( this._isMounted && !this.state.default) {
+                    this.setState({ currentLocation: position.coords}, () => this.getNearbyLocations())
+                }
+            },
             err => this._isMounted && this.setState({ errorMessage: err.message })
         )
+
+        setTimeout(function(){ setDefault() }, 3500);
+
+
     }
 
     componentWillUnmount() {
         this._isMounted = false;
+    }
+
+
+    renderLocations(locationResults) {
+        if (!this.state.default) {
+            return (
+                <>
+                    {this.renderNearby(locationResults)}
+                </>
+            )
+        } else {
+            return (
+                <>
+                    {this.renderDefaultLocations(locationResults)}
+                </>
+            )
+        }
     }
 
 
@@ -241,15 +317,15 @@ class Home extends React.Component {
 
                             searchSuggestions={searchBarSuggestions}
 
-                            handleSuggestion={(suggestion, e)=> {this.suggestionClick(suggestion)}}
+                            handleSuggestion={(suggestion, e) => { this.suggestionClick(suggestion) }}
                         />
 
 
                     </div>
                 </div>
                 <div className={`container mobile-padding`}>
-                    <h2 className={`h5-font`}>Explore Nearby</h2>
-                    {this.renderNearby(locationResults)}
+
+                    {this.renderLocations(locationResults)}
                 </div>
 
             </div>

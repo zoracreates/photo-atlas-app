@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 
 import TitleCard from '../cards/TtitleCard'
-import TwoCols from '../../components/layout/TwoCols';
+import TitleCardCols from '../../components/layout/TitleCardCols';
 
 function ResultsList(props) {
 
@@ -21,7 +21,7 @@ function ResultsList(props) {
             <div aria-live="polite" className="sr-only">
                 <p>Showing search results</p>
             </div>
-            <TwoCols>
+            <TitleCardCols>
             {list.map((location, id) => {
                 const { thumbnail, title, src, locationId, woeId } = location;
 
@@ -39,7 +39,7 @@ function ResultsList(props) {
                 )
 
             })}
-            </TwoCols>
+            </TitleCardCols>
             </>
         )
 

@@ -4,7 +4,6 @@ import SearchBar from '../../components/forms/SearchBar';
 import MapWithCards from '../../components/layout/MapWithCards';
 
 import getFlickrPhotos from '../../utils/flickr/getFlickrPhotos';
-import createFlickrImageUrl from '../../utils/flickr/createFlickrImageUrl';
 import getFlickrPlace from '../../utils/flickr/getFlickrPlace';
 import getCurrentLocation from '../../utils/getCurrentLocation';
 import ResultsList from '../../components/content/ResultsList';
@@ -24,6 +23,7 @@ class SearchResults extends React.Component {
     _isMounted = false;
 
     getSearchResults = (lat, lon, tags) => {
+        
 
         let searchLat = lat;
 
@@ -32,9 +32,11 @@ class SearchResults extends React.Component {
         let options = {
             "lat": searchLat,
             "lon": searchLon,
-            "extras": "geo, tags",
+            "extras": "geo, tags, url_n",
             "accuracy": 6
         }
+
+        console.log(options)
 
         if (tags) {
             options.tags = tags
@@ -74,7 +76,7 @@ class SearchResults extends React.Component {
 
                     photo => {
 
-                        let url = createFlickrImageUrl(photo);
+                        let url = photo.url_n
 
                         let title = photo.title;
 
