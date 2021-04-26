@@ -309,7 +309,7 @@ class TripContent extends React.Component {
                         mapLon={mapLon}
                         mapZoom={mapZoom}
                     >
-                        <div className='dark-background mobile-header'>
+                        <div className='mobile-header'>
                             <div className={`container mobile-padding`}>
                                 <button onClick={() => { window.history.back() }} className={`secondary-button back-button`}>Back</button>
                                 {loaded && this.props.userId === authorId && <EditTripSmall onClick={() => this.openEditModal()} />}

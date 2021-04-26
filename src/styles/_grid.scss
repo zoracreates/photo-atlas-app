@@ -12,7 +12,7 @@ footer,
 .dark-background,
 .light-background {
     width: 100%;
-    min-width: 320px;
+    min-width: 150px;
 }
 
 footer {
@@ -47,11 +47,6 @@ footer .container {
 .container.header-container {
     padding-top: 10px;
     padding-bottom: 10px;
-}
-
-header {
-    height: 94px;
-
 }
 
 .mobile-header {
@@ -177,7 +172,7 @@ header {
         }
 
         &.open  .map .leaflet-container {
-            height: 55vh;
+            height: 70vh;
         }
 
         &.close .map .leaflet-container {

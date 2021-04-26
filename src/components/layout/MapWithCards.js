@@ -6,7 +6,7 @@ import Map from '../map/Map';
 class MapWithCards extends React.Component {
 
     state = {
-        openedMap: true
+        openedMap: false
     }
 
     handleToggle = () => {

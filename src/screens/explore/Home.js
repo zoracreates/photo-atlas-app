@@ -261,7 +261,7 @@ class Home extends React.Component {
                     this.setState({ currentLocation: position.coords}, () => this.getNearbyLocations())
                 }
             },
-            err => this._isMounted && this.setState({ errorMessage: err.message })
+            err => this._isMounted && this.setState({ errorMessage: err.message }, ()=>setDefault())
         )
 
         setTimeout(function(){ setDefault() }, 3500);
