@@ -61,7 +61,6 @@
 .mobile-header {
     .back-button {
         @extend %caption_font;
-        color: $light_link_color;
         margin: auto 0px;
 
         &::before {
@@ -69,7 +68,7 @@
             display: inline-block;
             width:  0.75rem;
             height: 0.75rem;
-            background-image:  url(../images/icons/48px/chevron-white.png);
+            background-image:  url(../images/icons/96px/chevron-blue.png);
             background-repeat: no-repeat;
             background-size: 0.5rem;
             background-position: center bottom;
@@ -92,12 +91,32 @@ input[type='submit'] {
     min-width: 5rem;
 }
 
+
 .actions {
+    display: none;
     margin: 0px;
     padding: 0px;
     text-align: right;
     list-style: none;
+    
+    @media (min-width: 769px) {
+     display: flex;
+     justify-content: flex-end;
+    }
+
+    li:not(:last-child) {
+        margin-right: 2.5rem;
+    }
 }
+
+.mobile-header .actions {
+    margin-top: .5rem;
+    display: flex;
+    justify-content: space-around;
+}
+
+
+
 
 .action-button {
     @extend %button_font;
@@ -153,8 +172,8 @@ input[type='submit'] {
     text-transform: none;
     font-size: 0.75rem;
     background: transparent;
+    color: $link_color;
     border: none;
-    color: $white_text_color;
     text-decoration: none;
     display: block;
     margin: 0px 0px 0px auto;
@@ -173,23 +192,27 @@ input[type='submit'] {
     }
 
     &.added::before  {
-        background-image: url(../images/icons/96px/heart-fill-white.png);   
+        background-image: url(../images/icons/96px/heart-fill-blue.png);   
     }
 
     &.add::before {
-        background-image: url(../images/icons/96px/heart-outline-white.png);   
+        background-image: url(../images/icons/96px/heart-outline-blue.png);   
     }
 
     &.edit::before{
-        background-image: url(../images/icons/48px/pencil-white.png);  
+        background-image: url(../images/icons/48px/pencil-blue.png);  
     }
 
     &.bookmark::before {
-        background-image: url(../images/icons/48px/bookmark-white-outline.png);  
+        background-image: url(../images/icons/48px/bookmark-blue-outline.png);  
     }
 
     &.bookmarked::before {
-        background-image: url(../images/icons/48px/bookmark-white-fill.png);  
+        background-image: url(../images/icons/48px/bookmark-blue-fill.png);  
+    }
+
+    &.directions::before {
+        background-image: url(../images/icons/96px/directions-blue.png); 
     }
     
 

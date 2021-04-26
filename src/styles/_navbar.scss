@@ -5,31 +5,28 @@ header {
         font-size: 0px;
         line-height: 0;
     }
-    
-    position: fixed;
-    bottom: 0px;
-    padding: 10px 0px;
-
     .container {
         display: flex;
+        flex-wrap: wrap;
+        align-items: flex-end;
+        max-width: 98%;
+        padding-left: 2%;
+        padding-right: 2%;
+        max-width: 1800px;
     }
-   
 
-    .logo {
+    padding: 10px 0px;
 
-        display: flex;
-        align-items: center;
+
+    .logo { 
+        padding-right: 2.5rem;
 
         img {
-            width: 0px;
-            height: 0px;
-            line-height: 0px;
+            width: 70px;
         }
     }
 
     nav {
-        margin: auto;
-        width: 90%;
         
         a {
             text-decoration: none;
@@ -41,43 +38,23 @@ header {
             }
         }
 
-
     }
 
     ul {
         padding: 0px;
         display: flex;
-        justify-content: space-between;
-
-
+        margin: 1rem 0 4px 0;
+        
         li {
-            @extend %caption_font;
-            flex-basis: 20%;
+            @extend %body1_font;
+            margin-right: 2.5rem;
             list-style: none;
             font-weight: $normal_weight;
             text-align: center;
+        }
 
-            img {
-                max-width: 25px;
-                display: block;
-                margin: auto;
-                padding-bottom: 10px;
-            }
-
-            span {
-                display: block;
-
-                &::before {
-                    content: '';
-                    display: block;
-                    height: 35px;
-                    width: 25px;
-                    margin: auto;
-                    padding-bottom: 10px;
-                    background-size: contain;
-                    background-repeat: no-repeat;
-                }
-            }
+        span {
+            display: block;
         }
     }
 }
@@ -85,7 +62,12 @@ header {
 
 @media (min-width: 769px) {
     header {
-        position: static;
+
+
+        .container {
+            display: flex;
+            padding: 0px;
+        }
         
         .logo {
             img {
@@ -102,6 +84,67 @@ header {
             margin-left: auto;
             min-width: 300px;
             width: auto;
+
+            ul {
+                justify-content: space-between;
+                li {
+                    flex-basis: 20%;
+                    margin-right: 0px;
+                    font-size: 0.75rem;
+                    span {
+                        &::before {
+                            content: '';
+                            display: block;
+                            height: 35px;
+                            width: 25px;
+                            margin: auto;
+                            padding-bottom: 10px;
+                            background-size: contain;
+                            background-repeat: no-repeat;
+                        }
+                    }
+                }
+            }
+
+            .explore {
+                span::before {
+                    background-image: url(../images/icons/96px/search-white.png);
+                }
+        
+                &.active span::before {
+                    background-image: url(../images/icons/96px/search-bold-white.png);
+                }
+            }
+            
+            .trips {
+                span::before {
+                    background-image: url(../images/icons/96px/trips-outline-white.png);
+                }
+        
+                &.active span::before {
+                    background-image: url(../images/icons/96px/trips-fill-white.png);
+                }
+            }
+            
+            .add {
+                span::before {
+                    background-image: url(../images/icons/96px/add-outline-white.png);
+                }
+        
+                &.active span::before {
+                    background-image: url(../images/icons/96px/add-fill-white.png);
+                }
+            }
+        
+            .profile {
+                span::before {
+                    background-image: url(../images/icons/96px/profile-outline-white.png);
+                }
+        
+                &.active span::before {
+                    background-image: url(../images/icons/96px/profile-fill-white.png);
+                }
+            }
         }
         
     }
@@ -111,46 +154,5 @@ header {
 
 
 
-nav {
-    .explore {
-        span::before {
-            background-image: url(../images/icons/96px/search-white.png);
-        }
-
-        &.active span::before {
-            background-image: url(../images/icons/96px/search-bold-white.png);
-        }
-    }
-    
-    .trips {
-        span::before {
-            background-image: url(../images/icons/96px/trips-outline-white.png);
-        }
-
-        &.active span::before {
-            background-image: url(../images/icons/96px/trips-fill-white.png);
-        }
-    }
-    
-    .add {
-        span::before {
-            background-image: url(../images/icons/96px/add-outline-white.png);
-        }
-
-        &.active span::before {
-            background-image: url(../images/icons/96px/add-fill-white.png);
-        }
-    }
-
-    .profile {
-        span::before {
-            background-image: url(../images/icons/96px/profile-outline-white.png);
-        }
-
-        &.active span::before {
-            background-image: url(../images/icons/96px/profile-fill-white.png);
-        }
-    }
-}
 
 

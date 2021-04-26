@@ -8,7 +8,7 @@ import createFlickrImageUrl from '../../utils/flickr/createFlickrImageUrl'
 import getFlickrPlace from '../../utils/flickr/getFlickrPlace'
 import getFlickrPhotos from '../../utils/flickr/getFlickrPhotos'
 import filterTags from '../../utils/filterTags'
-import { DirectionsLarge } from '../../components/buttons/DirectionsButtons'
+import { DirectionsLarge, DirectionsSmall } from '../../components/buttons/DirectionsButtons'
 import { AddToTripsLarge, AddToTripsSmall } from '../../components/buttons/AddToTripsButtons'
 import ManageTripsModal from '../../components/modals/ManageTripsModal'
 import firebase from '../../utils/firebase/firebaseConfig'
@@ -57,7 +57,7 @@ class Location extends React.Component {
             let database = firebase.database()
 
 
-            this._isMounted && database.ref(`userTrips/${userId}`).get().catch(error=> console.log(error)).then((snapshot) => {
+            this._isMounted && database.ref(`userTrips/${userId}`).get().catch(error => console.log(error)).then((snapshot) => {
                 let locationTrips = [];
                 if (snapshot.exists()) {
                     let trips = snapshot.val();
@@ -81,7 +81,7 @@ class Location extends React.Component {
                                 if (locationTrips.length > 0) {
 
                                     this.setState({ inTrips: true })
-                                    
+
                                 } else {
                                     this.setState({ inTrips: false })
                                 }
@@ -135,7 +135,7 @@ class Location extends React.Component {
         let pathQuery = this.props.location.search;
         let searchParams = new URLSearchParams(pathQuery);
         let woeId = searchParams.get("woe");
-        this.setState({woeId: woeId})
+        this.setState({ woeId: woeId })
 
 
         //if the path starts with flickr
@@ -447,10 +447,14 @@ class Location extends React.Component {
         return (
             <>
                 <div className="location">
-                    <div className='dark-background mobile-header'>
+                    <div className='mobile-header'>
                         <div className={`container mobile-padding`}>
                             <button onClick={() => { window.history.back() }} className={`secondary-button back-button`}>Back</button>
-                            <AddToTripsSmall added={inTrips} onClick={() => { this.manageTripsModal() }} />
+                            <ul className="actions">
+                                <li><AddToTripsSmall added={inTrips} onClick={() => { this.manageTripsModal() }} /></li>
+                            <li><DirectionsSmall latitude={destination.latitude} longitude={destination.longitude} /></li>
+                            </ul>
+                            
                         </div>
 
                     </div>
