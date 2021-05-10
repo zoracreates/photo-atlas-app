@@ -8,6 +8,6 @@ Photo Atlas App helps photographers find the right location to capture their bes
 
 
 ## Capstone Deliverables
-- [Final Report/Project Documentation](../blob/main/PhotoAtlasApp_CapstoneDocumentation.pdf)
+- [Final Report/Project Documentation](../main/PhotoAtlasApp_CapstoneDocumentation.pdf)
 - [Final Presentation Video](https://youtu.be/MM728FQKqg4)
 - [Project Pitch Video](https://youtu.be/zQqpP19CFC4)
